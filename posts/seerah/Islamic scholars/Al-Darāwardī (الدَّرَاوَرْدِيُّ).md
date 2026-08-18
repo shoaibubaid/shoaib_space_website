@@ -1,0 +1,2 @@
+**Later Scholar (Tabi' al-Tabi'in).**  
+Full name: **ʿAbd al-ʿAzīz ibn Muḥammad**. He was a prominent scholar from **Medina** in the 8th century. He was a contemporary of **Imam Malik** and is a very common name in the chains of narration coming out of Medina. He was originally of Persian descent (from a place called Daraward), but he became a master of the Medinan scholarly tradition.

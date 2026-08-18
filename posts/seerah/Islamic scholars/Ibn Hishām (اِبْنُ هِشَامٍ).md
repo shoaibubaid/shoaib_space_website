@@ -1,0 +1,1 @@
+**Ibn Hishām (d. 213 or 218 AH / 833 AD):** He was born long after the era of the Sahaba. He is the scholar who condensed and refined the biography of the Prophet for future generations.

@@ -1,0 +1,2 @@
+**Later Scholar (Tabi' al-Tabi'in era).**  
+He was a massive authority in Hadith and served as a **pivotal teacher** for the authors of all Six Canonical Books, including **Al-Bukhari**, **Muslim**, **Al-Tirmidhi**, and **Al-Nasa'i**. He travelled extensively and was known for his vast memory.

@@ -18,7 +18,7 @@ const postCache = {};
 
 async function loadManifest() {
   if (manifestCache) return manifestCache;
-  const res = await fetch("manifest.json");
+  const res = await fetch("manifest.json", { cache: "no-store" });
   manifestCache = await res.json();
   return manifestCache;
 }
@@ -37,7 +37,7 @@ function parseFrontmatter(raw) {
 
 async function loadPost(path) {
   if (postCache[path]) return postCache[path];
-  const res = await fetch(path);
+  const res = await fetch(path, { cache: "no-store" });
   const raw = await res.text();
   const parsed = parseFrontmatter(raw);
   postCache[path] = parsed;
@@ -376,7 +376,7 @@ let projectsCache = null;
 
 async function renderProjects() {
   if (!projectsCache) {
-    const res = await fetch("projects.json");
+    const res = await fetch("projects.json", { cache: "no-store" });
     projectsCache = await res.json();
   }
 
@@ -405,7 +405,7 @@ let talksCache = null;
 
 async function renderTalks() {
   if (!talksCache) {
-    const res = await fetch("talks.json");
+    const res = await fetch("talks.json", { cache: "no-store" });
     talksCache = await res.json();
   }
 
@@ -513,34 +513,78 @@ async function renderBlogGroups() {
 }
 
 // ---- post view ----
-async function renderPost(catKey, path) {
-  const manifest = await loadManifest();
-  const cat = manifest[catKey];
+// resolves a relative path (like a markdown link or image src) against the
+// directory of the file that referenced it — e.g. an image path written as
+// "pictures/x.png" inside posts/seerah/saba.md resolves to
+// posts/seerah/pictures/x.png, not to the site root.
+function resolveAssetPath(baseDir, relPath) {
+  if (!relPath) return relPath;
+  if (/^([a-z]+:)?\/\//i.test(relPath) || relPath.startsWith("/") ||
+      relPath.startsWith("data:") || relPath.startsWith("#") ||
+      relPath.startsWith("mailto:") || relPath.startsWith("post:")) {
+    return relPath;
+  }
+  const combined = baseDir + relPath;
+  const stack = [];
+  combined.split("/").forEach(part => {
+    if (part === "" || part === ".") return;
+    if (part === "..") stack.pop();
+    else stack.push(part);
+  });
+  return stack.join("/");
+}
+
+// Renders any markdown file — a registered post OR an arbitrary local .md
+// file linked from within one — into the post view. backLabel/backFn control
+// what the back-link does; eyebrowPrefix is optional text (like a category
+// name) shown before the era in the header.
+async function renderMarkdownFile(path, { backLabel, backFn, eyebrowPrefix = "" }) {
   const { meta, body } = await loadPost(path);
+  const fileDir = path.includes("/") ? path.slice(0, path.lastIndexOf("/") + 1) : "";
 
   const backLink = document.getElementById("post-back-link");
-  document.getElementById("post-back-label").textContent = cat.label;
+  document.getElementById("post-back-label").textContent = backLabel;
   backLink.onclick = async (e) => {
     e.preventDefault();
-    await renderBlogList(catKey);
-    showView("blog-list");
+    await backFn();
   };
 
+  const fallbackTitle = path.split("/").pop().replace(/\.md$/i, "").replace(/[-_]/g, " ");
   const article = document.getElementById("post-article");
   article.innerHTML = `
     <div class="article-header">
-      <span class="article-eyebrow">${cat.label} · ${meta.era || ""}</span>
-      <h1 class="handwritten article-title">${meta.title || ""}</h1>
+      <span class="article-eyebrow">${eyebrowPrefix}${meta.era || ""}</span>
+      <h1 class="handwritten article-title">${meta.title || fallbackTitle}</h1>
       <span class="article-readtime">${meta.readTime || ""}</span>
     </div>
     <div id="article-content" class="article-body"></div>
   `;
 
   const content = document.getElementById("article-content");
-  content.innerHTML = marked.parse(body);
+
+  // custom renderer: resolve image paths, open external links in a new
+  // tab, and turn plain relative .md links into in-app sub-page navigation
+  const renderer = new marked.Renderer();
+  renderer.image = (href, title, text) => {
+    const resolved = resolveAssetPath(fileDir, href);
+    return `<img src="${resolved}" alt="${text || ""}"${title ? ` title="${title}"` : ""}>`;
+  };
+  renderer.link = (href, title, text) => {
+    if (href.startsWith("post:")) return `<a href="${href}">${text}</a>`;
+    if (/^https?:\/\//.test(href) || href.startsWith("mailto:")) {
+      return `<a href="${href}" target="_blank" rel="noopener">${text}</a>`;
+    }
+    if (/\.md$/i.test(href)) {
+      const resolved = resolveAssetPath(fileDir, href);
+      return `<a href="#" data-subpage="${resolved}">${text}</a>`;
+    }
+    return `<a href="${href}">${text}</a>`;
+  };
+
+  content.innerHTML = marked.parse(body, { renderer });
 
   // internal cross-post links: [text](post:category/slug) jumps straight
-  // to another post, in the same or a different category.
+  // to another registered post, in the same or a different category.
   content.querySelectorAll('a[href^="post:"]').forEach(a => {
     const target = a.getAttribute("href").slice("post:".length);
     const [targetCat, targetSlug] = target.split("/");
@@ -548,6 +592,22 @@ async function renderPost(catKey, path) {
     a.addEventListener("click", async (e) => {
       e.preventDefault();
       await renderPost(targetCat, `posts/${targetCat}/${targetSlug}.md`);
+      showView("post");
+    });
+  });
+
+  // arbitrary local sub-page links: [text](some/local/file.md) — works for
+  // any markdown file that exists on disk, no manifest.json entry required.
+  // "Back" returns to whichever page linked to it.
+  content.querySelectorAll("a[data-subpage]").forEach(a => {
+    const target = a.dataset.subpage;
+    a.addEventListener("click", async (e) => {
+      e.preventDefault();
+      await renderMarkdownFile(target, {
+        backLabel: meta.title || fallbackTitle,
+        backFn: async () => { await renderMarkdownFile(path, { backLabel, backFn, eyebrowPrefix }); },
+        eyebrowPrefix: ""
+      });
       showView("post");
     });
   });
@@ -576,4 +636,17 @@ async function renderPost(catKey, path) {
   const sections = wrapContentSections(content);
   const floatList = (meta.floats || "").split(",").map(s => s.trim()).filter(Boolean);
   setupFloatingProps(sections, floatList);
+}
+
+async function renderPost(catKey, path) {
+  const manifest = await loadManifest();
+  const cat = manifest[catKey];
+  await renderMarkdownFile(path, {
+    backLabel: cat.label,
+    backFn: async () => {
+      await renderBlogList(catKey);
+      showView("blog-list");
+    },
+    eyebrowPrefix: `${cat.label} · `
+  });
 }

@@ -1,0 +1,2 @@
+**Later Scholar.**  
+Full name: **Aḥmad ibn Ḥanbal**. He is the founder of the Hanbali school of law and author of the _Musnad_, one of the largest collections of Hadith. He lived through the Abbasid era and is legendary for his steadfastness during the "Mihna" (Inquisition) regarding the nature of the Quran.

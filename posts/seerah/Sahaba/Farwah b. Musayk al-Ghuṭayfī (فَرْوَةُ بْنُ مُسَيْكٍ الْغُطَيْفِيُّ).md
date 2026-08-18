@@ -1,0 +1,2 @@
+[[Sahaba]]  
+A prominent leader of the **Murād** tribe from Yemen. He famously came to the Prophet ﷺ as part of a delegation. In literature, he is the primary source for the famous Hadith where the Prophet ﷺ explains the origins of **Saba** (answering whether Saba was a man, a woman, or a land).

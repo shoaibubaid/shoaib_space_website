@@ -1,0 +1,2 @@
+(Full name: ʿAbd Allāh ibn ʿAbbās / عَبْدُ اللهِ بْنُ عَبَّاسٍ)
+He was the cousin of the Prophet ﷺ. Though he was young when the Prophet passed away, he is considered one of the most learned [[Sahaba]].

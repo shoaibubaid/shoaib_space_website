@@ -1,0 +1,5 @@
+[[Tabi]]
+**Timeline:** Born 21 AH (642 CE) – Died 102 or 103 AH (722 CE)
+**Brief intro:** Born in Mecca, Mujahid was the foremost student of the Prophet's cousin, [[Ibn ʿAbbās (اِبْنُ عَبَّاسٍ)]]. He is widely considered the most authoritative figure in early Quranic exegesis (_Tafsir_). He was famous for his rigorous approach to learning; he stated that he reviewed the entire Quran with Ibn 'Abbas thirty times, stopping at every single verse to ask when, where, and why it was revealed.
+
+Because of this direct mentorship, his narrations are the primary link between the Sahaba's knowledge and the classical _Tafsir_ works we have today. He is so trusted that Imam al-Bukhari relied heavily on his interpretations in his _Sahih_. He passed away in Mecca while in the state of prostration (_sujud_) during prayer.

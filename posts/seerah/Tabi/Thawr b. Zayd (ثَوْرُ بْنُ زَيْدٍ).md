@@ -1,0 +1,1 @@
+A 2nd-century (AH) scholar from Medina. He is a primary source for the **Sira** (Prophetic biography) of [[Ibn Ishaq ( اِبْنُ إِسْحَاقَ)]]. When you see his name, it is almost always in the context of early Medinan history or legal traditions.

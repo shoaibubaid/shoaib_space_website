@@ -1,0 +1,1 @@
+His full name is **Muḥammad ibn Idrīs**. Born in Gaza and raised in Mecca, he was a member of the **Quraysh** tribe. He is the founder of the Shāfiʿī school of law and is credited with systematizing the principles of Islamic jurisprudence (_Uṣūl al-Fiqh_). In literature, he is often called the "Renewer of the Second Century."

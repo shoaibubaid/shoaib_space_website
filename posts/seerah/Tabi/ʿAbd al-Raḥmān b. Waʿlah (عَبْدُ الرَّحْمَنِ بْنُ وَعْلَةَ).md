@@ -1,0 +1,2 @@
+**Tabiʿī.**  
+A respected narrator from Egypt/Saba. He is most famous in Hadith literature for being the student of [[Ibn ʿAbbās (اِبْنُ عَبَّاسٍ)]]. He is the one who asked Ibn Abbas about the ruling on the skins of dead animals (tanning) and the use of Nabidh (a drink), which are core narrations in the major Hadith books.

@@ -1,0 +1,3 @@
+A skilled genealogist. He is more commonly known in history as **Muḥammad ibn Sallām al-Jumaḥī** (الْجُمَحِيُّ). He was a towering 9th-century literary critic and historian from **Basra**.
+
+He is legendary for writing **"Ṭabaqāt Fuḥūl al-Shuʿarāʾ"** (طَبَقَاتُ فُحُولِ الشُّعَرَاءِ), which was the first major work to categorize Arab poets into "classes." He was deeply concerned with the **authenticity** of ancient tribal poetry, famously exposing how some tribes (like those of **Ad** and **Thamud**) had poems falsely attributed to them by later storytellers.

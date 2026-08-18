@@ -1,0 +1,1 @@
+A grandson of a Tabiʿi. He was a master of genealogy and a teacher to many, including legendary scholars like Imam Ahmad.

@@ -1,0 +1,1 @@
+He is from [[Sahaba]]. The most prolific narrator of Hadith among the Companions. He spent three years in constant company with the Prophet ﷺ. In literature, he is the "Gold Standard" source for thousands of Prophetic traditions, particularly those related to daily life and ethics.

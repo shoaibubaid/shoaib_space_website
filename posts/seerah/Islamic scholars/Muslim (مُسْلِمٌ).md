@@ -1,0 +1,1 @@
+- His full name is **Muslim ibn al-Ḥajjāj**. He was a student of [[Al-Bukhārī (الْبُخَارِيُّ)]] and famously authored _Ṣaḥīḥ Muslim_. He is known for his highly organized method of grouping narrations with similar meanings together.

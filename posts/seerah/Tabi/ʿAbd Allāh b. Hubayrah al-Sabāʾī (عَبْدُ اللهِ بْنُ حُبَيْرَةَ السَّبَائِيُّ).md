@@ -1,0 +1,2 @@
+**Tabiʿī.**  
+A reliable scholar and judge (Qadi) from **Egypt** during the early 8th century. As his title "al-Sabāʾī" suggests, he belonged to the **Saba** (Yemeni) tribal lineage. He is a primary link for Hadiths and history originating from the Egyptian companions.

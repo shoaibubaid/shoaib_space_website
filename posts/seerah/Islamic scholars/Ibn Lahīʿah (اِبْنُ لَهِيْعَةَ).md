@@ -1,0 +1,3 @@
+His full name is **ʿAbd Allāh ibn Lahīʿah** (عَبْدُ اللهِ بْنُ لَهِيْعَةَ). He was a famous 8th-century scholar, judge, and historian from **Egypt**.
+
+He is a unique figure in Islamic scholarship because he was one of the primary sources for the history and genealogies of the **South Arabian (Yemeni) tribes** that settled in Egypt and North Africa. However, he is also famous for a specific historical tragedy: his massive library of original manuscripts **burned down** in a fire (around 170 AH). After the fire, he had to rely on his memory to teach, which led to a famous debate among Hadith scholars about the accuracy of his later narrations.

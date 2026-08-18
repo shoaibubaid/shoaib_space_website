@@ -1,0 +1,1 @@
+The nephew of [[Muṣʿab al-Zubayrī (مُصْعَبٌ الزُّبَيْرِيُّ)]]. He served as a judge (Qadi) in Mecca and wrote the definitive works on the lineages of the Quraysh.

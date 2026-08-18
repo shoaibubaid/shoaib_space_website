@@ -1,0 +1,1 @@
+Specifically known as **Al-Uwaysī**, he was a high-level 9th-century scholar from Medina. He is famous for being one of the primary teachers of **Imam [[Al-Bukhārī (الْبُخَارِيُّ)]]**. If you see him in a chain of narration (isnad), he is usually the one passing knowledge directly to the great compilers.

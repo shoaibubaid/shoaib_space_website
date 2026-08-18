@@ -1,0 +1,3 @@
+Abū ʿUshbah Muḥammad ibn Mūsā (8th–9th century) was a prominent early **genealogist** and historian. He is often cited in major classical works of lineage, such as those by **Al-Zubayr ibn Bakkār** and **Ibn ʿAbd al-Barr**, especially regarding the details of the **Quraysh** and other North Arabian tribes. 
+
+He belongs to the same era of intense documentation as **Al-Kalbi** and [[Muṣʿab al-Zubayrī (مُصْعَبٌ الزُّبَيْرِيُّ)]]. His contributions were vital in preserving the precise branches of the **Adnani** tribes, often providing specific details that other genealogists might have generalized.

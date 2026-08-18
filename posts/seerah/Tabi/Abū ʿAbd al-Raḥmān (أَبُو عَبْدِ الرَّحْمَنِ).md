@@ -1,0 +1,2 @@
+**Later Scholar / Tabiʿī.**  
+In the context of Hadith and your previous list, this almost always refers to **Abū ʿAbd al-Raḥmān al-Sulamī**, a famous scholar from the Tabiʿun generation who taught the Quran in Kufa for 40 years. However, **Imam Ahmad** (above) also carried this kunya (patronymic).

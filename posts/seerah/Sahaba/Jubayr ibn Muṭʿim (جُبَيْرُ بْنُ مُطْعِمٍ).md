@@ -1,0 +1,1 @@
+He is a [[Sahaba]]. He was a leader of the Quraysh who accepted Islam after the Battle of Badr (specifically around the time of Khaybar or the Conquest of Mecca). He is the primary source for much of the **genealogical knowledge** passed down to later generations.

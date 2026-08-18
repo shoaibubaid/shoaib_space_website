@@ -1,0 +1,1 @@
+[[Tabi]]. His actual name was **Salim**, the freed slave of the family of Muti'. He was a trustworthy narrator who lived in Medina and narrated directly from [[Abu Hurayra (أَبُو هُرَيْرَةَ)]]. He is a key link in the chain for many famous sayings of the Prophet ﷺ.

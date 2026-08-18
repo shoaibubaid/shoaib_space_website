@@ -1,0 +1,1 @@
+His full name is **Muḥammad ibn Isḥāq ibn Yasār** (مُحَمَّدُ بْنُ إِسْحَاقَ بْنِ يَسَارٍ). He is the most famous early biographer of the Prophet Muhammad, and his work forms the basis of the _Sīrah_ (Prophetic biography) we study today.

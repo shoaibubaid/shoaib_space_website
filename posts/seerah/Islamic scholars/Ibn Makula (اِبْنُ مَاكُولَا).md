@@ -1,0 +1,1 @@
+Ibn Mākūlā was a highly respected 11th-century historian and expert in **Hadith** and **genealogy**. He is most famous for his book _Al-Ikmāl_ (الإِكْمَال), which corrected the spelling and pronunciation of complex names in Islamic history
