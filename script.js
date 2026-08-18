@@ -158,7 +158,7 @@ ambienceBtn.addEventListener("click", () => {
   ambienceMenu.hidden = !ambienceMenu.hidden;
 });
 document.addEventListener("click", (e) => {
-  if (!ambienceMenu.hidden && !e.target.closest(".ambience-wrap")) {
+  if (!ambienceMenu.hidden && !e.target.closest("#ambience-btn, #ambience-menu")) {
     ambienceMenu.hidden = true;
   }
 });
@@ -170,6 +170,51 @@ document.querySelectorAll("#ambience-menu button").forEach(btn => {
 });
 
 setAmbience(localStorage.getItem("ambience") || "snow");
+
+// ---- theme picker (midnight / arcade) ----
+const themeBtn = document.getElementById("theme-btn");
+const themeBtnIcon = document.getElementById("theme-btn-icon");
+const themeBtnLabel = document.getElementById("theme-btn-label");
+const themeMenu = document.getElementById("theme-menu");
+
+const THEME_META = {
+  midnight: { icon: "ti-moon", label: "midnight" },
+  arcade: { icon: "ti-bulb", label: "arcade" }
+};
+
+function setTheme(theme) {
+  if (theme === "arcade") {
+    document.documentElement.setAttribute("data-theme", "arcade");
+  } else {
+    document.documentElement.removeAttribute("data-theme");
+  }
+
+  const meta = THEME_META[theme] || THEME_META.midnight;
+  themeBtnIcon.className = "ti " + meta.icon;
+  themeBtnLabel.textContent = meta.label;
+
+  localStorage.setItem("theme", theme);
+  document.querySelectorAll("#theme-menu button").forEach(b => {
+    b.classList.toggle("active", b.dataset.theme === theme);
+  });
+}
+
+themeBtn.addEventListener("click", () => {
+  themeMenu.hidden = !themeMenu.hidden;
+});
+document.addEventListener("click", (e) => {
+  if (!themeMenu.hidden && !e.target.closest("#theme-btn, #theme-menu")) {
+    themeMenu.hidden = true;
+  }
+});
+document.querySelectorAll("#theme-menu button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    setTheme(btn.dataset.theme);
+    themeMenu.hidden = true;
+  });
+});
+
+setTheme(localStorage.getItem("theme") || "midnight");
 
 // ---- floating decorative props ----
 // Add a new prop: drop an image into assets/floats/, then list its filename
@@ -358,6 +403,9 @@ function showView(name) {
   views.forEach(v => v.hidden = v.id !== `view-${name}`);
   navLinks.forEach(l => l.classList.toggle("active", l.dataset.nav === name));
   window.scrollTo({ top: 0, behavior: "instant" });
+  if (name !== "post") {
+    document.getElementById("post-bg-layer").classList.remove("active");
+  }
 }
 
 document.querySelectorAll("[data-nav]").forEach(el => {
@@ -469,9 +517,11 @@ async function renderBlogList(catKey) {
 // Add a new group: just give a category a new group name — no other setup needed.
 async function renderBlogGroups() {
   const manifest = await loadManifest();
+  const groupMeta = manifest.groups || {}; // groupName -> {icon, color}
 
   const groups = {}; // groupName -> [ {catKey, cat} ]
   Object.entries(manifest).forEach(([catKey, cat]) => {
+    if (catKey === "groups") return; // reserved key, not a category
     const groupName = cat.group || "Other";
     if (!groups[groupName]) groups[groupName] = [];
     groups[groupName].push({ catKey, cat });
@@ -484,9 +534,14 @@ async function renderBlogGroups() {
     const box = document.createElement("div");
     box.className = "category-group";
 
+    const meta = groupMeta[groupName] || {};
     const title = document.createElement("h3");
     title.className = "category-group-title";
-    title.textContent = groupName;
+    if (meta.icon) {
+      title.innerHTML = `<img src="assets/icons/${meta.icon}" alt="" class="group-icon"> ${groupName}`;
+    } else {
+      title.textContent = groupName;
+    }
     box.appendChild(title);
 
     const grid = document.createElement("div");
@@ -550,6 +605,17 @@ async function renderMarkdownFile(path, { backLabel, backFn, eyebrowPrefix = "" 
   };
 
   const fallbackTitle = path.split("/").pop().replace(/\.md$/i, "").replace(/[-_]/g, " ");
+
+  // per-post background image, set via frontmatter: background: filename.jpg
+  // (the file should live in assets/backgrounds/)
+  const postBg = document.getElementById("post-bg-layer");
+  if (meta.background) {
+    postBg.style.backgroundImage = `url("assets/backgrounds/${meta.background.trim()}")`;
+    postBg.classList.add("active");
+  } else {
+    postBg.classList.remove("active");
+  }
+
   const article = document.getElementById("post-article");
   article.innerHTML = `
     <div class="article-header">

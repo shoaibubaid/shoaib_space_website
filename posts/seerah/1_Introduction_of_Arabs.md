@@ -4,6 +4,7 @@ era: before Ishmael
 readTime: 15 min read
 excerpt: Introduction of Arbaian origin. Qahtani and Adnani arabs.
 floats: monitor.svg, monitor_cute.png
+background: desert-night.jpg
 ---
 
 ## Types of Arabs

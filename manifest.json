@@ -1,4 +1,8 @@
 {
+  "groups": {
+    "Islamic": { "icon": "islamic.svg", "color": "teal" },
+    "Computer": { "icon": "computer.svg", "color": "indigo" }
+  },
   "seerah": {
     "group": "Islamic",
     "icon": "ti-moon-stars",
@@ -9,7 +13,7 @@
       "posts/seerah/1_Introduction_of_Arabs.md",
       "posts/seerah/2_The_story_of_Saba.md",
       "posts/seerah/3_The_story_of_Rabia_Nasr.md",
-      "posts/seerah/14_The story_of _Tubban Asad.md",
+      "posts/seerah/4_The story_of_Tubban Asad.md",
       "posts/seerah/5_Usurpation_of_the_Throne_of_Yemen.md",
       "posts/seerah/6_Rule_passing_from_Himyar_to_Blacks.md"
     ]

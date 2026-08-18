@@ -8,13 +8,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Space+Mono:wght@400;700&family=Quicksand:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.44.0/iconfont/tabler-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/dist/tabler-icons.min.css">
 <link rel="stylesheet" href="style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
 </head>
 <body>
 
 <div id="bg-layer" class="bg-layer" aria-hidden="true"></div>
+<div id="post-bg-layer" class="post-bg-layer" aria-hidden="true"></div>
 
 <div class="page">
 
@@ -25,6 +26,16 @@
       <a href="#" data-nav="projects" class="nav-link">projects</a>
       <a href="#" data-nav="blog" class="nav-link">blog</a>
       <a href="#" data-nav="speaking" class="nav-link">speaking</a>
+      <div class="ambience-wrap">
+        <button id="theme-btn" aria-label="Choose a theme" aria-haspopup="true">
+          <i id="theme-btn-icon" class="ti ti-moon"></i>
+          <span id="theme-btn-label">midnight</span>
+        </button>
+        <div id="theme-menu" class="ambience-menu" hidden>
+          <button data-theme="midnight"><i class="ti ti-moon"></i> midnight</button>
+          <button data-theme="arcade"><i class="ti ti-bulb"></i> arcade</button>
+        </div>
+      </div>
       <div class="ambience-wrap">
         <button id="ambience-btn" aria-label="Choose background ambience" aria-haspopup="true">
           <i id="ambience-btn-icon" class="ti ti-snowflake"></i>

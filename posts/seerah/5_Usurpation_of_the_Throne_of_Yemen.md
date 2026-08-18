@@ -5,6 +5,7 @@ readTime: 15 min read
 excerpt: About the peple of Saba
 floats: monitor.svg, monitor_cute.png
 ---
+
 After Amr perished, the Throne was taken over 
 by this person named Lakhnia Dhu Shanatir (لَخْنِيعَةُ ذُو شَنَاتِرَ)
 

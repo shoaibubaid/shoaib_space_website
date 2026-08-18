@@ -4,6 +4,7 @@ era: fundamentals
 readTime: 9 min read
 excerpt: Why modern CPUs don't run one instruction at a time, and what that costs you.
 floats: monitor.svg, monitor_cute.svg, mouse.svg, keyboard.svg, lantern.svg, star.svg 
+background: monitor_cute.png
 ---
 
 ## The assembly-line idea
