@@ -1,0 +1,17 @@
+{
+  "seerah": {
+    "label": "seerah",
+    "intro": "A slow, chronological walk through the seerah — starting long before the Prophet was born, with the world that shaped Arabia.",
+    "posts": [
+      "posts/seerah/intro.md"
+    ]
+  },
+  "architecture": {
+    "label": "computer architecture",
+    "intro": "Notes on how computers actually work under the hood, written for future-me who will forget all of this in six months.",
+    "posts": [
+      "posts/architecture/intro.md",
+      "posts/architecture/pipelining.md"
+    ]
+  } 
+}

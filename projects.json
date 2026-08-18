@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Side Channel Analysis Target Simulator ",
+    "description": "This is a cycle-accurate side-channel power/EM trace generator built on the Unicorn Engine CPU emulator.",
+    "link": "https://github.com/shoaibubaid/Side-Channel-Analysis-Target-Simulator",
+    "tags": ["python", "c"],
+    "icon": "ti-terminal-2",
+    "color": "amber"
+  },
+  {
+    "title": "CPA_AES_MSO44Bscope",
+    "description": "Correlation Power Attack on AES using STM32F303RBT6 – Setup & Trace Collection Guide",
+    "link": "https://github.com/shoaibubaid/CPA_AES_MSO44Bscope",
+    "tags": ["c", "python"],
+    "icon": "ti-books",
+    "color": "teal"
+  },
+  {
+    "title": "Custom-Unix-Shell",
+    "description": "This project involves the development of a Unix-style command-line shell from scratch.",
+    "link": "https://github.com/shoaibubaid/Custom-Unix-Shell",
+    "tags": ["c++"],
+    "icon": "ti-mug",
+    "color": "coral"
+  }
+]

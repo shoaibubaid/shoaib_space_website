@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shoaib space</title>
+<meta name="description" content="Personal site and blog — notes on seerah, computer architecture, and whatever else is on my mind.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Space+Mono:wght@400;700&family=Quicksand:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.44.0/iconfont/tabler-icons.min.css">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+</head>
+<body>
+
+<div id="bg-layer" class="bg-layer" aria-hidden="true"></div>
+
+<div class="page">
+
+  <header class="topbar">
+    <a class="brand" href="#" data-nav="home">://shoaib.dev</a>
+    <nav class="nav">
+      <a href="#" data-nav="home" class="nav-link active">home</a>
+      <a href="#" data-nav="projects" class="nav-link">projects</a>
+      <a href="#" data-nav="blog" class="nav-link">blog</a>
+      <a href="#" data-nav="speaking" class="nav-link">speaking</a>
+      <div class="ambience-wrap">
+        <button id="ambience-btn" aria-label="Choose background ambience" aria-haspopup="true">
+          <i id="ambience-btn-icon" class="ti ti-snowflake"></i>
+          <span id="ambience-btn-label">snow</span>
+        </button>
+        <div id="ambience-menu" class="ambience-menu" hidden>
+          <button data-ambience="snow"><i class="ti ti-snowflake"></i> snow</button>
+          <button data-ambience="embers"><i class="ti ti-flame"></i> embers</button>
+          <button data-ambience="rain"><i class="ti ti-cloud-rain"></i> rain</button>
+          <button data-ambience="none"><i class="ti ti-x"></i> none</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- HOME -->
+    <section id="view-home" class="view">
+      <div class="avatar"><i class="ti ti-terminal-2"></i></div>
+      <h1 class="handwritten">hey, i'm Shoaib</h1>
+      <p class="intro">
+        I am an Islamic enthusiast and a computer engineer and I write about those topics, usually with something warm
+        going cold beside the keyboard. currently deep in low-level systems work, and slowly
+        working through the seerah one chapter at a time. this little corner of the internet is
+        where both of those live.
+      </p>
+      <div class="tag-row">
+        <span class="tag tag-amber">systems programming</span>
+        <span class="tag tag-teal">seerah notes</span>
+        <!-- <span class="tag tag-rose">cozy games</span> -->
+      </div>
+      <div class="social-row">
+        <a href="#" aria-label="GitHub"><i class="ti ti-brand-github"></i></a>
+        <a href="#" aria-label="Email"><i class="ti ti-mail"></i></a>
+        <a href="#" aria-label="RSS"><i class="ti ti-rss"></i></a>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="view-projects" class="view" hidden>
+      <h2 class="handwritten section-title">Things i've built</h2>
+      <p class="intro">A few things I've made and kept around.</p>
+      <div id="projects-grid" class="category-grid"></div>
+    </section>
+
+    <!-- BLOG: category cards -->
+    <section id="view-blog" class="view" hidden>
+      <h2 class="handwritten section-title">The blog</h2>
+      <p class="intro">Pick a topic to see what's inside.</p>
+
+      <div class="category-grid">
+        <button class="category-card cat-teal" data-cat="seerah">
+          <i class="ti ti-moon-stars"></i>
+          <span class="cat-name">seerah</span>
+          <span class="cat-count">1 posts</span>
+        </button>
+
+        <button class="category-card cat-indigo" data-cat="architecture">
+          <i class="ti ti-cpu"></i>
+          <span class="cat-name">computer architecture</span>
+          <span class="cat-count">1 posts</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- BLOG LIST (populated by JS) -->
+    <section id="view-blog-list" class="view" hidden>
+      <a href="#" class="back-link" data-nav="blog"><i class="ti ti-arrow-left"></i> blog</a>
+      <h2 id="blog-list-title" class="handwritten section-title"></h2>
+      <p id="blog-list-intro" class="intro"></p>
+      <div id="blog-list" class="post-list"></div>
+    </section>
+
+    <!-- POST (populated by JS) -->
+    <section id="view-post" class="view" hidden>
+      <a href="#" id="post-back-link" class="back-link"><i class="ti ti-arrow-left"></i> <span id="post-back-label"></span></a>
+      <div class="post-layout">
+        <aside class="toc">
+          <div class="toc-label">on this page</div>
+          <ul id="toc-list"></ul>
+        </aside>
+        <article id="post-article" class="article"></article>
+      </div>
+    </section>
+
+    <!-- SPEAKING -->
+    <section id="view-speaking" class="view" hidden>
+      <h2 class="handwritten section-title">Papers, talks &amp; speaking</h2>
+      <p class="intro">Places I've talked out loud about things I usually just write about and the papers that I have published.</p>
+      <div id="talks-grid" class="category-grid"></div>
+    </section>
+
+  </main>
+
+  <footer class="footer">made with tea and questionable sleep schedule</footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

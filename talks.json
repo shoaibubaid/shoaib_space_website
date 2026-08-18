@@ -1,0 +1,11 @@
+[
+  {
+    "title": "Everything Depends on Your Hammer: A Systematic Rowhammer Attack Exploration on SPHINCS+",
+    "event": "ICCAD 2025",
+    "date": "October 2025",
+    "description": "A walk through on a novel Rowhammer-based forgery attack on SPHINCS+ signature scheme and its demonstration.",
+    "link": "https://ieeexplore.ieee.org/abstract/document/11240843",
+    "icon": "ti-cpu",
+    "color": "indigo"
+  }
+]
