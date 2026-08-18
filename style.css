@@ -124,6 +124,27 @@ h1.handwritten{font-size:42px;}
   gap:14px;
   margin-top:24px;
 }
+
+.category-group{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px 20px 22px;
+  margin-bottom:18px;
+}
+.category-group-title{
+  font-family:'Caveat',cursive;
+  font-weight:700;
+  color:var(--amber);
+  font-size:26px;
+  margin:0;
+}
+.category-group .category-grid{
+  margin-top:14px;
+}
+.category-group .category-card{
+  background:var(--surface-raised);
+}
 .category-card{
   display:flex;
   flex-direction:column;

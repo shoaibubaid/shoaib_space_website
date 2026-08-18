@@ -1,17 +1,30 @@
 {
   "seerah": {
+    "group": "Islamic",
+    "icon": "ti-moon-stars",
+    "color": "teal",
     "label": "seerah",
     "intro": "A slow, chronological walk through the seerah — starting long before the Prophet was born, with the world that shaped Arabia.",
     "posts": [
-      "posts/seerah/intro.md"
+      "posts/seerah/saba.md",
+      "posts/seerah/abraha.md",
+      "posts/seerah/makkah-before-islam.md",
+      "posts/seerah/birth-and-childhood.md",
+      "posts/seerah/first-revelation.md"
     ]
   },
   "architecture": {
+    "group": "Computer",
+    "icon": "ti-cpu",
+    "color": "indigo",
     "label": "computer architecture",
     "intro": "Notes on how computers actually work under the hood, written for future-me who will forget all of this in six months.",
     "posts": [
-      "posts/architecture/intro.md",
-      "posts/architecture/pipelining.md"
+      "posts/architecture/pipelining.md",
+      "posts/architecture/cache-hierarchies.md",
+      "posts/architecture/isa-design.md",
+      "posts/architecture/branch-prediction.md",
+      "posts/architecture/memory-consistency.md"
     ]
-  } 
+  }
 }

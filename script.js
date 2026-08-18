@@ -366,6 +366,7 @@ document.querySelectorAll("[data-nav]").forEach(el => {
     showView(el.dataset.nav);
     if (el.dataset.nav === "projects") await renderProjects();
     if (el.dataset.nav === "speaking") await renderTalks();
+    if (el.dataset.nav === "blog") await renderBlogGroups();
   });
 });
 
@@ -463,12 +464,53 @@ async function renderBlogList(catKey) {
   });
 }
 
-document.querySelectorAll(".category-card").forEach(card => {
-  card.addEventListener("click", async () => {
-    await renderBlogList(card.dataset.cat);
-    showView("blog-list");
+// ---- blog groups view ----
+// Categories are grouped by their "group" field in manifest.json.
+// Add a new group: just give a category a new group name — no other setup needed.
+async function renderBlogGroups() {
+  const manifest = await loadManifest();
+
+  const groups = {}; // groupName -> [ {catKey, cat} ]
+  Object.entries(manifest).forEach(([catKey, cat]) => {
+    const groupName = cat.group || "Other";
+    if (!groups[groupName]) groups[groupName] = [];
+    groups[groupName].push({ catKey, cat });
   });
-});
+
+  const container = document.getElementById("blog-groups");
+  container.innerHTML = "";
+
+  Object.entries(groups).forEach(([groupName, entries]) => {
+    const box = document.createElement("div");
+    box.className = "category-group";
+
+    const title = document.createElement("h3");
+    title.className = "category-group-title";
+    title.textContent = groupName;
+    box.appendChild(title);
+
+    const grid = document.createElement("div");
+    grid.className = "category-grid";
+
+    entries.forEach(({ catKey, cat }) => {
+      const card = document.createElement("button");
+      card.className = `category-card cat-${cat.color || "amber"}`;
+      card.innerHTML = `
+        <i class="ti ${cat.icon || "ti-notes"}"></i>
+        <span class="cat-name">${cat.label}</span>
+        <span class="cat-count">${cat.posts.length} posts</span>
+      `;
+      card.addEventListener("click", async () => {
+        await renderBlogList(catKey);
+        showView("blog-list");
+      });
+      grid.appendChild(card);
+    });
+
+    box.appendChild(grid);
+    container.appendChild(box);
+  });
+}
 
 // ---- post view ----
 async function renderPost(catKey, path) {
