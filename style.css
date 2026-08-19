@@ -1,5 +1,5 @@
 :root{
-  --bg: #12141c;
+  --bg: #0a0b11;
   --bg-deep: #0c0e14;
   --surface: #1b1e29;
   --surface-raised: #21242f;
@@ -27,7 +27,7 @@
 /* "arcade" theme — warm neon signage against a rainy night window,
    inspired by a late-night arcade lounge rather than a quiet café */
 :root[data-theme="arcade"]{
-  --bg: #120a14;
+  --bg: #0a060c;
   --bg-deep: #0a050c;
   --surface: #1e1220;
   --surface-raised: #29182c;
@@ -406,7 +406,7 @@ h1.handwritten{font-size:42px;}
 .post-bg-layer{
   position:fixed;
   inset:0;
-  z-index:0;
+  z-index:-1;
   pointer-events:none;
   background-size:cover;
   background-position:center;
@@ -418,7 +418,7 @@ h1.handwritten{font-size:42px;}
   content:"";
   position:absolute;
   inset:0;
-  background:linear-gradient(180deg, rgba(10,8,12,0.55), rgba(10,8,12,0.85));
+  background:linear-gradient(180deg, rgba(10,8,12,0.92), rgba(10,8,12,0.85));
 }
 
 /* ambient background layer */

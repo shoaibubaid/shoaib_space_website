@@ -69,18 +69,18 @@ function clearAmbience() {
   bgLayer.innerHTML = "";
 }
 
-// slow, soft flakes drifting down behind the glass pane
+// medium-high density flakes drifting down
 function startSnow() {
   clearAmbience();
   const make = () => {
     const f = document.createElement("div");
     f.className = "snowflake";
-    const size = 2 + Math.random() * 3;
+    const size = 2.5 + Math.random() * 3.5;
     f.style.width = size + "px";
     f.style.height = size + "px";
     f.style.left = Math.random() * 100 + "vw";
-    f.style.opacity = 0.25 + Math.random() * 0.45;
-    const dur = 10 + Math.random() * 10;
+    f.style.opacity = 0.35 + Math.random() * 0.5;
+    const dur = 9 + Math.random() * 9;
     const drift = (Math.random() > 0.5 ? 1 : -1) * (20 + Math.random() * 40);
     f.style.transition = `transform ${dur}s linear, opacity 1s ease`;
     bgLayer.appendChild(f);
@@ -89,8 +89,8 @@ function startSnow() {
     });
     setTimeout(() => f.remove(), dur * 1000);
   };
-  for (let i = 0; i < 25; i++) setTimeout(make, i * 300);
-  ambienceTimer = setInterval(make, 550);
+  for (let i = 0; i < 55; i++) setTimeout(make, i * 130);
+  ambienceTimer = setInterval(make, 220);
 }
 
 function startEmbers() {
@@ -250,9 +250,10 @@ const activeFloats = []; // { sec, wrap, baseSectionTop, side, imgSize, topFract
 
 // props scroll a little slower than the page itself, for a subtle
 // parallax "lag" — 1 = moves exactly with the page, lower = slower.
-const FLOAT_PARALLAX_FACTOR = 0.55;
-const FLOAT_GAP_RIGHT = 28;  // distance kept from the article's right edge
-const FLOAT_GAP_LEFT = 12;   // distance kept from the article's left edge (note: this will sit on/near the TOC)
+const FLOAT_PARALLAX_FACTOR = 0.45;
+const FLOAT_GAP_RIGHT = 1;  // distance kept from the article's right edge
+const FLOAT_GAP_LEFT = 1;   // distance kept from the article's left edge (note: this will sit on/near the TOC)
+const FLOAT_MIN_VIEWPORT_WIDTH = 820; // below this width, props switch to centered/behind-text mode instead of side-margin mode
 
 function getFloatsLayer() {
   if (!floatsLayerEl) {
@@ -282,29 +283,52 @@ requestAnimationFrame(updateFloatParallax);
 
 // recalculates every currently-visible prop's position against the
 // present layout — needed because zooming/resizing changes the article
-// and TOC widths, so a position computed before the zoom is now stale
+// and TOC widths, so a position computed before the zoom is now stale.
+// Also enforces the hard mobile cutoff: if the window is now too narrow,
+// every active prop is cleared out immediately.
 function repositionActiveFloats() {
   const articleEl = document.getElementById("post-article");
   if (!articleEl || activeFloats.length === 0) return;
+
+  const narrow = window.innerWidth < FLOAT_MIN_VIEWPORT_WIDTH;
   const articleRect = articleEl.getBoundingClientRect();
   const rightClearance = window.innerWidth - articleRect.right;
   const leftClearance = articleRect.left;
 
   activeFloats.slice().forEach(entryObj => {
     const { sec, wrap, side, imgSize, topFraction } = entryObj;
-    const minNeeded = imgSize + 24;
-    const stillHasRoom = side === "right" ? rightClearance >= minNeeded : leftClearance >= minNeeded;
 
-    if (!stillHasRoom) {
+    // a prop spawned for the "other" layout mode doesn't make sense anymore
+    // (a centered behind-text prop on desktop, or a margin prop on mobile) —
+    // clear it out; it'll respawn correctly for the current mode next time
+    // its section re-intersects.
+    const modeMismatch = narrow ? side !== "center" : side === "center";
+    if (modeMismatch) {
       wrap.style.opacity = "0";
       const idx = activeFloats.indexOf(entryObj);
       if (idx !== -1) activeFloats.splice(idx, 1);
       setTimeout(() => wrap.remove(), 400);
-      sec._floatWrap = null;
+      if (sec._floatWraps) sec._floatWraps = sec._floatWraps.filter(w => w !== wrap);
       return;
     }
 
-    const leftPx = computeFloatLeft(side, imgSize, articleRect);
+    let leftPx;
+    if (narrow) {
+      leftPx = articleRect.left + Math.random() * Math.max(0, articleRect.width - imgSize);
+    } else {
+      const minNeeded = imgSize + 24;
+      const stillHasRoom = side === "right" ? rightClearance >= minNeeded : leftClearance >= minNeeded;
+      if (!stillHasRoom) {
+        wrap.style.opacity = "0";
+        const idx = activeFloats.indexOf(entryObj);
+        if (idx !== -1) activeFloats.splice(idx, 1);
+        setTimeout(() => wrap.remove(), 400);
+        if (sec._floatWraps) sec._floatWraps = sec._floatWraps.filter(w => w !== wrap);
+        return;
+      }
+      leftPx = computeFloatLeft(side, imgSize, articleRect);
+    }
+
     const sectionRect = sec.getBoundingClientRect();
     const docScrollY = window.scrollY || window.pageYOffset;
     wrap.style.left = leftPx + "px";
@@ -327,70 +351,99 @@ function setupFloatingProps(sections, floatList) {
   if (!floatList || floatList.length === 0) return;
 
   const articleEl = document.getElementById("post-article");
+  const DESKTOP_OPACITY = 0.85;
+  const MOBILE_BEHIND_OPACITY = 0.18; // subtle — meant to peek through gaps in the text, not compete with it
+  const TYPICAL_IMG_SIZE = 100; // used only for spacing math — actual per-prop size still randomizes
+
+  function spawnOneProp(sec, articleRect, narrow, topFraction) {
+    const sectionRect = sec.getBoundingClientRect();
+    const docScrollY = window.scrollY || window.pageYOffset;
+    const topPx = sectionRect.top + docScrollY + sectionRect.height * topFraction;
+    const file = floatList[Math.floor(Math.random() * floatList.length)];
+
+    let side, imgSize, leftPx;
+
+    if (narrow) {
+      side = "center";
+      imgSize = 60 + Math.random() * 70;
+      leftPx = articleRect.left + Math.random() * Math.max(0, articleRect.width - imgSize);
+    } else {
+      const rightClearance = window.innerWidth - articleRect.right;
+      const leftClearance = articleRect.left;
+      imgSize = 50 + Math.random() * 100;
+      const minNeeded = imgSize + 24;
+
+      if (rightClearance >= minNeeded && leftClearance >= minNeeded) {
+        side = Math.random() > 0.5 ? "left" : "right";
+      } else if (rightClearance >= minNeeded) {
+        side = "right";
+      } else if (leftClearance >= minNeeded) {
+        side = "left";
+      } else {
+        return null; // no real space on either side — skip rather than overlap content
+      }
+      leftPx = computeFloatLeft(side, imgSize, articleRect);
+    }
+
+    const wrap = document.createElement("div");
+    wrap.className = "float-wrap";
+    wrap.style.left = leftPx + "px";
+    wrap.style.top = topPx + "px";
+
+    const img = document.createElement("img");
+    img.src = `assets/floats/${file}`;
+    img.alt = "";
+    img.className = "float-decor";
+    img.style.width = imgSize + "px";
+    img.style.transform = side === "left" ? "rotate(-10deg)" : (side === "right" ? "rotate(10deg)" : "rotate(6deg)");
+
+    wrap.appendChild(img);
+    layer.appendChild(wrap);
+    const targetOpacity = narrow ? MOBILE_BEHIND_OPACITY : DESKTOP_OPACITY;
+    requestAnimationFrame(() => { wrap.style.opacity = String(targetOpacity); });
+
+    const entryObj = { sec, wrap, baseSectionTop: sectionRect.top, side, imgSize, topFraction };
+    activeFloats.push(entryObj);
+    wrap._entryObj = entryObj;
+    return wrap;
+  }
 
   floatObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       const sec = entry.target;
       if (entry.isIntersecting) {
-        if (sec._floatWrap) return;
+        if (sec._floatWraps && sec._floatWraps.length > 0) return;
 
+        const narrow = window.innerWidth < FLOAT_MIN_VIEWPORT_WIDTH;
         const articleRect = articleEl.getBoundingClientRect();
-        const rightClearance = window.innerWidth - articleRect.right;
-        const leftClearance = articleRect.left;
+        const sectionHeight = sec.getBoundingClientRect().height;
 
-        const imgSize = 44 + Math.random() * 36;
-        const minNeeded = imgSize + 24; // image plus a small breathing gap
+        // one slot roughly every 4x a typical prop's size — taller
+        // sections (more content) naturally get more props, short
+        // "coming soon" stubs get one or none
+        const slotCount = Math.max(1, Math.round(sectionHeight / (4 * TYPICAL_IMG_SIZE)));
 
-        let side;
-        if (rightClearance >= minNeeded && leftClearance >= minNeeded) {
-          side = Math.random() > 0.5 ? "left" : "right";
-        } else if (rightClearance >= minNeeded) {
-          side = "right";
-        } else if (leftClearance >= minNeeded) {
-          side = "left";
-        } else {
-          return; // no real space on either side — skip rather than overlap content
+        sec._floatWraps = [];
+        for (let i = 0; i < slotCount; i++) {
+          // evenly spaced slots with a little jitter so it doesn't look like a grid
+          const base = (i + 0.5) / slotCount;
+          const jitter = (Math.random() - 0.5) * (0.7 / slotCount);
+          const topFraction = Math.min(0.95, Math.max(0.05, base + jitter));
+
+          const wrap = spawnOneProp(sec, articleRect, narrow, topFraction);
+          if (wrap) sec._floatWraps.push(wrap);
         }
-
-        // uniform random pick — every file in the list has an equal chance
-        const file = floatList[Math.floor(Math.random() * floatList.length)];
-
-        const sectionRect = sec.getBoundingClientRect();
-        const docScrollY = window.scrollY || window.pageYOffset;
-        const topFraction = 0.15 + Math.random() * 0.55;
-        const topPx = sectionRect.top + docScrollY + sectionRect.height * topFraction;
-        const leftPx = computeFloatLeft(side, imgSize, articleRect);
-
-        const wrap = document.createElement("div");
-        wrap.className = "float-wrap";
-        wrap.style.left = leftPx + "px";
-        wrap.style.top = topPx + "px";
-
-        const img = document.createElement("img");
-        img.src = `assets/floats/${file}`;
-        img.alt = "";
-        img.className = "float-decor";
-        img.style.width = imgSize + "px";
-        img.style.transform = side === "left" ? "rotate(-45deg)" : "rotate(45deg)";
-
-        wrap.appendChild(img);
-        layer.appendChild(wrap);
-        requestAnimationFrame(() => { wrap.style.opacity = "0.85"; });
-
-        sec._floatWrap = wrap;
-        const entryObj = { sec, wrap, baseSectionTop: sectionRect.top, side, imgSize, topFraction };
-        activeFloats.push(entryObj);
-        wrap._entryObj = entryObj;
-      } else if (sec._floatWrap) {
-        const wrap = sec._floatWrap;
-        wrap.style.opacity = "0";
-        const idx = activeFloats.indexOf(wrap._entryObj);
-        if (idx !== -1) activeFloats.splice(idx, 1);
-        setTimeout(() => wrap.remove(), 700);
-        sec._floatWrap = null;
+      } else if (sec._floatWraps && sec._floatWraps.length > 0) {
+        sec._floatWraps.forEach(wrap => {
+          wrap.style.opacity = "0";
+          const idx = activeFloats.indexOf(wrap._entryObj);
+          if (idx !== -1) activeFloats.splice(idx, 1);
+          setTimeout(() => wrap.remove(), 700);
+        });
+        sec._floatWraps = null;
       }
     });
-  }, { rootMargin: "-35% 0px -35% 0px", threshold: 0 });
+  }, { rootMargin: "-15% 0px -15% 0px", threshold: 0 });
 
   sections.forEach(sec => floatObserver.observe(sec));
 }
@@ -604,10 +657,11 @@ async function renderMarkdownFile(path, { backLabel, backFn, eyebrowPrefix = "" 
     await backFn();
   };
 
-  const fallbackTitle = path.split("/").pop().replace(/\.md$/i, "").replace(/[-_]/g, " ");
+  const fallbackTitle = decodeURIComponent(path.split("/").pop().replace(/\.md$/i, "")).replace(/[-_]/g, " ");
 
   // per-post background image, set via frontmatter: background: filename.jpg
-  // (the file should live in assets/backgrounds/)
+  // (the file should live in assets/backgrounds/). Sits behind the ambience
+  // layer, so snow/rain/embers still show on top of it.
   const postBg = document.getElementById("post-bg-layer");
   if (meta.background) {
     postBg.style.backgroundImage = `url("assets/backgrounds/${meta.background.trim()}")`;

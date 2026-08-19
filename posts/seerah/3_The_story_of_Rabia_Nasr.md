@@ -1,9 +1,10 @@
 ---
-title: The Story of Saba
-era: around the time of ad and thamud
-readTime: 15 min read
-excerpt: About the peple of Saba
-floats: monitor.svg, monitor_cute.png
+title: 3. The Story of Rabi'a b. Nasr
+era: will be updated soon
+readTime: 25 min read
+excerpt: story of Rabi'a b. Nasr and shiqq and satih and the dream
+floats: lantern.png, moon.png, arabbooks.png, palmtree.png, prayer_mat.png
+background: 2_seerah_saba.png
 ---
 previous : [previous](2_The_story_of_Saba.md)
 
@@ -21,16 +22,16 @@ kahin means sooth sayer in ancient arabia.
 Kahins are those mysterious people who act and look mysteriously and give news about the future. whether it is a jinn posession or something else, After Prophet (SAW), all of these are considered shirk because this is not compatible with our beautiful religion Islam.
 
 This person Satih had no limbs and was like a water skin (look at the image below) with his face in his chest. When he got angry he would puff up and sit.
-![[water skin.png]]
+![water skin.png](./pictures/water%20skin.png)
 
 Shiqq' name is given as Shiqq b. Sa‘b b. Yashkur b. Ruhm b. Afrak b. Qays b. ‘Abqar b. Anmār b. Nizār (شِقُّ بْنُ صَعْبِ بْنِ يَشْكُرَ بْنِ رُهْمِ بْنِ أَفْرَكَ بْنِ قَيْسِ بْنِ عَبْقَرِ بْنِ أَنْمَارِ بْنِ نِزَارٍ).
 
 He looks like a half a man, like probably with one hand, one leg and so on.
-And it is said that [[Khālid b. ‘Abd Allāh al-Qasri (خَالِدُ بْنُ عَبْدِ اللَّهِ الْقَسْرِيُّ)]] was of his progeny.
+And it is said that [Khālid b. ‘Abd Allāh al-Qasri (خَالِدُ بْنُ عَبْدِ اللَّهِ الْقَسْرِيُّ)](./Islamic%20scholars/Khālid%20b.%20‘Abd%20Allāh%20al-Qasri%20(خَالِدُ%20بْنُ%20عَبْدِ%20اللَّهِ%20الْقَسْرِيُّ).md) was of his progeny.
 
 According to al-Suhayli both Shiqq and Satih were bom on the same day when Tarifa, daughter of al-Khayr, the Himyarite woman, died. It is said that she spat into the mouth of each of them, each therefore inheriting the gift of divination from her. She was the wife of 'Amr b.  'Amir, previously mentioned. But God knows best.
 
-[[Ibn Ishaq ( اِبْنُ إِسْحَاقَ)]] said that Rabi'a b. Nasr was king of Yemen and of the true line of the tubba- kings. He saw a vision that awed and terrified him. So he gathered every single soothsayer, magician, bird prognosticator, and star foreteller in his kingdom and told them, “I have seen visions that amazed and scared me. Tell me what they were and how to interpret them.” They replied, “Relate them to us and we will interpret them.” He responded, “If I do tell you what they were I won’t feel secure with your explanation; the only one capable of interpreting them will be someone who knows what they were before I tell them.”
+[Ibn Ishaq ( اِبْنُ إِسْحَاقَ)](./Islamic%20scholars/Ibn%20Ishaq%20(%20اِبْنُ%20إِسْحَاقَ).md) said that Rabi'a b. Nasr was king of Yemen and of the true line of the tubba- kings. He saw a vision that awed and terrified him. So he gathered every single soothsayer, magician, bird prognosticator, and star foreteller in his kingdom and told them, “I have seen visions that amazed and scared me. Tell me what they were and how to interpret them.” They replied, “Relate them to us and we will interpret them.” He responded, “If I do tell you what they were I won’t feel secure with your explanation; the only one capable of interpreting them will be someone who knows what they were before I tell them.”
 
 One of the wise men then suggested, “If that is what the king wants, then he should send for Shiqq and Satih. No one is more knowledgeable than they; they will tell him what he asked for.”
 
@@ -253,7 +254,7 @@ Ibn Ishaq further related that when the sword of al-Nu'man b. al-Mundhir was bro
 
 
 
-![[alhira.png]]
+![alhira.png](./pictures/alhira.png)
 
 
-next: [[4. The story of  Hassan b. Tubban Asad Abu Karib]]
+next: [4. The story of  Hassan b. Tubban Asad Abu Karib](./4_The%20story_of_Tubban%20Asad.md)

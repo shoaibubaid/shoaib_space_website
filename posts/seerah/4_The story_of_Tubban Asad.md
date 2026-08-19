@@ -1,15 +1,16 @@
 ---
-title: The Story of Saba
-era: around the time of ad and thamud
-readTime: 15 min read
-excerpt: About the peple of Saba
-floats: monitor.svg, monitor_cute.png
+title: 4. The story of Tubban Asad abu karib
+era: will be updated soon
+readTime: 25 min read
+excerpt: story of the last Tubban and his son.
+floats: lantern.png, moon.png, arabbooks.png, palmtree.png, prayer_mat.png
+background: 2_seerah_saba.png
 ---
-previous: [[3. The story of Rabi'a b. Nasr b]]
+previous: [3. The story of Rabi'a b. Nasr b](./3_The_story_of_Rabia_Nasr.md)
 
 ### Lineology
 
-[[Ibn Ishaq ( اِبْنُ إِسْحَاقَ)]] stated that when the previously mentioned Rabia b Nasr died, all of the kingship has reverted back this person called Hassan b. Tubban Asad Abu Karib (حَسَّانُ بْنُ تُبَّانَ أَسْعَدَ أَبِي كَرِبٍ). 
+[Ibn Ishaq ( اِبْنُ إِسْحَاقَ)](./Islamic%20scholars/Ibn%20Ishaq%20(%20اِبْنُ%20إِسْحَاقَ).md) stated that when the previously mentioned Rabia b Nasr died, all of the kingship has reverted back this person called Hassan b. Tubban Asad Abu Karib (حَسَّانُ بْنُ تُبَّانَ أَسْعَدَ أَبِي كَرِبٍ). 
 
 Hassan was just a normal king. On the other hand, Asad Abu Karib was a Tubba, in fact the last Tubba. The title _Tubba‘_ wasn't just a synonym for "king"—it specifically designated a ruler who held unified dominion over the entirety of Yemen and its surrounding tribal confederations.
 
@@ -23,7 +24,7 @@ Zayd, the first tubba , was the son of Amr Dhu al-Adhar b. Abraha Dhu al-Manar b
 
 His reign proceeded after that of Rabi‘a b. Nasr. Once, he went to east, through Madina. He passes through that place without bothering the inhabitants and also leaves his son there. But the people treacherously kills that son. He becomes so angry and decides to wipe out the people and cut down the palm trees.
 
-![[palm trees in Madina.png]]
+![palm trees in Madina.png](./pictures/palm%20trees%20in%20Madina.png)
 
 Knowing about this threat, the people of *ansar*, joined up against him. They selected Amr b Talla as the leader. Amr b Talla was the brother of **Banu-al-Najjar**. Amr b Talla is of the tribe, Banu c Amr b. Mabdhul. Mabdhul’s name was c Amir b. Malik b. al-Najjar, and al-Najjar’s name was Taym Allah b. Tha'laba b. c A.mr b. al-Khazraj b. Harith b. Tha'laba b. c Amr b. 'Amir. (basically, he also trace back to Amr b Amir)
 
@@ -35,14 +36,14 @@ Now one theory (by ibn ishaq) suggest that actually the tubba was angry towards 
 
 Now Ibn Ishaq's story continues like this.
 
-Tubba is already angry and want to destroy the city of Madina and he is in fight (probably outside of the city). Two deeply learned jewish rabbis from [[banu qurayza]] arrive and told him, “O king, do not do this. Unless you adopt a different course from that you intend, you will be prevented from accomplishing it, and we will not be able to save you from swift retribution.” Tubba asked why this was so, and they replied, “This is where a prophet will migrate; he will go forth from this holy sanctuary from Quraysh in times to come and this shall be his home and his abode.”
+Tubba is already angry and want to destroy the city of Madina and he is in fight (probably outside of the city). Two deeply learned jewish rabbis from [banu qurayza](./z_jews/banu%20qurayza.md) arrive and told him, “O king, do not do this. Unless you adopt a different course from that you intend, you will be prevented from accomplishing it, and we will not be able to save you from swift retribution.” Tubba asked why this was so, and they replied, “This is where a prophet will migrate; he will go forth from this holy sanctuary from Quraysh in times to come and this shall be his home and his abode.”
 
 Tubba was intrigued by the learnings they had and had changed the plan. Tubba and his people had the idols whom they worshipped (according to ibn Ishaq). But he adopted the religion of the rabbis and departed Madina.
 
 Tubba is now going back to Yemen and was going through Mecca on his way (he dont know about Kaaba yet.) When he arrived between Usfan(عُسْفَانُ) and Amaj(أَمَجُ), he was approached by some men from the tribe *Hudhayi b. Mudrika b. Ilyas b. Mudar b. Nizar b. Ma'ad b. 'Adnan
 (هُذَيْلُ بْنُ مُدْرِكَةَ بْنِ إِلْيَاسَ بْنِ مُضَرَ بْنِ نِزَارِ بْنِ مَعَدِّ بْنِ عَدْنَانَ)* 
 They asked him, “O king, may we lead you to an ancient treasury overlooked by kings before yourself, in which there are pearls, chrysolite, sapphires, gold, and silver?” “Certainly you may,” he replied. They said, “It is a building in Mecca whose people worship it and offer prayers there.”
-![[tubbas_back_to_yemen.png]]
+![tubbas_back_to_yemen.png](./pictures/tubbas_back_to_yemen.png)
 
 Actually the Hudhaylis sought to destroy him by this, since they knew that any king wanting this or being disrespectful there would perish.
 
@@ -108,3 +109,5 @@ Hassan is Tubba's successor, he went to expand Yemen, but his army disliked and 
 Amr killed him but suffered insomnia so he killed all who told him to kill Hassna except Dhu Ru'ayn who already adviced him not to kill
 
 Amr perished and Himyar’s state fell into disorder and disarray
+
+next: [5 Usuruption of Throne](./5_Usurpation_of_the_Throne_of_Yemen.md)

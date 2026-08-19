@@ -1,10 +1,10 @@
 ---
-title: Intro of Arabs
+title: 1. Intro of Arabs
 era: before Ishmael
 readTime: 15 min read
 excerpt: Introduction of Arbaian origin. Qahtani and Adnani arabs.
-floats: monitor.svg, monitor_cute.png
-background: desert-night.jpg
+floats: lantern.png, moon.png, arabbooks.png, palmtree.png, prayer_mat.png
+background: arabia.png
 ---
 
 ## Types of Arabs
@@ -12,7 +12,7 @@ background: desert-night.jpg
 - There are two kinds of Arabs
 	- The original Arabs (اَلْعَرَبُ الْعَارِبَةُ) - Arab al Ariba
 	- The Arabized Arabs (اَلْعَرَبُ الْمُسْتَعْرِبَةُ) - Arab al Mustariba
-- Among the people of Arab al Ariba were [Ad](Types%20of%20arabs/Ad(عادٌ).md), [[Thamud( ثَمُودُ)]], [[Tasm( طَسْمٌ)]], [[Jadis(جَدِيسُ)]], [[Umaym(أُمَيْمُ)]], [[Jurhum(جُرْهُمُ)]], [[Amaliq(عَمَالِيقُ)]] and others only known to Allah. These people were present during and even before the time of Prophet Abraham (A.S).
+- Among the people of Arab al Ariba were [Ad(عادٌ)](Types%20of%20arabs/Ad(عادٌ).md), [Thamud( ثَمُودُ)](./Types%20of%20arabs/Thamud(%20ثَمُودُ).md), [Tasm( طَسْمٌ)](./Types%20of%20arabs/Tasm(%20طَسْمٌ).md), [Jadis(جَدِيسُ)](./Types%20of%20arabs/Jadis(جَدِيسُ).md), [Umaym(أُمَيْمُ)](./Types%20of%20arabs/Umaym(أُمَيْمُ).md), [Jurhum(جُرْهُمُ)](./Types%20of%20arabs/Jurhum(جُرْهُمُ).md), [Amaliq(عَمَالِيقُ)](./Types%20of%20arabs/Amaliq(عَمَالِيقُ).md) and others only known to Allah. These people were present during and even before the time of Prophet Abraham (A.S).
 - However these people are not anymore. All the Arabs that are present currently are the descendants of Ishmael (A.S)
 
 
@@ -22,8 +22,8 @@ background: desert-night.jpg
 	1.  Some say that Qahtan is son of Hud or Hud himself or Hud's brother or one of Hud's offspring
 	2.  Some other (one of them being [[Ibn Ishaq ( اِبْنُ إِسْحَاقَ)]]) say that Qahtan is a descendant of Ishmael (A.S) . One authority gives the lineage as Qahtan b. al-Hamysa b. Tayman b. Qaydhar b. Nabt b. Ishmael.  Al bukhari claims that Prophet (SAW) said to a group from Aslam "Combat O sons of Ishmael". Now this person Aslam(أَسْلَمُ) b. Afsa(أَفْصَى) b. Haritha( حَارِثَةُ) b. Amr(عَمْرُو) b. Amir(عَامِرُ) is from the tibe of Khuzaa( خُزَاعَةُ). This tribe Khuzaa is from Saba b. Qahtan.
 	3.  And the third and overwhelming view is that Qahtani Arabs are not from Ishmael. (whether they are from Yemen or somewhere else)
- ![[old_middle_east_map.png]]
-![[middle_east_map.png]] 
+ ![old_middle_east_map.png](./pictures/old_middle_east_map.png)
+![middle_east_map.png](./pictures/middle_east_map.png)
 
 
 ## New classification of Arabs
@@ -31,9 +31,11 @@ Since there are some issues with the previous classification, a new classificati
 - Qahtani -  Those from Qahtan
 - Adnani -  Those from Adnan
 
-One thumb rule is that
-==Qahtani means **Arabs of Yemen (Himyar)** and== 
-==Adnani means **Arabs of Hijaz**. look at the map above.==
+> One thumb rule is that
+>
+> Qahtani means **Arabs of Yemen (Himyar)** and
+>
+> Adnani means **Arabs of Hijaz**. look at the map above
 
 Qahtani Arabs are further classified into **Saba** and **Hadramawt**. Where as Adnani Arabs are classified into **Rabiah** and **Mudar**.
 
@@ -41,7 +43,7 @@ One more lineage but this is the object of dispute is Qudaa.
 Some say they are Adnani while other claims they are Qahtani. There is also a hadith that supports they are Qahtani.
 
 
-![[Arab classification.png]]
+![Arab classification.png](./pictures/Arab%20classification.png)
 
 The taxonomy has the following order.
 - **Shuʿūb (شُعُوبٌ)** - Great nations/Peoples
@@ -68,4 +70,4 @@ Summary:
 
 We continue with Saba, Hadramawt then move to Adnan's lineage InshaAllah
 
-next: [[2. The story of Saba]]
+next: [2. The story of Saba](./2_The_story_of_Saba.md)

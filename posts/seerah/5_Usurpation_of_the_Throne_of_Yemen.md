@@ -1,10 +1,13 @@
 ---
-title: The Story of Saba
-era: around the time of ad and thamud
-readTime: 15 min read
-excerpt: About the peple of Saba
-floats: monitor.svg, monitor_cute.png
+title: 5. Usuruption of throne of Yemen
+era: will be updated soon
+readTime: 10 min read
+excerpt: How the Yemen throne was taken by commoner
+floats: lantern.png, moon.png, arabbooks.png, palmtree.png, prayer_mat.png
+background: 2_seerah_saba.png
 ---
+
+previous: [previous](./4_The%20story_of_Tubban%20Asad.md)
 
 After Amr perished, the Throne was taken over 
 by this person named Lakhnia Dhu Shanatir (لَخْنِيعَةُ ذُو شَنَاتِرَ)
@@ -33,9 +36,9 @@ By the time Dhu Nuwas took the throne around 510 CE, religion was no longer just
 
 Because the Christian Byzantine Empire was heavily persecuting and oppressing Jews within its borders, Dhu Nuwas viewed Christianity not as a sister faith, but as the political arm of a hostile, invading Roman superpower. He saw the local Arab Christian communities inside Yemen (like Najran) as a dangerous "fifth column"—traitors who would side with Rome and Abyssinia to overthrow him.
 
-![[byzantine_empire.png]]
+![byzantine_empire.png](./pictures/byzantine_empire.png)
 
-![[Himyar kingdom.png]]
+![Himyar kingdom.png](./pictures/Himyar%20kingdom.png)
 
 
 In Najran there were still some remnants of followers of the religion of Jesus, son of Mary, on whom be peace. They were people of goodness and virtue and their leader’s name was 
@@ -51,3 +54,5 @@ Then Ibn Ishaq related the story of Abd Allah b. al-Thamir when he adopted Chris
 
 
 Note: Tubban As'ad (the father) lived in a time when adopting monotheistic Judaism was a peaceful step away from paganism. His son, Dhu Nuwas, lived in a much darker era where Christianity and Judaism had become weapons of war between empires. **Dhu Nuwas didn't kill the Christians because his father was a pagan; he killed them because he was a radicalized, politically desperate monarch trying to stop a Christian Roman-Abyssinian takeover of Yemen**—an invasion that ultimately did happen and destroyed his kingdom right after the massacre
+
+[next](./6_Rule_passing_from_Himyar_to_Blacks.md)
