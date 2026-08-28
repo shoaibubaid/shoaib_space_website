@@ -1,8 +1,8 @@
 ---
 title: 4. The story of Tubban Asad abu karib
-era: will be updated soon
+era: 60 CE
 readTime: 25 min read
-excerpt: story of the last Tubban and his son.
+excerpt: story of the last Tubban (or emperor) of Himyar and his son.
 floats: lantern.png, moon.png, arabbooks.png, palmtree.png, prayer_mat.png
 background: 2_seerah_saba.png
 ---

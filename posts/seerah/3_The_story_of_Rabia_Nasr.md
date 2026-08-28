@@ -1,15 +1,15 @@
 ---
 title: 3. The Story of Rabi'a b. Nasr
-era: will be updated soon
+era: 460 CE
 readTime: 25 min read
-excerpt: story of Rabi'a b. Nasr and shiqq and satih and the dream
+excerpt: story of a himyarite king in yemen from lakhm tribe, Rabi'a b. Nasr and shiqq and satih and the dream where the abyssinians invade the land - which indeed occur after 70 years
 floats: lantern.png, moon.png, arabbooks.png, palmtree.png, prayer_mat.png
 background: 2_seerah_saba.png
 ---
 previous : [previous](2_The_story_of_Saba.md)
 
 There was a person whose name was Rabi'a b. Nasr b. Abi Haritha b. 'Amr b. Amir (ربيعة بن نصر بن أبي حارثة بن عمرو بن عامر).
-He was one of the Tubba kings in Yemen (for Himyar) and interestingly, he is from the lakhm tribe which has already left Yemen before the al-'arim torrent.
+He was one of the Tubba kings (just a king, not an emperor. **Asad abu karib** was the TUBBA (or emperor) at that time.) in Yemen (for Himyar) and interestingly, he is from the lakhm tribe which has already left Yemen before the al-'arim torrent.
 
 The main highlight of his story is his dream and his conversation with two mysterious soothsayers: Shiqq and Satih.
 
@@ -22,6 +22,7 @@ kahin means sooth sayer in ancient arabia.
 Kahins are those mysterious people who act and look mysteriously and give news about the future. whether it is a jinn posession or something else, After Prophet (SAW), all of these are considered shirk because this is not compatible with our beautiful religion Islam.
 
 This person Satih had no limbs and was like a water skin (look at the image below) with his face in his chest. When he got angry he would puff up and sit.
+
 ![water skin.png](./pictures/water%20skin.png)
 
 Shiqq' name is given as Shiqq b. Sa‘b b. Yashkur b. Ruhm b. Afrak b. Qays b. ‘Abqar b. Anmār b. Nizār (شِقُّ بْنُ صَعْبِ بْنِ يَشْكُرَ بْنِ رُهْمِ بْنِ أَفْرَكَ بْنِ قَيْسِ بْنِ عَبْقَرِ بْنِ أَنْمَارِ بْنِ نِزَارٍ).

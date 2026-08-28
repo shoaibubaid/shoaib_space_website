@@ -1,8 +1,8 @@
 ---
 title: 5. Usuruption of throne of Yemen
-era: will be updated soon
+era: (c. 490s–517 CE)
 readTime: 10 min read
-excerpt: How the Yemen throne was taken by commoner
+excerpt: How the Yemen throne was usurupted by commoner named Lakhni'a Yanuf Dhu Shanatir.
 floats: lantern.png, moon.png, arabbooks.png, palmtree.png, prayer_mat.png
 background: 2_seerah_saba.png
 ---

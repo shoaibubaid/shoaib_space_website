@@ -1,5 +1,5 @@
 ---
-title: 1. Intro of Arabs
+title: 1. Introducing Arab types - Qahtani and Adnani
 era: before Ishmael
 readTime: 15 min read
 excerpt: Introduction of Arbaian origin. Qahtani and Adnani arabs.
@@ -20,7 +20,7 @@ background: arabia.png
 - The Arabs of the Yemen are known as the Himyar (حِمْيَرُ). These people are well known to have been from Qahtan (قَحْطَانُ).
 - Who is Qahtan? Different people has different opinions
 	1.  Some say that Qahtan is son of Hud or Hud himself or Hud's brother or one of Hud's offspring
-	2.  Some other (one of them being [[Ibn Ishaq ( اِبْنُ إِسْحَاقَ)]]) say that Qahtan is a descendant of Ishmael (A.S) . One authority gives the lineage as Qahtan b. al-Hamysa b. Tayman b. Qaydhar b. Nabt b. Ishmael.  Al bukhari claims that Prophet (SAW) said to a group from Aslam "Combat O sons of Ishmael". Now this person Aslam(أَسْلَمُ) b. Afsa(أَفْصَى) b. Haritha( حَارِثَةُ) b. Amr(عَمْرُو) b. Amir(عَامِرُ) is from the tibe of Khuzaa( خُزَاعَةُ). This tribe Khuzaa is from Saba b. Qahtan.
+	2.  Some other (one of them being [Ibn Ishaq ( اِبْنُ إِسْحَاقَ)](./Islamic%20scholars/Ibn%20Ishaq%20(%20اِبْنُ%20إِسْحَاقَ).md)) say that Qahtan is a descendant of Ishmael (A.S) . One authority gives the lineage as Qahtan b. al-Hamysa b. Tayman b. Qaydhar b. Nabt b. Ishmael.  Al bukhari claims that Prophet (SAW) said to a group from Aslam "Combat O sons of Ishmael". Now this person Aslam(أَسْلَمُ) b. Afsa(أَفْصَى) b. Haritha( حَارِثَةُ) b. Amr(عَمْرُو) b. Amir(عَامِرُ) is from the tibe of Khuzaa( خُزَاعَةُ). This tribe Khuzaa is from Saba b. Qahtan.
 	3.  And the third and overwhelming view is that Qahtani Arabs are not from Ishmael. (whether they are from Yemen or somewhere else)
  ![old_middle_east_map.png](./pictures/old_middle_east_map.png)
 ![middle_east_map.png](./pictures/middle_east_map.png)

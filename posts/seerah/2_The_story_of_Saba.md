@@ -1,8 +1,8 @@
 ---
-title: 2. The Story of Saba
-era: around the time of ad and thamud
+title: 2. The Story of Saba 
+era: 1200–275 BCE
 readTime: 15 min read
-excerpt: About the peple of Saba
+excerpt: Starting with Qahtani arabs, we first discuss the story of the people of Saba, how they were once blessed and how turning away from Allah dispersed them across Arabia.
 floats: lantern.png, moon.png, arabbooks.png, palmtree.png, prayer_mat.png
 background: 2_seerah_saba.png
 ---
