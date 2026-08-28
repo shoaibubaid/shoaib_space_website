@@ -46,6 +46,8 @@ Daws Dhu Tha‘laban lived during the early 6th century CE. The massacre at Najr
 
 This message pleased the Negus when he received it, and he sent him a message that Abraha should remain in Yemen until further orders. And so it was that Abraha did remain in Yemen.”
 
+One thing to understand is that Abrahah was decidedly **clement** *(mild, gentle, or merciful)* for a 6th-century military commander. He was ambitious, assertive, and determined to project power, but he preferred building alliances, repairing infrastructure, and showing calculated mercy over wanton violence.
+
 [previous](./5_Usurpation_of_the_Throne_of_Yemen.md)  <======> [next](./7_Abraha_rebel_against_mecca_and_humiliated.md)
 
 
