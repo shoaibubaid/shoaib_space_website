@@ -10,13 +10,14 @@
     "label": "seerah",
     "intro": "A slow, chronological walk through the seerah — starting long before the Prophet was born, with the world that shaped Arabia.",
     "posts": [
-      "posts/seerah/1_Introduction_of_Arabs.md",
-      "posts/seerah/2_The_story_of_Saba.md",
-      "posts/seerah/3_The_story_of_Rabia_Nasr.md",
-      "posts/seerah/4_The story_of_Tubban Asad.md",
-      "posts/seerah/5_Usurpation_of_the_Throne_of_Yemen.md",
-      "posts/seerah/6_Rule_passing_from_Himyar_to_Blacks.md",
-      "posts/seerah/7_Abraha_rebel_against_mecca_and_humiliated.md"
+      "posts/islamic/seerah/1_Introduction_of_Arabs.md",
+      "posts/islamic/seerah/2_The_story_of_Saba.md",
+      "posts/islamic/seerah/3_The_story_of_Rabia_Nasr.md",
+      "posts/islamic/seerah/4_The story_of_Tubban Asad.md",
+      "posts/islamic/seerah/5_Usurpation_of_the_Throne_of_Yemen.md",
+      "posts/islamic/seerah/6_Rule_passing_from_Himyar_to_Blacks.md",
+      "posts/islamic/seerah/7_Abraha_rebel_against_mecca_and_humiliated.md",
+      "posts/islamic/seerah/8_kingship_revert_to_himyar.md"
     ]
   },
   "architecture": {
@@ -26,7 +27,19 @@
     "label": "computer architecture",
     "intro": "Notes on how computers actually work under the hood, written for future-me who will forget all of this in six months.",
     "posts": [
-      "posts/architecture/intro.md"
+      "posts/cs/architecture/intro.md"
+    ]
+  },
+
+  "dsa": {
+    "group": "Computer",
+    "icon": "ti-cpu",
+    "color": "teal",
+    "label": "Data Structures and Algorithms",
+    "intro": "Explaining Data structures and Algorithms in a structured way so that the future me can crack tech interviews",
+    "posts": [
+      "posts/cs/dsa/intro.md"
     ]
   }
+
 }

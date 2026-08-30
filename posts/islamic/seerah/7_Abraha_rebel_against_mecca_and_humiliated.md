@@ -6,7 +6,7 @@ excerpt: How Abraha got pride and why he tries to attack Kaaba how he got humili
 floats: lantern.png, moon.png, arabbooks.png, palmtree.png, prayer_mat.png
 background: 7_seerah.png
 ---
-[previous](./6_Rule_passing_from_Himyar_to_Blacks.md)
+[previous](./6_Rule_passing_from_Himyar_to_Blacks.md)  <======> [next](./8_kingship_revert_to_himyar.md)
 
 # Abraha builts the church " al-Qullays"
 
@@ -201,4 +201,4 @@ in Eastern Christian and Byzantine-influenced architecture of the 6th century, g
 # Summary
 Abraha aims to build a church that he wants it to be better that Kaba. Hearing that, a person got enraged and defecated in it. So Abraha waged war against Kaba, he met his first resistor in Sana and captures him, the second resistor Nufayl at modern day Bisha and keeps him as guide, reaches al mugammis and captures some camels of Abd al muttalib. Abd al muttalib talks with Abraha and gets his camels and pray to God because he was helpless. Elephants refuse to come towards mecca but still they somehow brings and birds throw stones and Abraha dies at Sana in his return journey. Abraha's first son, then his next son rules, then sayf gets help from persia and establishes Yemeni power there.
 
-[previous](./6_Rule_passing_from_Himyar_to_Blacks.md)
+[previous](./6_Rule_passing_from_Himyar_to_Blacks.md)  <======> [next](./8_kingship_revert_to_himyar.md)

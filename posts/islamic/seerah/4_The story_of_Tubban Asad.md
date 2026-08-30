@@ -14,7 +14,7 @@ previous: [3. The story of Rabi'a b. Nasr b](./3_The_story_of_Rabia_Nasr.md)
 
 Hassan was just a normal king. On the other hand, Asad Abu Karib was a Tubba, in fact the last Tubba. The title _Tubba‘_ wasn't just a synonym for "king"—it specifically designated a ruler who held unified dominion over the entirety of Yemen and its surrounding tribal confederations.
 
-- **Tubban As'ad Abu Karib son of Kulki Karib b. Zayd**  achieved massive military conquests, expanding his reach into central Arabia and heading north toward the Levant. He was the last ruler to maintain that massive, unified empire.
+- **Tubban As'ad Abu Karib son of Kulki Karib b. Zayd**  achieved massive military conquests, expanding his reach into central Arabia and heading north toward the Levant. He was the last ruler to maintain that massive, unified empire. Asad abu karib is also of **Himyar**
 - **Hassan b. Tubban**, while succeeding his father, faced immediate tribal fractures. His reign was heavily occupied by civil unrest and internal mutiny. According to the traditional narratives, he was ultimately assassinated by his own brother (Amr) because the army grew exhausted from continuous warfare. Because his reign marked the _collapse_ of the unified empire, many historians draw the line at his father.
 
 Zayd, the first tubba , was the son of Amr Dhu al-Adhar b. Abraha Dhu al-Manar b. al-Raish b. Adi b. Sayfi b. Saba al-Asghar b. Ka'b Kahf aI Zulum b. Zayd b. Sahl b.  Amr b. Qays b. Mu'awiya b. jusham b. c Abd Shams b. Wail b. al-Ghawth b. Qatan b. c Arib b. Zuhayr b. Ayman b. al-Hamaysa b. al- c Aranjaj ( Himyar)
