@@ -4,7 +4,7 @@ era: 523 CE
 readTime: 5 min
 excerpt: how rule transferred from himyar to the blacks
 floats: lantern.png, moon.png, arabbooks.png, palmtree.png, prayer_mat.png
-background: 6_seerah.png
+background: seerah/6_seerah.png
 ---
 [previous](./5_Usurpation_of_the_Throne_of_Yemen.md)  <======> [next](./7_Abraha_rebel_against_mecca_and_humiliated.md)
 

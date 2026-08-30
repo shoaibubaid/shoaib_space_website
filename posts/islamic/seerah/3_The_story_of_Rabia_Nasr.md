@@ -4,7 +4,7 @@ era: 460 CE
 readTime: 25 min read
 excerpt: story of a himyarite king in yemen from lakhm tribe, Rabi'a b. Nasr and shiqq and satih and the dream where the abyssinians invade the land - which indeed occur after 70 years
 floats: lantern.png, moon.png, arabbooks.png, palmtree.png, prayer_mat.png
-background: 2_seerah_saba.png
+background: seerah/2_seerah_saba.png
 ---
 previous : [previous](2_The_story_of_Saba.md)
 

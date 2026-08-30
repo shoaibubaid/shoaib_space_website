@@ -4,7 +4,7 @@ era: 460 CE
 readTime: 25 min read
 excerpt: story of the last Tubban (or emperor) of Himyar and his son.
 floats: lantern.png, moon.png, arabbooks.png, palmtree.png, prayer_mat.png
-background: 2_seerah_saba.png
+background: seerah/2_seerah_saba.png
 ---
 previous: [3. The story of Rabi'a b. Nasr b](./3_The_story_of_Rabia_Nasr.md)
 

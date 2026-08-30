@@ -4,7 +4,7 @@ era: 1200–275 BCE
 readTime: 15 min read
 excerpt: Starting with Qahtani arabs, we first discuss the story of the people of Saba, how they were once blessed and how turning away from Allah dispersed them across Arabia.
 floats: lantern.png, moon.png, arabbooks.png, palmtree.png, prayer_mat.png
-background: 2_seerah_saba.png
+background: seerah/2_seerah_saba.png
 ---
 
 

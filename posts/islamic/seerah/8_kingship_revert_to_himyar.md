@@ -4,7 +4,7 @@ era: 578 CE
 readTime: 25 min
 excerpt: How Abraha got pride and why he tries to attack Kaaba how he got humiliated.
 floats: lantern.png, moon.png, arabbooks.png, palmtree.png, prayer_mat.png
-background: 7_seerah.png
+background: seerah/7_seerah.png
 ---
 
 [previous](./7_Abraha_rebel_against_mecca_and_humiliated.md)  <======> [next](./8_kingship_revert_to_himyar.md)
