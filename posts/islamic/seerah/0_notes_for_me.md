@@ -14,3 +14,5 @@ Dhu nuwas also from Himyar
 Abraha , yaksum and masruq are abyssinians christians
 
 sayf b dhu yazan is also Himyarite
+
+satirun is from the disputed branch Qudaa 
