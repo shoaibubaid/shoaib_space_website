@@ -43,11 +43,12 @@
   "dsa": {
     "group": "Computer",
     "icon": "ti-cpu",
-    "color": "teal",
+    "color": "red",
     "label": "Data Structures and Algorithms",
     "intro": "Explaining Data structures and Algorithms in a structured way so that the future me can crack tech interviews",
     "posts": [
-      "posts/cs/dsa/intro.md"
+      "posts/cs/dsa/intro.md",
+      "posts/cs/dsa/problem_solving_patterns.md"
     ]
   }
 
