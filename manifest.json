@@ -27,7 +27,16 @@
     "label": "computer architecture",
     "intro": "Notes on how computers actually work under the hood, written for future-me who will forget all of this in six months.",
     "posts": [
-      "posts/cs/architecture/intro.md"
+      "posts/cs/architecture/intro.md",
+      "posts/cs/architecture/dld/number_systems.md",
+      "posts/cs/architecture/dld/Switching_algebra.md",
+      "posts/cs/architecture/dld/combinational_circuits.md",
+      "posts/cs/architecture/dld/sequential_circuits.md",
+      "posts/cs/architecture/ca/isa.md",
+      "posts/cs/architecture/ca/processor_datapath.md",
+      "posts/cs/architecture/ca/pipelining.md",
+      "posts/cs/architecture/ca/memory.md",
+      "posts/cs/architecture/ca/io.md"
     ]
   },
 
