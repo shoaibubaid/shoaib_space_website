@@ -43,12 +43,36 @@
   "dsa": {
     "group": "Computer",
     "icon": "ti-cpu",
-    "color": "red",
+    "color": "wine",
     "label": "Data Structures and Algorithms",
     "intro": "Explaining Data structures and Algorithms in a structured way so that the future me can crack tech interviews",
     "posts": [
       "posts/cs/dsa/intro.md",
       "posts/cs/dsa/problem_solving_patterns.md"
+    ]
+  },
+
+   "system_design": {
+    "group": "Computer",
+    "icon": "ti-cpu",
+    "color": "frost",
+    "label": "System Design",
+    "intro": "Explaining System Design concepts in a structured way so that the future me can crack tech interviews",
+    "posts": [
+      "posts/cs/system_design/overview.md",
+      "posts/cs/system_design/1_fundamentals.md",
+      "posts/cs/system_design/2_Networking.md",
+      "posts/cs/system_design/3_scalability.md",
+      "posts/cs/system_design/4_distributed_systems.md",
+      "posts/cs/system_design/5_databases.md",
+      "posts/cs/system_design/6_caching.md",
+      "posts/cs/system_design/7_system_architecture.md",
+      "posts/cs/system_design/8_reliability.md",
+      "posts/cs/system_design/9_security.md",
+      "posts/cs/system_design/10_devops.md",
+      "posts/cs/system_design/11_tradeoffs.md",
+      "posts/cs/system_design/12_hld.md",
+      "posts/cs/system_design/13_lld.md"
     ]
   }
 
