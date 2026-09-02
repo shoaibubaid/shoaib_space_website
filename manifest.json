@@ -43,7 +43,7 @@
   "dsa": {
     "group": "Computer",
     "icon": "ti-cpu",
-    "color": "wine",
+    "color": "teal",
     "label": "Data Structures and Algorithms",
     "intro": "Explaining Data structures and Algorithms in a structured way so that the future me can crack tech interviews",
     "posts": [
@@ -55,7 +55,7 @@
    "system_design": {
     "group": "Computer",
     "icon": "ti-cpu",
-    "color": "frost",
+    "color": "indigo",
     "label": "System Design",
     "intro": "Explaining System Design concepts in a structured way so that the future me can crack tech interviews",
     "posts": [
