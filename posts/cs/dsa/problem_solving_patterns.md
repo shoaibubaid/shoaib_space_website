@@ -64,39 +64,39 @@ public:
 };
 ```
 
-1. [Rearrange 0 and 1](https://www.geeksforgeeks.org/problems/segregate-0s-and-1s5106/1)
-1. [Remove Duplicates (easy)](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
-1. [Squaring a Sorted Array (easy)](https://leetcode.com/problems/squares-of-a-sorted-array/)
-1. [Triplet Sum to Zero (medium)](https://leetcode.com/problems/3sum/)
-1. [Triplet Sum Close to Target (medium)](https://leetcode.com/problems/3sum-closest/)
-1. [Triplets with Smaller Sum (medium)](https://www.geeksforgeeks.org/problems/count-triplets-with-sum-smaller-than-x5549/1)
-1. [Subarrays with Product Less than a Target (medium)](https://leetcode.com/problems/subarray-product-less-than-k/)
-1. [Dutch National Flag Problem (medium)](https://leetcode.com/problems/sort-colors/description/)
-1. [Problem Challenge 1: Quadruple Sum to Target (medium)](https://leetcode.com/problems/4sum/)
-1. [Problem Challenge 2: Comparing Strings containing Backspaces (medium)](https://leetcode.com/problems/backspace-string-compare/)
-1. [Problem Challenge 3: Minimum Window Sort (medium)](https://leetcode.com/problems/shortest-unsorted-continuous-subarray/)
+2. [Rearrange 0 and 1](https://www.geeksforgeeks.org/problems/segregate-0s-and-1s5106/1)
+3. [Remove Duplicates (easy)](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
+4. [Squaring a Sorted Array (easy)](https://leetcode.com/problems/squares-of-a-sorted-array/)
+5. [Triplet Sum to Zero (medium)](https://leetcode.com/problems/3sum/)
+6. [Triplet Sum Close to Target (medium)](https://leetcode.com/problems/3sum-closest/)
+7. [Triplets with Smaller Sum (medium)](https://www.geeksforgeeks.org/problems/count-triplets-with-sum-smaller-than-x5549/1)
+8. [Subarrays with Product Less than a Target (medium)](https://leetcode.com/problems/subarray-product-less-than-k/)
+9. [Dutch National Flag Problem (medium)](https://leetcode.com/problems/sort-colors/description/)
+10. [Problem Challenge 1: Quadruple Sum to Target (medium)](https://leetcode.com/problems/4sum/)
+11. [Problem Challenge 2: Comparing Strings containing Backspaces (medium)](https://leetcode.com/problems/backspace-string-compare/)
+12. [Problem Challenge 3: Minimum Window Sort (medium)](https://leetcode.com/problems/shortest-unsorted-continuous-subarray/)
 ## 2. Fast and Slow Pointers
 1. LinkedList Cycle (easy)
-1. Start of LinkedList Cycle (medium)
-1. Happy Number (medium)
-1. FIND DUPLICATE NUMBER
-1. Middle of the LinkedList (easy)
-1. Problem Challenge 1: Palindrome LinkedList (medium)
-1. Problem Challenge 2: Rearrange a LinkedList (medium)
-1. Problem Challenge 3: Cycle in a Circular Array (hard)
+2. Start of LinkedList Cycle (medium)
+3. Happy Number (medium)
+4. FIND DUPLICATE NUMBER
+5. Middle of the LinkedList (easy)
+6. Problem Challenge 1: Palindrome LinkedList (medium)
+7. Problem Challenge 2: Rearrange a LinkedList (medium)
+8. Problem Challenge 3: Cycle in a Circular Array (hard)
 ## 3. Sliding Window
 1. Maximum Sum Subarray of Size K (easy)
-1. Smallest Subarray with a given sum (easy)
-1. Longest Substring with K Distinct Characters (medium)
-1. Fruits into Baskets (medium)
-1. No-repeat Substring (hard)
-1. Longest Substring with Same Letters after Replacement (hard)
-1. Longest Subarray with Ones after Replacement (hard)
-1. Minimum size subarray SUM
-1. MInimum Size Substring (HARD)
-1. Problem Challenge 1: Permutation in a String (hard)
-1. Problem Challenge 2: String Anagrams (hard)
-1. Problem Challenge 4: Words Concatenation (hard)
+2. Smallest Subarray with a given sum (easy)
+3. Longest Substring with K Distinct Characters (medium)
+4. Fruits into Baskets (medium)
+5. No-repeat Substring (hard)
+6. Longest Substring with Same Letters after Replacement (hard)
+7. Longest Subarray with Ones after Replacement (hard)
+8. Minimum size subarray SUM
+9. MInimum Size Substring (HARD)
+10. Problem Challenge 1: Permutation in a String (hard)
+11. Problem Challenge 2: String Anagrams (hard)
+12. Problem Challenge 4: Words Concatenation (hard)
 ## 4. Kadane Pattern
 1. Maximum subarray sum
 1. Minimum Subarray Sum
