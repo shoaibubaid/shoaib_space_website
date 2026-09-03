@@ -284,8 +284,6 @@ requestAnimationFrame(updateFloatParallax);
 // recalculates every currently-visible prop's position against the
 // present layout — needed because zooming/resizing changes the article
 // and TOC widths, so a position computed before the zoom is now stale.
-// Also enforces the hard mobile cutoff: if the window is now too narrow,
-// every active prop is cleared out immediately.
 function repositionActiveFloats() {
   const articleEl = document.getElementById("post-article");
   if (!articleEl || activeFloats.length === 0) return;
@@ -702,6 +700,14 @@ async function renderMarkdownFile(path, { backLabel, backFn, eyebrowPrefix = "" 
   };
 
   content.innerHTML = marked.parse(body, { renderer });
+
+  // syntax-highlight every code block using highlight.js — auto-detects the
+  // language, or uses whatever's after the ``` fence (e.g. ```cpp)
+  if (window.hljs) {
+    content.querySelectorAll("pre code").forEach(block => {
+      hljs.highlightElement(block);
+    });
+  }
 
   // internal cross-post links: [text](post:category/slug) jumps straight
   // to another registered post, in the same or a different category.
