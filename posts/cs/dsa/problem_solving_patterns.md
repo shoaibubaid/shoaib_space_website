@@ -121,6 +121,46 @@ class Solution {
 
 ```
 3. [Remove Duplicates (easy)](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
+
+Given the `head` of a sorted linked list, delete all duplicates such that each element appears only once. Return the linked list sorted as well.
+
+```cpp
+// optimum solution
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if(head == NULL || head->next == nullptr){
+            return head;
+        }
+        
+        ListNode* left = head;
+        ListNode* right = head->next;
+
+        while(right != nullptr){
+            if(left->val == right->val){
+                left->next = right->next;
+                right = right->next;
+            }
+            else{
+                left = left->next;
+                right = right->next;
+            }
+        }
+        return head;
+    }
+};
+```
+
 4. [Squaring a Sorted Array (easy)](https://leetcode.com/problems/squares-of-a-sorted-array/)
 5. [Triplet Sum to Zero (medium)](https://leetcode.com/problems/3sum/)
 6. [Triplet Sum Close to Target (medium)](https://leetcode.com/problems/3sum-closest/)
