@@ -7,20 +7,22 @@ floats: bulb.png, cpu.png, gpu.png, keyboard.png, monitor.png, ram.png, star_yel
 background: cs/dsa.png
 ---
 
+Credits : [padho_with_pratyush](https://www.youtube.com/@padho_with_pratyush)
 
 ## 1. Two Pointers
-1. Pair with Target Sum (easy)
-1. Rearrange 0 and 1
-1. Remove Duplicates (easy)
-1. Squaring a Sorted Array (easy)
-1. Triplet Sum to Zero (medium)
-1. Triplet Sum Close to Target (medium)
-1. Triplets with Smaller Sum (medium)
-1. Subarrays with Product Less than a Target (medium)
-1. Dutch National Flag Problem (medium)
-1. Problem Challenge 1: Quadruple Sum to Target (medium)
-1. Problem Challenge 2: Comparing Strings containing Backspaces (medium)
-1. Problem Challenge 3: Minimum Window Sort (medium)
+Examples
+1. [Pair with Target Sum (easy)](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/)
+1. [Rearrange 0 and 1](https://www.geeksforgeeks.org/problems/segregate-0s-and-1s5106/1)
+1. [Remove Duplicates (easy)](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
+1. [Squaring a Sorted Array (easy)](https://leetcode.com/problems/squares-of-a-sorted-array/)
+1. [Triplet Sum to Zero (medium)](https://leetcode.com/problems/3sum/)
+1. [Triplet Sum Close to Target (medium)](https://leetcode.com/problems/3sum-closest/)
+1. [Triplets with Smaller Sum (medium)](https://www.geeksforgeeks.org/problems/count-triplets-with-sum-smaller-than-x5549/1)
+1. [Subarrays with Product Less than a Target (medium)](https://leetcode.com/problems/subarray-product-less-than-k/)
+1. [Dutch National Flag Problem (medium)](https://leetcode.com/problems/sort-colors/description/)
+1. [Problem Challenge 1: Quadruple Sum to Target (medium)](https://leetcode.com/problems/4sum/)
+1. [Problem Challenge 2: Comparing Strings containing Backspaces (medium)](https://leetcode.com/problems/backspace-string-compare/)
+1. [Problem Challenge 3: Minimum Window Sort (medium)](https://leetcode.com/problems/shortest-unsorted-continuous-subarray/)
 ## 2. Fast and Slow Pointers
 1. LinkedList Cycle (easy)
 1. Start of LinkedList Cycle (medium)
