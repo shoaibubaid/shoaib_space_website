@@ -14,10 +14,10 @@ Credits : [padho_with_pratyush](https://www.youtube.com/@padho_with_pratyush)
 [Two pointer approach GFG](https://www.geeksforgeeks.org/dsa/two-pointers-technique/)
 
 Use the two pointer approach when you see any of these:
-1. Sorted Input
-2. Pairs or Subarrays
-3. Sliding Window Problems
-4. Linked Lists (Slow–Fast pointers)
+-  Sorted Input
+-  Pairs or Subarrays
+-  Sliding Window Problems
+-  Linked Lists (Slow–Fast pointers)
 
 
 Examples

@@ -347,7 +347,6 @@ h1.handwritten{font-size:42px;}
 .article-body h3.article-heading{font-size:17px;color:var(--frost);}
 .article-body p{margin:0 0 14px;}
 .article-body a{color:var(--amber);text-decoration:none;}
-.article-body a:hover{text-decoration:underline;}
 .article-body img{
   max-width:100%;
   border-radius:10px;
@@ -528,3 +527,11 @@ h1.handwritten{font-size:42px;}
   #ambience-btn, #theme-btn{padding:6px 8px;}
   .brand{font-size:13px;}
 }
+
+/* colors that we can use */
+/* teal	sage/seafoam	#6fae9e
+indigo	soft purple-blue	#8b8ce0
+amber	warm gold (your accent color)	#e8a94e
+coral	dusty rose-red	#b56368
+rose	pink	#d98fa8
+frost	cool steel blue	#7fa3c4 */
