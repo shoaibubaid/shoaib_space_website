@@ -303,7 +303,9 @@ h1.handwritten{font-size:42px;}
   grid-template-columns:180px 1fr;
   gap:36px;
 }
+.post-layout .article{min-width:0;}
 .toc{
+  min-width:0;
   position:sticky;
   top:24px;
   align-self:start;
