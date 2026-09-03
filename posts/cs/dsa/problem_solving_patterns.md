@@ -10,8 +10,18 @@ background: cs/dsa.png
 Credits : [padho_with_pratyush](https://www.youtube.com/@padho_with_pratyush)
 
 ## 1. Two Pointers
+
+[Two pointer approach GFG](https://www.geeksforgeeks.org/dsa/two-pointers-technique/)
+
+Use the two pointer approach when you see any of these:
+1. Sorted Input
+2. Pairs or Subarrays
+3. Sliding Window Problems
+4. Linked Lists (Slow–Fast pointers)
+
+
 Examples
-1. [Pair with Target Sum (easy)](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/)
+1. [Pair with Target Sum (easy)](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/) : Here we have a Sorted Input and asking for pairs, so we go for two pointer approach.
 1. [Rearrange 0 and 1](https://www.geeksforgeeks.org/problems/segregate-0s-and-1s5106/1)
 1. [Remove Duplicates (easy)](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
 1. [Squaring a Sorted Array (easy)](https://leetcode.com/problems/squares-of-a-sorted-array/)

@@ -6,7 +6,7 @@
   "seerah": {
     "group": "Islamic",
     "icon": "ti-moon-stars",
-    "color": "teal",
+    "color": "amber",
     "label": "seerah",
     "intro": "A slow, chronological walk through the seerah — starting long before the Prophet was born, with the world that shaped Arabia.",
     "posts": [
@@ -23,7 +23,7 @@
   "architecture": {
     "group": "Computer",
     "icon": "ti-cpu",
-    "color": "indigo",
+    "color": "coral",
     "label": "computer architecture",
     "intro": "Notes on how computers actually work under the hood, written for future-me who will forget all of this in six months.",
     "posts": [

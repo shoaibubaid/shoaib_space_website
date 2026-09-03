@@ -253,6 +253,14 @@ h1.handwritten{font-size:42px;}
 .cat-coral i{color:var(--wine-dim);}
 .cat-coral .cat-name{color:var(--wine-dim);}
 
+.cat-rose{border-left-color:var(--rose);}
+.cat-rose i{color:var(--rose);}
+.cat-rose .cat-name{color:var(--rose);}
+
+.cat-frost{border-left-color:var(--frost);}
+.cat-frost i{color:var(--frost);}
+.cat-frost .cat-name{color:var(--frost);}
+
 .category-card .post-item-excerpt{margin:2px 0 4px;}
 .category-card .tag-row{margin-bottom:0;}
 
@@ -338,7 +346,8 @@ h1.handwritten{font-size:42px;}
 .article-body h2.article-heading{font-size:20px;}
 .article-body h3.article-heading{font-size:17px;color:var(--frost);}
 .article-body p{margin:0 0 14px;}
-.article-body a{color:var(--amber);}
+.article-body a{color:var(--amber);text-decoration:none;}
+.article-body a:hover{text-decoration:underline;}
 .article-body img{
   max-width:100%;
   border-radius:10px;
