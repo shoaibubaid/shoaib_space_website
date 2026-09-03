@@ -26,7 +26,7 @@ Examples
 Here we have a Sorted Input and asking for pairs, so we go for two pointer approach.
 
 
-```c
+```cpp
 // Brute force method
 class Solution {
 public:
