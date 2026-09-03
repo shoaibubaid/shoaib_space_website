@@ -21,7 +21,49 @@ Use the two pointer approach when you see any of these:
 
 
 Examples
-1. [Pair with Target Sum (easy)](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/) : Here we have a Sorted Input and asking for pairs, so we go for two pointer approach.
+1. [Pair with Target Sum (easy)](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/) 
+
+Here we have a Sorted Input and asking for pairs, so we go for two pointer approach.
+
+
+```c
+// Brute force method
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& numbers, int target) {
+        for(int i = 0; i < numbers.size(); i++){
+            for(int j = i+1; j < numbers.size(); j++){
+                if(numbers[i]+numbers[j] == target) return {i+1, j+1};
+            }
+        }
+        return {-1, -1};
+    }
+};
+
+// Optimum 2 Pointer approach
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& numbers, int target) {
+        int left = 0;
+        int right = numbers.size() - 1;
+
+        while(left <= right){
+            if(numbers[left] + numbers[right] == target){
+                return {left+1, right+1};
+            }
+
+            if(numbers[left] + numbers[right] < target){
+                left++;
+            }
+            else{
+                right--;
+            }
+        }
+        return {-1, -1};
+    }
+};
+```
+
 1. [Rearrange 0 and 1](https://www.geeksforgeeks.org/problems/segregate-0s-and-1s5106/1)
 1. [Remove Duplicates (easy)](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
 1. [Squaring a Sorted Array (easy)](https://leetcode.com/problems/squares-of-a-sorted-array/)
