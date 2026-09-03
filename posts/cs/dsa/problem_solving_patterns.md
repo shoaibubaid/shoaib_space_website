@@ -18,6 +18,8 @@ Use the two pointer approach when you see any of these:
 -  Pairs or Subarrays
 -  Sliding Window Problems
 -  Linked Lists (Slow–Fast pointers)
+-  Elements have opposite destinations
+-  You need to examine both ends
 
 
 Examples
@@ -65,6 +67,59 @@ public:
 ```
 
 2. [Rearrange 0 and 1](https://www.geeksforgeeks.org/problems/segregate-0s-and-1s5106/1)
+
+Given an array `arr[]` consisting of only `0`'s and `1`'s. Modify the array in-place to segregate 0s onto the left side and 1s onto the right side of the array.
+
+
+*Here, I did not even thought of doing two pointer approach.*
+
+
+```cpp
+// First approach that I tried.
+class Solution {
+  public:
+    void segregate0and1(vector<int> &arr) {
+        // code here
+        int count = 0;
+        for(int i = 0; i < arr.size(); i++){
+            if (arr[i] == 0){
+                arr[count++] = 0;
+            }
+        }
+        
+        for(int i = count; i < arr.size(); i++){
+            arr[i] = 1;
+        }
+    }
+};
+```
+
+```cpp
+// Optimum 2 pointer approach
+
+class Solution {
+  public:
+    void segregate0and1(vector<int> &arr) {
+        // code here
+        int left = 0;
+        int right = arr.size() - 1;
+        
+        while(left < right){
+            if(arr[left] == 0){
+                left++;
+            }
+            else if(arr[right] == 1){
+                right--;
+            }
+            else{// that is, arr[left] = 1 and arr[right] = 0
+                swap(arr[left++], arr[right--]);
+                
+            }
+        }
+    }
+};
+
+```
 3. [Remove Duplicates (easy)](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
 4. [Squaring a Sorted Array (easy)](https://leetcode.com/problems/squares-of-a-sorted-array/)
 5. [Triplet Sum to Zero (medium)](https://leetcode.com/problems/3sum/)
