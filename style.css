@@ -65,6 +65,80 @@
   filter: brightness(1.3);
 }
 
+/* "space" theme — deep space with a slowly-drifting planet, cycling
+   nebula background, and floating spaceships/meteors */
+:root[data-theme="space"]{
+  --bg: #07060f;
+  --bg-deep: #05040b;
+  --surface: #100e24;
+  --surface-raised: #17142f;
+  --border: #2a2650;
+  --border-soft: #201d40;
+
+  --text: #e8e6ff;
+  --text-secondary: #9c96c4;
+  --text-muted: #6a638f;
+
+  --amber: #b39bff;
+  --amber-dim: #8f7ad9;
+  --amber-glow: rgba(179,155,255,0.22);
+  --wine: #ff7cc8;
+  --wine-dim: #ff9ed6;
+  --frost: #7ce8ff;
+  --teal: #7ce8ff;
+  --indigo: #b39bff;
+  --rose: #ff7cc8;
+
+  --neon-pink: #ff7cc8;
+  --neon-cyan: #7ce8ff;
+}
+[data-theme="space"] .handwritten{
+  text-shadow: 0 0 10px currentColor, 0 0 22px currentColor;
+}
+[data-theme="space"] .avatar{
+  box-shadow: 0 0 16px var(--amber-glow), 0 0 30px rgba(255,124,200,0.15);
+}
+[data-theme="space"] .brand{
+  text-shadow: 0 0 8px rgba(179,155,255,0.5);
+}
+
+/* space theme layers: crossfading background + planet, drifting ships/meteors */
+.space-bg-layer{
+  position:fixed;
+  inset:0;
+  z-index:-3;
+  pointer-events:none;
+  background-size:cover;
+  background-position:center;
+  opacity:0;
+  transition:opacity 3s ease;
+}
+.space-bg-layer.active{opacity:0.6;}
+
+.space-planet{
+  position:fixed;
+  top:40px;
+  right:-20px;
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  background-size:cover;
+  background-position:center;
+  opacity:0;
+  transition:opacity 2.5s ease;
+  box-shadow:0 0 46px 14px rgba(179,155,255,0.22);
+  pointer-events:none;
+  z-index:-2;
+}
+.space-planet.active{opacity:1;}
+
+#space-drift-layer{position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden;}
+.space-drift{
+  position:absolute;
+  opacity:0;
+  filter:drop-shadow(0 0 5px rgba(232,230,255,0.5));
+}
+
 *{box-sizing:border-box;}
 
 html{overflow-x:hidden;}

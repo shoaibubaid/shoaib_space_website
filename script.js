@@ -171,7 +171,7 @@ document.querySelectorAll("#ambience-menu button").forEach(btn => {
 
 setAmbience(localStorage.getItem("ambience") || "snow");
 
-// ---- theme picker (midnight / arcade) ----
+// ---- theme picker (midnight / arcade / space) ----
 const themeBtn = document.getElementById("theme-btn");
 const themeBtnIcon = document.getElementById("theme-btn-icon");
 const themeBtnLabel = document.getElementById("theme-btn-label");
@@ -179,15 +179,119 @@ const themeMenu = document.getElementById("theme-menu");
 
 const THEME_META = {
   midnight: { icon: "ti-moon", label: "midnight" },
-  arcade: { icon: "ti-bulb", label: "arcade" }
+  arcade: { icon: "ti-bulb", label: "arcade" },
+  space: { icon: "ti-rocket", label: "space" }
 };
 
-function setTheme(theme) {
-  if (theme === "arcade") {
-    document.documentElement.setAttribute("data-theme", "arcade");
-  } else {
-    document.documentElement.removeAttribute("data-theme");
+// ---- space theme: crossfading background/planet, drifting ships/meteors ----
+// Add more art any time: drop a file into assets/space/<category>/ and add
+// its filename to the matching array in space.json. No code changes needed.
+let spaceAssetsCache = null;
+let spaceTimers = [];
+let spaceActive = false;
+
+async function loadSpaceAssets() {
+  if (spaceAssetsCache) return spaceAssetsCache;
+  try {
+    const res = await fetch("space.json", { cache: "no-store" });
+    spaceAssetsCache = await res.json();
+  } catch (e) {
+    spaceAssetsCache = { planets: [], spaceships: [], backgrounds: [], meteors: [] };
   }
+  return spaceAssetsCache;
+}
+
+function clearSpaceTimers() {
+  spaceTimers.forEach(t => clearInterval(t));
+  spaceTimers = [];
+}
+
+// crossfades between two stacked layers, cycling through a file list —
+// used for both the background and the corner planet
+function startSpaceCrossfade(layerA, layerB, files, folder, intervalMs) {
+  if (!files || files.length === 0) return;
+  let showingA = true;
+  let idx = 0;
+  layerA.style.backgroundImage = `url("assets/space/${folder}/${files[idx]}")`;
+  layerA.classList.add("active");
+  const timer = setInterval(() => {
+    idx = (idx + 1) % files.length;
+    const next = showingA ? layerB : layerA;
+    const current = showingA ? layerA : layerB;
+    next.style.backgroundImage = `url("assets/space/${folder}/${files[idx]}")`;
+    next.classList.add("active");
+    current.classList.remove("active");
+    showingA = !showingA;
+  }, intervalMs);
+  spaceTimers.push(timer);
+}
+
+// spawns images that drift slowly across the screen, fading in and out —
+// used for both spaceships (slow) and meteors (fast, diagonal)
+function startSpaceDrift(container, files, folder, opts) {
+  if (!files || files.length === 0) return;
+  const spawn = () => {
+    if (!spaceActive) return;
+    const file = files[Math.floor(Math.random() * files.length)];
+    const img = document.createElement("img");
+    img.src = `assets/space/${folder}/${file}`;
+    img.alt = "";
+    img.className = "space-drift";
+    const size = opts.minSize + Math.random() * (opts.maxSize - opts.minSize);
+    img.style.width = size + "px";
+    img.style.top = Math.random() * 70 + "vh";
+    const fromLeft = Math.random() > 0.5;
+    img.style.left = fromLeft ? "-10vw" : "110vw";
+    img.style.transform = (fromLeft ? "" : "scaleX(-1) ") + `rotate(${opts.rotate || 0}deg)`;
+    container.appendChild(img);
+    requestAnimationFrame(() => {
+      img.style.transition = `left ${opts.duration}s linear, opacity 1.5s ease`;
+      img.style.opacity = String(opts.opacity || 0.9);
+      img.style.left = fromLeft ? "110vw" : "-10vw";
+    });
+    setTimeout(() => { img.style.opacity = "0"; }, Math.max(0, opts.duration - 1.5) * 1000);
+    setTimeout(() => img.remove(), (opts.duration + 1.5) * 1000);
+  };
+  spawn();
+  const timer = setInterval(spawn, opts.everyMs);
+  spaceTimers.push(timer);
+}
+
+async function startSpaceTheme() {
+  spaceActive = true;
+  const assets = await loadSpaceAssets();
+  if (!spaceActive) return; // theme may have been switched away while loading
+
+  const bgA = document.getElementById("space-bg-a");
+  const bgB = document.getElementById("space-bg-b");
+  const planetA = document.getElementById("space-planet-a");
+  const planetB = document.getElementById("space-planet-b");
+  const driftLayer = document.getElementById("space-drift-layer");
+
+  startSpaceCrossfade(bgA, bgB, assets.backgrounds, "backgrounds", 75000);
+  startSpaceCrossfade(planetA, planetB, assets.planets, "planets", 45000);
+  startSpaceDrift(driftLayer, assets.spaceships, "spaceships", { minSize: 50, maxSize: 90, duration: 34, everyMs: 22000, opacity: 0.85 });
+  startSpaceDrift(driftLayer, assets.meteors, "meteors", { minSize: 26, maxSize: 42, duration: 5, everyMs: 8000, opacity: 0.9, rotate: 20 });
+}
+
+function stopSpaceTheme() {
+  spaceActive = false;
+  clearSpaceTimers();
+  ["space-bg-a", "space-bg-b", "space-planet-a", "space-planet-b"].forEach(id => {
+    document.getElementById(id).classList.remove("active");
+  });
+  document.getElementById("space-drift-layer").innerHTML = "";
+}
+
+function setTheme(theme) {
+  if (theme === "midnight") {
+    document.documentElement.removeAttribute("data-theme");
+  } else {
+    document.documentElement.setAttribute("data-theme", theme);
+  }
+
+  if (theme === "space") startSpaceTheme();
+  else stopSpaceTheme();
 
   const meta = THEME_META[theme] || THEME_META.midnight;
   themeBtnIcon.className = "ti " + meta.icon;
