@@ -1,21 +1,21 @@
 {
   "planets": [
-    "saturn.png",
-    "junk.png",
-    "gold.png"
+    "planet1.png",
+    "planet2.png",
+    "planet3.png"
   ],
   "spaceships": [
-    "rocket.png",
-    "round.png",
-    "station.png"
+    "spaceship1.png",
+    "spaceship2.png",
+    "spaceship3.png"
   ],
   "backgrounds": [
-    "image1.png",
-    "image2.png",
-    "image3.png"
+    "nebula1.png",
+    "nebula2.png",
+    "nebula3.png"
   ],
   "meteors": [
-    "meteors.png",
-    "stones.png"
+    "meteor2.png",
+    "meteor1.png"
   ]
 }
