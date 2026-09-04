@@ -290,6 +290,38 @@ public:
 };
 ```
 7. [Triplets with Smaller Sum (medium)](https://www.geeksforgeeks.org/problems/count-triplets-with-sum-smaller-than-x5549/1)
+
+```cpp
+class Solution {
+  public:
+    int countTriplets(int sum, vector<int>& arr) {
+        int n = arr.size();
+        int count = 0;
+        sort(arr.begin(), arr.end());
+        for(int i = 0; i < n-2; i++){
+            if(i > 0 && arr[i] == arr[i-1]) continue;
+            int left = i+1;
+            int right = n-1;
+            
+            while(left < right){
+                int current_sum = arr[i] + arr[left] + arr[right];
+                if(current_sum < sum) {
+                    count+= right-left; // because all other between the left and right satisfies 
+                    left++;
+                    
+                    while(left < right && arr[left] == arr[left-1]) left++;
+                }
+                else{
+                    right--;
+                    while(left < right && arr[right] == arr[right+1]) right--;
+                }
+            }
+        }
+        return count;
+        
+    }
+};
+```
 8. [Subarrays with Product Less than a Target (medium)](https://leetcode.com/problems/subarray-product-less-than-k/)
 9. [Dutch National Flag Problem (medium)](https://leetcode.com/problems/sort-colors/description/)
 10. [Problem Challenge 1: Quadruple Sum to Target (medium)](https://leetcode.com/problems/4sum/)
