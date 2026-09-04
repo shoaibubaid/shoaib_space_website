@@ -163,6 +163,8 @@ public:
 
 4. [Squaring a Sorted Array (easy)](https://leetcode.com/problems/squares-of-a-sorted-array/)
 
+Given an integer array `nums` sorted in non-decreasing order, return an array of the squares of each number sorted in non-decreasing order.
+
 This uses two pointer merge sort technique inherently
 
 similar: [88. Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array/description/), [360. Sort Transformed Array](https://leetcode.com/problems/sort-transformed-array/description/)
@@ -207,6 +209,52 @@ public:
 };
 ```
 5. [Triplet Sum to Zero (medium)](https://leetcode.com/problems/3sum/)
+
+Given an integer array `nums`, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k] == 0`.
+
+Notice that the solution set must not contain duplicate triplets.
+
+```cpp
+// O(n²) complexity
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+
+        vector<vector<int>> ans;
+        // first sort them all
+        vector<int> nums2 = nums;
+        sort(nums2.begin(), nums2.end());
+
+        // apply two sum for each of the iteration
+        for (int i = 0; i < nums2.size() - 2; i++) {
+            if (i > 0 && nums2[i] == nums2[i - 1])
+                continue; // skip duplicate i
+            int left = i + 1;
+            int right = nums2.size() - 1;
+
+            int target = -1 * (nums2[i]);
+            while (left < right) {
+                if (nums2[left] + nums2[right] == target) {
+                    ans.push_back({nums2[i], nums2[left], nums2[right]});
+                    left++;
+                    right--;
+
+                    while (left < right && nums2[left] == nums2[left - 1])
+                        left++; // skip duplicate left
+                    while (left < right && nums2[right] == nums2[right + 1])
+                        right--; // skip duplicate right
+                } else if (nums2[left] + nums2[right] < target) {
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+        }
+        return ans;
+    }
+};
+```
+
 6. [Triplet Sum Close to Target (medium)](https://leetcode.com/problems/3sum-closest/)
 7. [Triplets with Smaller Sum (medium)](https://www.geeksforgeeks.org/problems/count-triplets-with-sum-smaller-than-x5549/1)
 8. [Subarrays with Product Less than a Target (medium)](https://leetcode.com/problems/subarray-product-less-than-k/)
