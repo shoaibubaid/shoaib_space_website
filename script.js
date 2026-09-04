@@ -236,7 +236,7 @@ function startSpaceDrift(container, files, folder, opts) {
     const img = document.createElement("img");
     img.src = `assets/space/${folder}/${file}`;
     img.alt = "";
-    img.className = "space-drift";
+    img.className = "space-drift" + (opts.extraClass ? " " + opts.extraClass : "");
     const size = opts.minSize + Math.random() * (opts.maxSize - opts.minSize);
     img.style.width = size + "px";
 
@@ -249,19 +249,20 @@ function startSpaceDrift(container, files, folder, opts) {
     const dy = Math.sin(angle) * travel;
     const passX = window.innerWidth * (0.1 + Math.random() * 0.8);
     const passY = window.innerHeight * (0.05 + Math.random() * 0.7);
+    const rotateVal = opts.rotateWithTravel === false ? (opts.tilt || 0) : angleDeg + (opts.tilt || 0);
 
     // position pinned at the pass point; the actual motion happens entirely
     // through one transform transition (translate + a constant rotate), so
     // there's only ever one interpolation driving the path — guaranteed straight
     img.style.left = passX + "px";
     img.style.top = passY + "px";
-    img.style.transform = `translate(${-dx / 2}px, ${-dy / 2}px) rotate(${angleDeg + (opts.tilt || 0)}deg)`;
+    img.style.transform = `translate(${-dx / 2}px, ${-dy / 2}px) rotate(${rotateVal}deg)`;
 
     container.appendChild(img);
     requestAnimationFrame(() => {
       img.style.transition = `transform ${opts.duration}s linear, opacity 1.5s ease`;
       img.style.opacity = String(opts.opacity || 0.9);
-      img.style.transform = `translate(${dx / 2}px, ${dy / 2}px) rotate(${angleDeg + (opts.tilt || 0)}deg)`;
+      img.style.transform = `translate(${dx / 2}px, ${dy / 2}px) rotate(${rotateVal}deg)`;
     });
     setTimeout(() => { img.style.opacity = "0"; }, Math.max(0, opts.duration - 1.5) * 1000);
     setTimeout(() => img.remove(), (opts.duration + 1.5) * 1000);
@@ -278,12 +279,10 @@ async function startSpaceTheme() {
 
   const bgA = document.getElementById("space-bg-a");
   const bgB = document.getElementById("space-bg-b");
-  const planetA = document.getElementById("space-planet-a");
-  const planetB = document.getElementById("space-planet-b");
   const driftLayer = document.getElementById("space-drift-layer");
 
   startSpaceCrossfade(bgA, bgB, assets.backgrounds, "backgrounds", 75000);
-  startSpaceCrossfade(planetA, planetB, assets.planets, "planets", 45000);
+  startSpaceDrift(driftLayer, assets.planets, "planets", { minSize: 70, maxSize: 170, duration: 55, everyMs: 32000, opacity: 0.95, extraClass: "space-drift-planet", rotateWithTravel: false });
   startSpaceDrift(driftLayer, assets.spaceships, "spaceships", { minSize: 30, maxSize: 130, duration: 34, everyMs: 20000, opacity: 0.85 });
   startSpaceDrift(driftLayer, assets.meteors, "meteors", { minSize: 16, maxSize: 60, duration: 5, everyMs: 7000, opacity: 0.9 });
 }
@@ -291,7 +290,7 @@ async function startSpaceTheme() {
 function stopSpaceTheme() {
   spaceActive = false;
   clearSpaceTimers();
-  ["space-bg-a", "space-bg-b", "space-planet-a", "space-planet-b"].forEach(id => {
+  ["space-bg-a", "space-bg-b"].forEach(id => {
     document.getElementById(id).classList.remove("active");
   });
   document.getElementById("space-drift-layer").innerHTML = "";
