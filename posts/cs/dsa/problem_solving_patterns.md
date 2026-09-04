@@ -162,6 +162,50 @@ public:
 ```
 
 4. [Squaring a Sorted Array (easy)](https://leetcode.com/problems/squares-of-a-sorted-array/)
+
+This uses two pointer merge sort technique inherently
+
+similar: [88. Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array/description/), [360. Sort Transformed Array](https://leetcode.com/problems/sort-transformed-array/description/)
+
+```cpp
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& nums) {
+        int left =  nums.size() - 1;
+        int right = nums.size();
+        int current = 0;
+        vector<int> ans(
+            nums.size()); // can be optimized without using extra space?
+        for (int i = 0; i < nums.size(); i++) {
+            if (nums[i] >= 0) {
+                left = i - 1;
+                right = i;
+                break;
+            }
+        }
+
+        while (left > -1 && right < nums.size()) {
+            if (nums[left] * nums[left] <= nums[right] * nums[right]) {
+                ans[current++] = nums[left] * nums[left];
+                left--;
+            } else {
+                ans[current++] = (nums[right] * nums[right]);
+                right++;
+            }
+        }
+
+        while (left > -1) {
+            ans[current++] = (nums[left] * nums[left]);
+            left--;
+        }
+        while (right < nums.size()) {
+            ans[current++] = (nums[right] * nums[right]);
+            right++;
+        }
+        return ans;
+    }
+};
+```
 5. [Triplet Sum to Zero (medium)](https://leetcode.com/problems/3sum/)
 6. [Triplet Sum Close to Target (medium)](https://leetcode.com/problems/3sum-closest/)
 7. [Triplets with Smaller Sum (medium)](https://www.geeksforgeeks.org/problems/count-triplets-with-sum-smaller-than-x5549/1)
