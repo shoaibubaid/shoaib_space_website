@@ -323,6 +323,40 @@ class Solution {
 };
 ```
 8. [Subarrays with Product Less than a Target (medium)](https://leetcode.com/problems/subarray-product-less-than-k/)
+
+You are given an array of integers `nums` and an integer k.
+
+Return the number of contiguous subarrays where the product of all the elements in the subarray is strictly less than `k`.
+
+*This one requires a bit of thinking. This tells how to count contigous subarrays*
+
+```cpp
+class Solution {
+public:
+    int numSubarrayProductLessThanK(vector<int>& nums, int k) {
+        if (k <= 1)
+            return 0;
+
+        int left = 0;
+        int ans = 0;
+        int product = 1;
+
+        for (int right = 0; right < nums.size(); right++) {
+            product *= nums[right];
+
+            while (product >= k) {
+                product /= nums[left];
+                left++;
+            }
+
+            ans += right - left + 1;
+        }
+
+        return ans;
+    }
+};
+```
+
 9. [Dutch National Flag Problem (medium)](https://leetcode.com/problems/sort-colors/description/)
 10. [Problem Challenge 1: Quadruple Sum to Target (medium)](https://leetcode.com/problems/4sum/)
 11. [Problem Challenge 2: Comparing Strings containing Backspaces (medium)](https://leetcode.com/problems/backspace-string-compare/)
