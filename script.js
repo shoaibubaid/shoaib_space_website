@@ -239,15 +239,29 @@ function startSpaceDrift(container, files, folder, opts) {
     img.className = "space-drift";
     const size = opts.minSize + Math.random() * (opts.maxSize - opts.minSize);
     img.style.width = size + "px";
-    img.style.top = Math.random() * 70 + "vh";
-    const fromLeft = Math.random() > 0.5;
-    img.style.left = fromLeft ? "-10vw" : "110vw";
-    img.style.transform = (fromLeft ? "" : "scaleX(-1) ") + `rotate(${opts.rotate || 0}deg)`;
+
+    // pick a random direction and a random point to pass near — every
+    // spawn gets its own straight-line path at its own angle
+    const angle = Math.random() * Math.PI * 2;
+    const angleDeg = angle * 180 / Math.PI;
+    const travel = Math.max(window.innerWidth, window.innerHeight) * 1.3;
+    const dx = Math.cos(angle) * travel;
+    const dy = Math.sin(angle) * travel;
+    const passX = window.innerWidth * (0.1 + Math.random() * 0.8);
+    const passY = window.innerHeight * (0.05 + Math.random() * 0.7);
+
+    // position pinned at the pass point; the actual motion happens entirely
+    // through one transform transition (translate + a constant rotate), so
+    // there's only ever one interpolation driving the path — guaranteed straight
+    img.style.left = passX + "px";
+    img.style.top = passY + "px";
+    img.style.transform = `translate(${-dx / 2}px, ${-dy / 2}px) rotate(${angleDeg + (opts.tilt || 0)}deg)`;
+
     container.appendChild(img);
     requestAnimationFrame(() => {
-      img.style.transition = `left ${opts.duration}s linear, opacity 1.5s ease`;
+      img.style.transition = `transform ${opts.duration}s linear, opacity 1.5s ease`;
       img.style.opacity = String(opts.opacity || 0.9);
-      img.style.left = fromLeft ? "110vw" : "-10vw";
+      img.style.transform = `translate(${dx / 2}px, ${dy / 2}px) rotate(${angleDeg + (opts.tilt || 0)}deg)`;
     });
     setTimeout(() => { img.style.opacity = "0"; }, Math.max(0, opts.duration - 1.5) * 1000);
     setTimeout(() => img.remove(), (opts.duration + 1.5) * 1000);
@@ -270,8 +284,8 @@ async function startSpaceTheme() {
 
   startSpaceCrossfade(bgA, bgB, assets.backgrounds, "backgrounds", 75000);
   startSpaceCrossfade(planetA, planetB, assets.planets, "planets", 45000);
-  startSpaceDrift(driftLayer, assets.spaceships, "spaceships", { minSize: 50, maxSize: 90, duration: 34, everyMs: 22000, opacity: 0.85 });
-  startSpaceDrift(driftLayer, assets.meteors, "meteors", { minSize: 26, maxSize: 42, duration: 5, everyMs: 8000, opacity: 0.9, rotate: 20 });
+  startSpaceDrift(driftLayer, assets.spaceships, "spaceships", { minSize: 30, maxSize: 130, duration: 34, everyMs: 20000, opacity: 0.85 });
+  startSpaceDrift(driftLayer, assets.meteors, "meteors", { minSize: 16, maxSize: 60, duration: 5, everyMs: 7000, opacity: 0.9 });
 }
 
 function stopSpaceTheme() {

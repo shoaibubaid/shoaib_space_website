@@ -119,16 +119,16 @@
   position:fixed;
   top:40px;
   right:-20px;
-  width:150px;
-  height:150px;
-  border-radius:50%;
+  width:170px;
+  height:170px;
   background-size:cover;
   background-position:center;
   opacity:0;
-  transition:opacity 2.5s ease;
-  box-shadow:0 0 46px 14px rgba(179,155,255,0.22);
+  transition:opacity 3s ease;
   pointer-events:none;
   z-index:-2;
+  mask-image:radial-gradient(circle, black 52%, transparent 74%);
+  -webkit-mask-image:radial-gradient(circle, black 52%, transparent 74%);
 }
 .space-planet.active{opacity:1;}
 
@@ -631,7 +631,6 @@ h1.handwritten{font-size:42px;}
   #ambience-btn, #theme-btn{padding:6px 8px;}
   .brand{font-size:13px;}
 }
-
 /* colors that we can use */
 /* teal	sage/seafoam	#6fae9e
 indigo	soft purple-blue	#8b8ce0
