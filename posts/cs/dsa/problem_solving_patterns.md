@@ -358,6 +358,83 @@ public:
 ```
 
 9. [Dutch National Flag Problem (medium)](https://leetcode.com/problems/sort-colors/description/)
+
+You are given an array `nums` with `n` objects colored red, white, or blue, sort them **in-place** so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
+
+We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.
+
+You must solve this problem without using the library's sort function.
+
+```cpp
+// Approach 1
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        int count0 = 0;
+        int count1 = 0;
+        int count2 = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            if (nums[i] == 0)
+                count0++;
+            if (nums[i] == 1)
+                count1++;
+            if (nums[i] == 2)
+                count2++;
+        }
+
+        for (int i = 0; i < count0; i++) {
+            nums[i] = 0;
+        }
+
+        for (int i = count0; i < count0 + count1; i++) {
+            nums[i] = 1;
+        }
+
+        for (int i = count0 + count1; i < count0 + count1 + count2; i++) {
+            nums[i] = 2;
+        }
+    }
+};
+```
+
+```cpp
+// Optimum approach
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        /* Assume that there is an array that has 3 pointers
+        From 0 to low - 1: 0s
+        From low to mid  : 1s
+        From mid to high : Unsorted
+        From high to n-1 : 2s
+
+        Now think that the unsorted array is this one and start
+        We just need to sort from mid to high
+        */
+
+        int low = 0;
+        int mid = 0;
+        int high = nums.size() - 1;
+
+        while (mid <= high) {
+            if (nums[mid] == 0) {
+                swap(nums[low], nums[mid]);
+                low++;
+                mid++;
+            }
+
+            else if (nums[mid] == 1) {
+                mid++;
+            }
+
+            else{
+                swap(nums[high], nums[mid]);
+                high--;
+            }
+        }
+    }
+};
+```
 10. [Problem Challenge 1: Quadruple Sum to Target (medium)](https://leetcode.com/problems/4sum/)
 11. [Problem Challenge 2: Comparing Strings containing Backspaces (medium)](https://leetcode.com/problems/backspace-string-compare/)
 12. [Problem Challenge 3: Minimum Window Sort (medium)](https://leetcode.com/problems/shortest-unsorted-continuous-subarray/)
