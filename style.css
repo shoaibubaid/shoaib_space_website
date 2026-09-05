@@ -93,13 +93,15 @@
   --neon-cyan: #7ce8ff;
 }
 [data-theme="space"] .handwritten{
-  text-shadow: 0 0 10px currentColor, 0 0 22px currentColor;
+  color: var(--text);
+  text-shadow: 0 0 10px rgba(255,63,176,0.75), 0 0 22px rgba(255,63,176,0.4);
 }
 [data-theme="space"] .avatar{
   box-shadow: 0 0 16px var(--amber-glow), 0 0 30px rgba(255,124,200,0.15);
 }
 [data-theme="space"] .brand{
-  text-shadow: 0 0 8px rgba(179,155,255,0.5);
+  color: var(--text);
+  text-shadow: 0 0 8px rgba(255,63,176,0.6);
 }
 
 /* space theme layers: crossfading background + planet, drifting ships/meteors */
@@ -108,8 +110,7 @@
   inset:0;
   z-index:-3;
   pointer-events:none;
-  background-size:1800px auto;
-  background-repeat:no-repeat;
+  background-size:cover;
   background-position:center;
   opacity:0;
   transition:opacity 3s ease;

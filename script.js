@@ -259,11 +259,10 @@ function startSpaceDrift(container, files, folder, opts) {
     img.style.transform = `translate(${-dx / 2}px, ${-dy / 2}px) rotate(${rotateVal}deg)`;
 
     container.appendChild(img);
-    requestAnimationFrame(() => {
-      img.style.transition = `transform ${opts.duration}s linear, opacity 1.5s ease`;
-      img.style.opacity = String(opts.opacity || 0.9);
-      img.style.transform = `translate(${dx / 2}px, ${dy / 2}px) rotate(${rotateVal}deg)`;
-    });
+    void img.offsetWidth; // force a reflow so the browser commits the starting position before the transition is applied — without this, some spawns randomly skip straight to the end state and never visibly animate
+    img.style.transition = `transform ${opts.duration}s linear, opacity 1.5s ease`;
+    img.style.opacity = String(opts.opacity || 0.9);
+    img.style.transform = `translate(${dx / 2}px, ${dy / 2}px) rotate(${rotateVal}deg)`;
     setTimeout(() => { img.style.opacity = "0"; }, Math.max(0, opts.duration - 1.5) * 1000);
     setTimeout(() => img.remove(), (opts.duration + 1.5) * 1000);
   };
@@ -282,9 +281,9 @@ async function startSpaceTheme() {
   const driftLayer = document.getElementById("space-drift-layer");
 
   startSpaceCrossfade(bgA, bgB, assets.backgrounds, "backgrounds", 75000);
-  startSpaceDrift(driftLayer, assets.planets, "planets", { minSize: 70, maxSize: 170, duration: 55, everyMs: 32000, opacity: 0.95, extraClass: "space-drift-planet", rotateWithTravel: false });
-  startSpaceDrift(driftLayer, assets.spaceships, "spaceships", { minSize: 30, maxSize: 130, duration: 34, everyMs: 20000, opacity: 0.85 });
-  startSpaceDrift(driftLayer, assets.meteors, "meteors", { minSize: 16, maxSize: 60, duration: 5, everyMs: 7000, opacity: 0.9 });
+  startSpaceDrift(driftLayer, assets.planets, "planets", { minSize: 70, maxSize: 170, duration: 55, everyMs: 16000, opacity: 0.95, extraClass: "space-drift-planet", rotateWithTravel: false });
+  startSpaceDrift(driftLayer, assets.spaceships, "spaceships", { minSize: 30, maxSize: 130, duration: 34, everyMs: 9000, opacity: 0.85 });
+  startSpaceDrift(driftLayer, assets.meteors, "meteors", { minSize: 16, maxSize: 60, duration: 5, everyMs: 3000, opacity: 0.9 });
 }
 
 function stopSpaceTheme() {
