@@ -384,8 +384,8 @@ async function startArcadeTheme() {
     useImageFallback();
   }
 
-  startGroundWalk(driftLayer, assets.robots, "assets/arcade/robots", {
-    minSize: 50, maxSize: 95, duration: 13, everyMs: 5000, opacity: 0.9, groundBand: [0.8, 0.9]
+  startSpaceDrift(driftLayer, assets.robots, "assets/arcade/robots", {
+    minSize: 45, maxSize: 90, duration: 22, everyMs: 14000, opacity: 0.9
   });
 }
 
