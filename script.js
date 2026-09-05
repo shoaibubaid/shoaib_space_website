@@ -189,6 +189,7 @@ const THEME_META = {
 let spaceAssetsCache = null;
 let spaceTimers = [];
 let spaceActive = false;
+let arcadeActive = false;
 
 async function loadSpaceAssets() {
   if (spaceAssetsCache) return spaceAssetsCache;
@@ -208,17 +209,17 @@ function clearSpaceTimers() {
 
 // crossfades between two stacked layers, cycling through a file list —
 // used for both the background and the corner planet
-function startSpaceCrossfade(layerA, layerB, files, folder, intervalMs) {
+function startSpaceCrossfade(layerA, layerB, files, basePath, intervalMs) {
   if (!files || files.length === 0) return;
   let showingA = true;
   let idx = 0;
-  layerA.style.backgroundImage = `url("assets/space/${folder}/${files[idx]}")`;
+  layerA.style.backgroundImage = `url("${basePath}/${files[idx]}")`;
   layerA.classList.add("active");
   const timer = setInterval(() => {
     idx = (idx + 1) % files.length;
     const next = showingA ? layerB : layerA;
     const current = showingA ? layerA : layerB;
-    next.style.backgroundImage = `url("assets/space/${folder}/${files[idx]}")`;
+    next.style.backgroundImage = `url("${basePath}/${files[idx]}")`;
     next.classList.add("active");
     current.classList.remove("active");
     showingA = !showingA;
@@ -228,13 +229,13 @@ function startSpaceCrossfade(layerA, layerB, files, folder, intervalMs) {
 
 // spawns images that drift slowly across the screen, fading in and out —
 // used for both spaceships (slow) and meteors (fast, diagonal)
-function startSpaceDrift(container, files, folder, opts) {
+function startSpaceDrift(container, files, basePath, opts) {
   if (!files || files.length === 0) return;
   const spawn = () => {
     if (!spaceActive) return;
     const file = files[Math.floor(Math.random() * files.length)];
     const img = document.createElement("img");
-    img.src = `assets/space/${folder}/${file}`;
+    img.src = `${basePath}/${file}`;
     img.alt = "";
     img.className = "space-drift" + (opts.extraClass ? " " + opts.extraClass : "");
     const size = opts.minSize + Math.random() * (opts.maxSize - opts.minSize);
@@ -271,6 +272,52 @@ function startSpaceDrift(container, files, folder, opts) {
   spaceTimers.push(timer);
 }
 
+// walks sprites left-to-right or right-to-left along a fixed ground band —
+// used for arcade robots. The wrapper div carries the JS-driven horizontal
+// position; the inner image carries a CSS-animated bob + facing-direction
+// flip, so nothing fights over the "transform" property.
+function startGroundWalk(container, files, basePath, opts) {
+  if (!files || files.length === 0) return;
+  const spawn = () => {
+    if (!arcadeActive) return;
+    const file = files[Math.floor(Math.random() * files.length)];
+    const size = opts.minSize + Math.random() * (opts.maxSize - opts.minSize);
+    const bandMin = opts.groundBand ? opts.groundBand[0] : 0.82;
+    const bandMax = opts.groundBand ? opts.groundBand[1] : 0.9;
+    const groundY = window.innerHeight * (bandMin + Math.random() * (bandMax - bandMin));
+    const fromLeft = Math.random() > 0.5;
+    const startX = fromLeft ? -size - 20 : window.innerWidth + 20;
+    const endX = fromLeft ? window.innerWidth + 20 : -size - 20;
+
+    const wrap = document.createElement("div");
+    wrap.style.position = "absolute";
+    wrap.style.left = startX + "px";
+    wrap.style.top = groundY + "px";
+    wrap.style.opacity = "0";
+    wrap.style.pointerEvents = "none";
+
+    const img = document.createElement("img");
+    img.src = `${basePath}/${file}`;
+    img.alt = "";
+    img.className = "arcade-walk-bob " + (fromLeft ? "dir-right" : "dir-left");
+    img.style.width = size + "px";
+    img.style.display = "block";
+
+    wrap.appendChild(img);
+    container.appendChild(wrap);
+    void wrap.offsetWidth; // same forced-reflow fix as startSpaceDrift, for the same reason
+    wrap.style.transition = `left ${opts.duration}s linear, opacity 1.5s ease`;
+    wrap.style.opacity = String(opts.opacity || 0.9);
+    wrap.style.left = endX + "px";
+
+    setTimeout(() => { wrap.style.opacity = "0"; }, Math.max(0, opts.duration - 1.5) * 1000);
+    setTimeout(() => wrap.remove(), (opts.duration + 1.5) * 1000);
+  };
+  spawn();
+  const timer = setInterval(spawn, opts.everyMs);
+  spaceTimers.push(timer);
+}
+
 async function startSpaceTheme() {
   spaceActive = true;
   const assets = await loadSpaceAssets();
@@ -280,16 +327,77 @@ async function startSpaceTheme() {
   const bgB = document.getElementById("space-bg-b");
   const driftLayer = document.getElementById("space-drift-layer");
 
-  startSpaceCrossfade(bgA, bgB, assets.backgrounds, "backgrounds", 75000);
-  startSpaceDrift(driftLayer, assets.planets, "planets", { minSize: 70, maxSize: 170, duration: 55, everyMs: 16000, opacity: 0.95, extraClass: "space-drift-planet", rotateWithTravel: false });
-  startSpaceDrift(driftLayer, assets.spaceships, "spaceships", { minSize: 30, maxSize: 130, duration: 34, everyMs: 9000, opacity: 0.85 });
-  startSpaceDrift(driftLayer, assets.meteors, "meteors", { minSize: 16, maxSize: 60, duration: 5, everyMs: 3000, opacity: 0.9 });
+  startSpaceCrossfade(bgA, bgB, assets.backgrounds, "assets/space/backgrounds", 75000);
+  startSpaceDrift(driftLayer, assets.planets, "assets/space/planets", { minSize: 70, maxSize: 170, duration: 55, everyMs: 16000, opacity: 0.95, extraClass: "space-drift-planet", rotateWithTravel: false });
+  startSpaceDrift(driftLayer, assets.spaceships, "assets/space/spaceships", { minSize: 30, maxSize: 130, duration: 34, everyMs: 9000, opacity: 0.85 });
+  startSpaceDrift(driftLayer, assets.meteors, "assets/space/meteors", { minSize: 16, maxSize: 60, duration: 5, everyMs: 3000, opacity: 0.9 });
 }
 
 function stopSpaceTheme() {
   spaceActive = false;
   clearSpaceTimers();
   ["space-bg-a", "space-bg-b"].forEach(id => {
+    document.getElementById(id).classList.remove("active");
+  });
+  document.getElementById("space-drift-layer").innerHTML = "";
+}
+
+// ---- arcade theme extras: video background (with image fallback), and
+// robots walking along the floor ----
+// Add more art any time: drop a file into assets/arcade/<category>/ and add
+// its filename to arcade.json. No code changes needed.
+let arcadeAssetsCache = null;
+
+async function loadArcadeAssets() {
+  if (arcadeAssetsCache) return arcadeAssetsCache;
+  try {
+    const res = await fetch("arcade.json", { cache: "no-store" });
+    arcadeAssetsCache = await res.json();
+  } catch (e) {
+    arcadeAssetsCache = { backgroundVideo: "", backgroundImages: [], robots: [] };
+  }
+  return arcadeAssetsCache;
+}
+
+async function startArcadeTheme() {
+  arcadeActive = true;
+  const assets = await loadArcadeAssets();
+  if (!arcadeActive) return; // theme may have been switched away while loading
+
+  const video = document.getElementById("arcade-bg-video");
+  const bgA = document.getElementById("arcade-bg-a");
+  const bgB = document.getElementById("arcade-bg-b");
+  const driftLayer = document.getElementById("space-drift-layer");
+
+  const useImageFallback = () => {
+    video.classList.remove("active");
+    startSpaceCrossfade(bgA, bgB, assets.backgroundImages, "assets/arcade/background", 60000);
+  };
+
+  if (assets.backgroundVideo) {
+    video.src = `assets/arcade/background/${assets.backgroundVideo}`;
+    video.onerror = useImageFallback;
+    video.play()
+      .then(() => { if (arcadeActive) video.classList.add("active"); })
+      .catch(useImageFallback);
+  } else {
+    useImageFallback();
+  }
+
+  startGroundWalk(driftLayer, assets.robots, "assets/arcade/robots", {
+    minSize: 50, maxSize: 95, duration: 13, everyMs: 5000, opacity: 0.9, groundBand: [0.8, 0.9]
+  });
+}
+
+function stopArcadeTheme() {
+  arcadeActive = false;
+  clearSpaceTimers();
+  const video = document.getElementById("arcade-bg-video");
+  video.pause();
+  video.removeAttribute("src");
+  video.load();
+  video.classList.remove("active");
+  ["arcade-bg-a", "arcade-bg-b"].forEach(id => {
     document.getElementById(id).classList.remove("active");
   });
   document.getElementById("space-drift-layer").innerHTML = "";
@@ -302,8 +410,9 @@ function setTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
   }
 
-  if (theme === "space") startSpaceTheme();
-  else stopSpaceTheme();
+  if (theme === "space") { startSpaceTheme(); stopArcadeTheme(); }
+  else if (theme === "arcade") { startArcadeTheme(); stopSpaceTheme(); }
+  else { stopSpaceTheme(); stopArcadeTheme(); }
 
   const meta = THEME_META[theme] || THEME_META.midnight;
   themeBtnIcon.className = "ti " + meta.icon;

@@ -1,0 +1,11 @@
+{
+  "backgroundVideo": "arcade-hall.mp4",
+  "backgroundImages": [
+    "background.png",
+    "background2.png"
+  ],
+  "robots": [
+    "robot1.png",
+    "robot2.png"
+  ]
+}
