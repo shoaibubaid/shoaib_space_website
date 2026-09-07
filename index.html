@@ -18,12 +18,10 @@
 
 <div id="bg-layer" class="bg-layer" aria-hidden="true"></div>
 <div id="post-bg-layer" class="post-bg-layer" aria-hidden="true"></div>
-<div id="space-bg-a" class="space-bg-layer" aria-hidden="true"></div>
-<div id="space-bg-b" class="space-bg-layer" aria-hidden="true"></div>
-<video id="arcade-bg-video" class="arcade-bg-video" muted loop playsinline aria-hidden="true"></video>
-<div id="arcade-bg-a" class="space-bg-layer" aria-hidden="true"></div>
-<div id="arcade-bg-b" class="space-bg-layer" aria-hidden="true"></div>
-<div id="space-drift-layer" aria-hidden="true"></div>
+<video id="theme-bg-video" class="theme-bg-video" muted loop playsinline aria-hidden="true"></video>
+<div id="theme-bg-a" class="theme-bg-layer" aria-hidden="true"></div>
+<div id="theme-bg-b" class="theme-bg-layer" aria-hidden="true"></div>
+<div id="theme-drift-layer" aria-hidden="true"></div>
 
 <div class="page">
 
@@ -55,6 +53,19 @@
           <button data-ambience="embers"><i class="ti ti-flame"></i> embers</button>
           <button data-ambience="rain"><i class="ti ti-cloud-rain"></i> rain</button>
           <button data-ambience="none"><i class="ti ti-x"></i> none</button>
+        </div>
+      </div>
+      <div class="ambience-wrap">
+        <button id="textcolor-btn" aria-label="Choose text color" aria-haspopup="true">
+          <i id="textcolor-btn-icon" class="ti ti-typography"></i>
+          <span id="textcolor-btn-label">default</span>
+        </button>
+        <div id="textcolor-menu" class="ambience-menu" hidden>
+          <button data-textcolor="default"><i class="ti ti-point"></i> default</button>
+          <button data-textcolor="yellow"><i class="ti ti-point-filled"></i> yellow</button>
+          <button data-textcolor="white"><i class="ti ti-point-filled"></i> white</button>
+          <button data-textcolor="cyan"><i class="ti ti-point-filled"></i> cyan</button>
+          <button data-textcolor="rose"><i class="ti ti-point-filled"></i> rose</button>
         </div>
       </div>
     </nav>

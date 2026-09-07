@@ -1,0 +1,32 @@
+{
+  "midnight": {
+    "backgroundVideo": "midnight.mp4",
+    "backgroundImages": ["background1.png"],
+    "floats": [],
+    "floatMinSize": 40,
+    "floatMaxSize": 90,
+    "floatDuration": 25,
+    "floatEveryMs": 15000,
+    "floatOpacity": 0.6
+  },
+  "arcade": {
+    "backgroundVideo": "background.mp4",
+    "backgroundImages": ["background.png", "background2.png"],
+    "floats": ["float1.png", "float2.png", "float3.png", "float4.png", "float5.png"],
+    "floatMinSize": 45,
+    "floatMaxSize": 90,
+    "floatDuration": 22,
+    "floatEveryMs": 4000,
+    "floatOpacity": 0.8
+  },
+  "space": {    
+    "backgroundVideo": "midnight.mp4",
+    "backgroundImages": ["nebula1.png", "nebula2.png", "nebula3.png"],
+    "floats": ["meteor1.png", "meteor2.png", "planet1.png", "planet2.png", "planet3.png", "spaceship1.png", "spaceship2.png", "spaceship3.png"],
+    "floatMinSize": 20,
+    "floatMaxSize": 170,
+    "floatDuration": 30,
+    "floatEveryMs": 6000,
+    "floatOpacity": 0.9
+  }
+}

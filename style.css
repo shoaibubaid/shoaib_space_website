@@ -104,34 +104,18 @@
   text-shadow: 0 0 8px rgba(255,63,176,0.6);
 }
 
-/* space theme layers: crossfading background + planet, drifting ships/meteors */
-.space-bg-layer{
-  position:fixed;
-  inset:0;
-  z-index:-3;
-  pointer-events:none;
-  background-size:cover;
-  background-position:center;
-  opacity:0;
-  transition:opacity 3s ease;
-}
-.space-bg-layer.active{opacity:0.6;}
+/* independent text-color picker — decoupled from theme choice. Placed
+   after every [data-theme] block above so it wins on source order when
+   set to anything other than "default" (equal specificity to those
+   selectors, so whichever comes later in the file takes priority). */
+:root[data-text="yellow"]{ --text:#ffe066; --text-secondary:#d9c060; }
+:root[data-text="white"]{ --text:#f5f5f5; --text-secondary:#c7c7c7; }
+:root[data-text="cyan"]{ --text:#7ce8ff; --text-secondary:#5fb0c4; }
+:root[data-text="rose"]{ --text:#ff9ecf; --text-secondary:#d97bab; }
 
-#space-drift-layer{position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden;}
-.space-drift{
-  position:absolute;
-  opacity:0;
-  filter:drop-shadow(0 0 5px rgba(232,230,255,0.5));
-}
-.space-drift-planet{
-  mask-image:radial-gradient(circle, black 52%, transparent 74%);
-  -webkit-mask-image:radial-gradient(circle, black 52%, transparent 74%);
-  filter:none;
-}
-
-/* arcade theme's video background — falls back to the crossfade image
-   layers (reusing .space-bg-layer) if no video is available */
-.arcade-bg-video{
+/* unified theme visuals — one video/image background layer and one
+   floating-object layer, shared by every theme via themes.json */
+.theme-bg-video{
   position:fixed;
   inset:0;
   width:100%;
@@ -142,22 +126,40 @@
   transition:opacity 3s ease;
   pointer-events:none;
 }
-.arcade-bg-video.active{opacity:0.6;}
+.theme-bg-video.active{opacity:0.6;}
 
-/* ground-walking sprites (arcade robots) — the wrapper handles horizontal
-   position via JS, the inner image handles a bob + facing-direction flip
-   purely through CSS animation, so the two never fight over "transform" */
-@keyframes arcade-bob-right{
+.theme-bg-layer{
+  position:fixed;
+  inset:0;
+  z-index:-3;
+  pointer-events:none;
+  background-size:cover;
+  background-position:center;
+  opacity:0;
+  transition:opacity 3s ease;
+}
+.theme-bg-layer.active{opacity:0.6;}
+
+#theme-drift-layer{position:fixed;inset:0;pointer-events:none;z-index:-2;overflow:hidden;}
+.theme-float{
+  position:absolute;
+  opacity:0;
+  filter:drop-shadow(0 0 5px rgba(0,0,0,0.4));
+}
+
+/* ground-walking sprites — kept as an optional style, unused by default but
+   available if a theme's floats should walk a floor line instead of drift */
+@keyframes ground-bob-right{
   0%,100%{transform:scaleX(1) translateY(0);}
   50%{transform:scaleX(1) translateY(-6px);}
 }
-@keyframes arcade-bob-left{
+@keyframes ground-bob-left{
   0%,100%{transform:scaleX(-1) translateY(0);}
   50%{transform:scaleX(-1) translateY(-6px);}
 }
-.arcade-walk-bob{display:block;filter:drop-shadow(0 4px 5px rgba(0,0,0,0.5));}
-.arcade-walk-bob.dir-right{animation:arcade-bob-right 0.55s ease-in-out infinite;}
-.arcade-walk-bob.dir-left{animation:arcade-bob-left 0.55s ease-in-out infinite;}
+.ground-walk-bob{display:block;filter:drop-shadow(0 4px 5px rgba(0,0,0,0.5));}
+.ground-walk-bob.dir-right{animation:ground-bob-right 0.55s ease-in-out infinite;}
+.ground-walk-bob.dir-left{animation:ground-bob-left 0.55s ease-in-out infinite;}
 
 *{box-sizing:border-box;}
 
@@ -579,7 +581,7 @@ h1.handwritten{font-size:42px;}
 
 /* ambience toggle */
 .ambience-wrap{position:relative;}
-#ambience-btn, #theme-btn{
+#ambience-btn, #theme-btn, #textcolor-btn{
   background:none;
   border:1px solid var(--border);
   border-radius:6px;
@@ -592,8 +594,8 @@ h1.handwritten{font-size:42px;}
   font-family:'Space Mono',monospace;
   font-size:11px;
 }
-#ambience-btn:hover, #theme-btn:hover{color:var(--amber);border-color:var(--amber-dim);}
-#ambience-btn i, #theme-btn i{font-size:15px;}
+#ambience-btn:hover, #theme-btn:hover, #textcolor-btn:hover{color:var(--amber);border-color:var(--amber-dim);}
+#ambience-btn i, #theme-btn i, #textcolor-btn i{font-size:15px;}
 .ambience-menu{
   position:absolute;
   top:calc(100% + 8px);
@@ -647,14 +649,7 @@ h1.handwritten{font-size:42px;}
 @media (max-width:480px){
   .nav{gap:10px 14px;}
   .nav-link{font-size:13px;}
-  #ambience-btn span, #theme-btn span{display:none;}
-  #ambience-btn, #theme-btn{padding:6px 8px;}
+  #ambience-btn span, #theme-btn span, #textcolor-btn span{display:none;}
+  #ambience-btn, #theme-btn, #textcolor-btn{padding:6px 8px;}
   .brand{font-size:13px;}
 }
-/* colors that we can use */
-/* teal	sage/seafoam	#6fae9e
-indigo	soft purple-blue	#8b8ce0
-amber	warm gold (your accent color)	#e8a94e
-coral	dusty rose-red	#b56368
-rose	pink	#d98fa8
-frost	cool steel blue	#7fa3c4 */

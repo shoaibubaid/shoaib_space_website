@@ -183,33 +183,33 @@ const THEME_META = {
   space: { icon: "ti-rocket", label: "space" }
 };
 
-// ---- space theme: crossfading background/planet, drifting ships/meteors ----
-// Add more art any time: drop a file into assets/space/<category>/ and add
-// its filename to the matching array in space.json. No code changes needed.
-let spaceAssetsCache = null;
-let spaceTimers = [];
-let spaceActive = false;
-let arcadeActive = false;
+// ---- unified theme visuals: background (video or crossfading images) +
+// floating objects, shared by every theme through one manifest ----
+// Add a new theme's visuals: create assets/themes/<theme>/background/ and
+// assets/themes/<theme>/floats/, then add an entry to themes.json with the
+// same shape as the existing ones. No code changes needed.
+let themesConfigCache = null;
+let themeTimers = [];
+let themeVisualsActive = null; // name of the theme whose visuals are currently running, or null
 
-async function loadSpaceAssets() {
-  if (spaceAssetsCache) return spaceAssetsCache;
+async function loadThemesConfig() {
+  if (themesConfigCache) return themesConfigCache;
   try {
-    const res = await fetch("space.json", { cache: "no-store" });
-    spaceAssetsCache = await res.json();
+    const res = await fetch("themes.json", { cache: "no-store" });
+    themesConfigCache = await res.json();
   } catch (e) {
-    spaceAssetsCache = { planets: [], spaceships: [], backgrounds: [], meteors: [] };
+    themesConfigCache = {};
   }
-  return spaceAssetsCache;
+  return themesConfigCache;
 }
 
-function clearSpaceTimers() {
-  spaceTimers.forEach(t => clearInterval(t));
-  spaceTimers = [];
+function clearThemeTimers() {
+  themeTimers.forEach(t => clearInterval(t));
+  themeTimers = [];
 }
 
-// crossfades between two stacked layers, cycling through a file list —
-// used for both the background and the corner planet
-function startSpaceCrossfade(layerA, layerB, files, basePath, intervalMs) {
+// crossfades between two stacked layers, cycling through a file list
+function startBgCrossfade(layerA, layerB, files, basePath, intervalMs) {
   if (!files || files.length === 0) return;
   let showingA = true;
   let idx = 0;
@@ -224,20 +224,19 @@ function startSpaceCrossfade(layerA, layerB, files, basePath, intervalMs) {
     current.classList.remove("active");
     showingA = !showingA;
   }, intervalMs);
-  spaceTimers.push(timer);
+  themeTimers.push(timer);
 }
 
-// spawns images that drift slowly across the screen, fading in and out —
-// used for both spaceships (slow) and meteors (fast, diagonal)
-function startSpaceDrift(container, files, basePath, opts) {
+// spawns images that drift across the screen at a random angle, fading in and out
+function startFloatDrift(container, files, basePath, opts) {
   if (!files || files.length === 0) return;
   const spawn = () => {
-    if (!spaceActive) return;
+    if (!themeVisualsActive) return;
     const file = files[Math.floor(Math.random() * files.length)];
     const img = document.createElement("img");
     img.src = `${basePath}/${file}`;
     img.alt = "";
-    img.className = "space-drift" + (opts.extraClass ? " " + opts.extraClass : "");
+    img.className = "theme-float" + (opts.extraClass ? " " + opts.extraClass : "");
     const size = opts.minSize + Math.random() * (opts.maxSize - opts.minSize);
     img.style.width = size + "px";
 
@@ -269,17 +268,16 @@ function startSpaceDrift(container, files, basePath, opts) {
   };
   spawn();
   const timer = setInterval(spawn, opts.everyMs);
-  spaceTimers.push(timer);
+  themeTimers.push(timer);
 }
 
-// walks sprites left-to-right or right-to-left along a fixed ground band —
-// used for arcade robots. The wrapper div carries the JS-driven horizontal
-// position; the inner image carries a CSS-animated bob + facing-direction
-// flip, so nothing fights over the "transform" property.
+// optional: walks sprites left-to-right or right-to-left along a fixed
+// ground band instead of drifting at any angle — not used by default, but
+// available for any theme that sets "floatMode": "ground" in themes.json
 function startGroundWalk(container, files, basePath, opts) {
   if (!files || files.length === 0) return;
   const spawn = () => {
-    if (!arcadeActive) return;
+    if (!themeVisualsActive) return;
     const file = files[Math.floor(Math.random() * files.length)];
     const size = opts.minSize + Math.random() * (opts.maxSize - opts.minSize);
     const bandMin = opts.groundBand ? opts.groundBand[0] : 0.82;
@@ -299,13 +297,13 @@ function startGroundWalk(container, files, basePath, opts) {
     const img = document.createElement("img");
     img.src = `${basePath}/${file}`;
     img.alt = "";
-    img.className = "arcade-walk-bob " + (fromLeft ? "dir-right" : "dir-left");
+    img.className = "ground-walk-bob " + (fromLeft ? "dir-right" : "dir-left");
     img.style.width = size + "px";
     img.style.display = "block";
 
     wrap.appendChild(img);
     container.appendChild(wrap);
-    void wrap.offsetWidth; // same forced-reflow fix as startSpaceDrift, for the same reason
+    void wrap.offsetWidth;
     wrap.style.transition = `left ${opts.duration}s linear, opacity 1.5s ease`;
     wrap.style.opacity = String(opts.opacity || 0.9);
     wrap.style.left = endX + "px";
@@ -315,92 +313,60 @@ function startGroundWalk(container, files, basePath, opts) {
   };
   spawn();
   const timer = setInterval(spawn, opts.everyMs);
-  spaceTimers.push(timer);
+  themeTimers.push(timer);
 }
 
-async function startSpaceTheme() {
-  spaceActive = true;
-  const assets = await loadSpaceAssets();
-  if (!spaceActive) return; // theme may have been switched away while loading
+async function startThemeVisuals(themeName) {
+  themeVisualsActive = themeName;
+  const allThemes = await loadThemesConfig();
+  const cfg = allThemes[themeName];
+  if (themeVisualsActive !== themeName) return; // switched away while loading
+  if (!cfg) return; // no visuals defined for this theme — perfectly valid, just nothing renders
 
-  const bgA = document.getElementById("space-bg-a");
-  const bgB = document.getElementById("space-bg-b");
-  const driftLayer = document.getElementById("space-drift-layer");
-
-  startSpaceCrossfade(bgA, bgB, assets.backgrounds, "assets/space/backgrounds", 75000);
-  startSpaceDrift(driftLayer, assets.planets, "assets/space/planets", { minSize: 70, maxSize: 170, duration: 55, everyMs: 16000, opacity: 0.95, extraClass: "space-drift-planet", rotateWithTravel: false });
-  startSpaceDrift(driftLayer, assets.spaceships, "assets/space/spaceships", { minSize: 30, maxSize: 130, duration: 34, everyMs: 9000, opacity: 0.85 });
-  startSpaceDrift(driftLayer, assets.meteors, "assets/space/meteors", { minSize: 16, maxSize: 60, duration: 5, everyMs: 3000, opacity: 0.9 });
-}
-
-function stopSpaceTheme() {
-  spaceActive = false;
-  clearSpaceTimers();
-  ["space-bg-a", "space-bg-b"].forEach(id => {
-    document.getElementById(id).classList.remove("active");
-  });
-  document.getElementById("space-drift-layer").innerHTML = "";
-}
-
-// ---- arcade theme extras: video background (with image fallback), and
-// robots walking along the floor ----
-// Add more art any time: drop a file into assets/arcade/<category>/ and add
-// its filename to arcade.json. No code changes needed.
-let arcadeAssetsCache = null;
-
-async function loadArcadeAssets() {
-  if (arcadeAssetsCache) return arcadeAssetsCache;
-  try {
-    const res = await fetch("arcade.json", { cache: "no-store" });
-    arcadeAssetsCache = await res.json();
-  } catch (e) {
-    arcadeAssetsCache = { backgroundVideo: "", backgroundImages: [], robots: [] };
-  }
-  return arcadeAssetsCache;
-}
-
-async function startArcadeTheme() {
-  arcadeActive = true;
-  const assets = await loadArcadeAssets();
-  if (!arcadeActive) return; // theme may have been switched away while loading
-
-  const video = document.getElementById("arcade-bg-video");
-  const bgA = document.getElementById("arcade-bg-a");
-  const bgB = document.getElementById("arcade-bg-b");
-  const driftLayer = document.getElementById("space-drift-layer");
+  const video = document.getElementById("theme-bg-video");
+  const bgA = document.getElementById("theme-bg-a");
+  const bgB = document.getElementById("theme-bg-b");
+  const driftLayer = document.getElementById("theme-drift-layer");
 
   const useImageFallback = () => {
     video.classList.remove("active");
-    startSpaceCrossfade(bgA, bgB, assets.backgroundImages, "assets/arcade/background", 60000);
+    startBgCrossfade(bgA, bgB, cfg.backgroundImages, `assets/themes/${themeName}/background`, 75000);
   };
 
-  if (assets.backgroundVideo) {
-    video.src = `assets/arcade/background/${assets.backgroundVideo}`;
+  if (cfg.backgroundVideo) {
+    video.src = `assets/themes/${themeName}/background/${cfg.backgroundVideo}`;
     video.onerror = useImageFallback;
     video.play()
-      .then(() => { if (arcadeActive) video.classList.add("active"); })
+      .then(() => { if (themeVisualsActive === themeName) video.classList.add("active"); })
       .catch(useImageFallback);
   } else {
     useImageFallback();
   }
 
-  startSpaceDrift(driftLayer, assets.robots, "assets/arcade/robots", {
-    minSize: 45, maxSize: 90, duration: 22, everyMs: 14000, opacity: 0.9
-  });
+  const floatOpts = {
+    minSize: cfg.floatMinSize ?? 40,
+    maxSize: cfg.floatMaxSize ?? 90,
+    duration: cfg.floatDuration ?? 25,
+    everyMs: cfg.floatEveryMs ?? 12000,
+    opacity: cfg.floatOpacity ?? 0.85,
+    groundBand: cfg.floatGroundBand
+  };
+  const floatFn = cfg.floatMode === "ground" ? startGroundWalk : startFloatDrift;
+  floatFn(driftLayer, cfg.floats, `assets/themes/${themeName}/floats`, floatOpts);
 }
 
-function stopArcadeTheme() {
-  arcadeActive = false;
-  clearSpaceTimers();
-  const video = document.getElementById("arcade-bg-video");
+function stopThemeVisuals() {
+  themeVisualsActive = null;
+  clearThemeTimers();
+  const video = document.getElementById("theme-bg-video");
   video.pause();
   video.removeAttribute("src");
   video.load();
   video.classList.remove("active");
-  ["arcade-bg-a", "arcade-bg-b"].forEach(id => {
+  ["theme-bg-a", "theme-bg-b"].forEach(id => {
     document.getElementById(id).classList.remove("active");
   });
-  document.getElementById("space-drift-layer").innerHTML = "";
+  document.getElementById("theme-drift-layer").innerHTML = "";
 }
 
 function setTheme(theme) {
@@ -410,9 +376,8 @@ function setTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
   }
 
-  if (theme === "space") { startSpaceTheme(); stopArcadeTheme(); }
-  else if (theme === "arcade") { startArcadeTheme(); stopSpaceTheme(); }
-  else { stopSpaceTheme(); stopArcadeTheme(); }
+  stopThemeVisuals();
+  startThemeVisuals(theme);
 
   const meta = THEME_META[theme] || THEME_META.midnight;
   themeBtnIcon.className = "ti " + meta.icon;
@@ -440,6 +405,45 @@ document.querySelectorAll("#theme-menu button").forEach(btn => {
 });
 
 setTheme(localStorage.getItem("theme") || "midnight");
+
+// ---- text color picker (independent of theme choice) ----
+const textcolorBtn = document.getElementById("textcolor-btn");
+const textcolorBtnIcon = document.getElementById("textcolor-btn-icon");
+const textcolorBtnLabel = document.getElementById("textcolor-btn-label");
+const textcolorMenu = document.getElementById("textcolor-menu");
+
+function setTextColor(choice) {
+  if (choice === "default") {
+    document.documentElement.removeAttribute("data-text");
+  } else {
+    document.documentElement.setAttribute("data-text", choice);
+  }
+
+  textcolorBtnIcon.className = choice === "default" ? "ti ti-typography" : "ti ti-point-filled";
+  textcolorBtnLabel.textContent = choice;
+
+  localStorage.setItem("textColor", choice);
+  document.querySelectorAll("#textcolor-menu button").forEach(b => {
+    b.classList.toggle("active", b.dataset.textcolor === choice);
+  });
+}
+
+textcolorBtn.addEventListener("click", () => {
+  textcolorMenu.hidden = !textcolorMenu.hidden;
+});
+document.addEventListener("click", (e) => {
+  if (!textcolorMenu.hidden && !e.target.closest("#textcolor-btn, #textcolor-menu")) {
+    textcolorMenu.hidden = true;
+  }
+});
+document.querySelectorAll("#textcolor-menu button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    setTextColor(btn.dataset.textcolor);
+    textcolorMenu.hidden = true;
+  });
+});
+
+setTextColor(localStorage.getItem("textColor") || "default");
 
 // ---- floating decorative props ----
 // Add a new prop: drop an image into assets/floats/, then list its filename
