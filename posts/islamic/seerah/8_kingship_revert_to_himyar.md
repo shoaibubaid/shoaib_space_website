@@ -95,6 +95,7 @@ Ibn Ishaq’s account states, “So Wahriz and the Persians stayed in Yemen. And
 ### Explanation of the last line (not from the book)
 Sayf ibn Dhī Yazan became the king of Yemen, while Wahrīz served as the Sasanian military governor/commander before returning to Persia.
 
+
 1. How the Power Was Divided
 - **The Royal Crown to Sayf:** Following the defeat and death of Masrūq (shot with an arrow by Wahrīz), Wahrīz entered Ṣan‘ā’ and formally installed Sayf ibn Dhī Yazan on the throne of his Himyarite ancestors.
 
@@ -107,9 +108,52 @@ Sayf ibn Dhī Yazan became the king of Yemen, while Wahrīz served as the Sasani
 
 - **The Assassination of Sayf:** Sayf kept a personal bodyguard of Abyssinian servants. While out on a royal excursion, these Abyssinian guards turned on him and assassinated him with spears.
 
-- **Direct Persian Rule:** Following Sayf's death, Khosrow I sent Wahrīz back to Yemen with a second Persian army to suppress the remaining Abyssinian resistance. From that point on, the indigenous Himyarite monarchy ended, and Wahrīz became the first direct Persian governor (marzbān) of Yemen. The Persian descendants settled there and became known in Arab history as the Abnā’ (الأبناء).
+- **Direct Persian Rule:** Following Sayf's death, chosroe I sent Wahrīz back to Yemen with a second Persian army to suppress the remaining Abyssinian resistance. From that point on, the indigenous Himyarite monarchy ended, and Wahrīz became the first direct Persian governor (marzbān) of Yemen. The Persian descendants settled there and became known in Arab history as the Abnā’ (الأبناء).
 
 
+### How Persian Rule ended in Yemen
+[Ibn Hisham](./Islamic%20scholars/Ibn%20Hishām%20(اِبْنُ%20هِشَامٍ).md)'s account states that eventually Wahriz died and Chosroe appointed his son al-Marzuban b. Wahriz (المَرْزُبَان بن وَهْرِز) over Yemen.  when he died, Chosroe appointed al-Marzuban’s son al-Taynujan(التَّيْنُجَان). Later Chosroe exiled al-Taynujan from Yemen because he was becoming corrupt and appointed a loyal one, Badhan (بَاذَان) to the rule; it was during his reign that the Messenger of God (SAAS) was appointed to his mission.
+
+
+Two different Sasanian emperors ruled during this timeline:
+
+- For the initial appointments (Wahrīz (وَهْرِز) and his son): The Emperor was Khosrow I Anushirvan (كسرى أنوشروان), who reigned until 579 CE.
+
+- For the deposition/exile of al-Taynūjān and the appointment of Bādhān: The Emperor was his grandson, Khosrow II Abrawiz b. Hurmuz b. Anushirwan or simply Parvez (كسرى أبرويز), who reigned c. 590–628 CE. Khosrow II was the contemporary ruler when the Prophet Muhammad began his mission.
+
+
+### Two different narrations on how this Chosroe II died
+Two narrations on death of  Abrawiz who was the contemporary chosroe during prophet (SAW)
+
+#### Ibn Hisham's account
+[Ibn Hisham](./Islamic%20scholars/Ibn%20Hishām%20(اِبْنُ%20هِشَامٍ).md) relates on the authority of [al zuhri](./Islamic%20scholars/Al-Zuhrī%20(ابن%20شهاب%20الزهري).md) that Chosroe wrote the following to Badhan, “I am told that a man from Quraysh has appeared in Mecca claiming to be a prophet. Travel to him and seek his repentance. If he repents, well and good. If he does not, send me his head! ”
+
+Badhan sent Chosroe’s message to the Messenger of God (SAAS) who replied, “God has promised me that Chosroe will be killed on such and such a day and month.” When this response was brought to Badhan he came to a halt and waited, saying, “If indeed he be a Prophet, it will occur as he said.” And God did kill Chosroe on the day foreseen by the Messenger of God (SAAS).
+
+According to Ibn Hisham he died at the hands of his son Shirawayh. b. Abrawiz Others state that his sons joined forces to kill him.This Chosroe was by name Abrawlz b. Hurmuz b. Anushirwan b. Qabbadh. It was he who defeated the Byzantines, as referred to in the Almighty’s words in the Qur’an, 
+
+>(surat al-Rum , XXX, v.1-3)
+>
+>A.L.M. The Romans have been defeated in the closest land” .
+>
+
+
+
+
+#### Al suhayli's account
+According to [al-Suhayli](./Islamic%20scholars/Abū%20al-Qāsim%20al-Suhaylī%20(أَبُو%20الْقَاسِمِ%20السُّهَيْلِيُّ).md), his death occurred the night of Tuesday, the tenth of Jumada al-Ula, of the year 9 AH. What happened, it is thought, though God alone knows, is that when the Messenger of God (SAAS) wrote to Chosroe inviting him to accept Islam, he became enraged, tore up the letter and then wrote his own instructions to his governor in Yemen.
+
+
+Some accounts report that the Messenger of God (SAAS) replied to Badhan’s emissary with the words, “This night my Lord has killed your lord.” And it was as he said, Chosroe being killed that very same night by his sons as a result of his having changed from justice to tyranny. Having deposed him they appointed his son Shlrawayh in his place. But he only lived on for six months or less after he had murdered his father.
+
+
+#### Continuation
+Al-Zuhri added that when news of Chosroe’s death reached Badhan, he sent word to the Messenger of God (SAAS) of the acceptance of Islam by himself and the Persians along with him. His Persian envoys asked, “To whom do we belong, Messenger of God?” He replied, “You are from us and to us, the people of the House.” According to al-Zuhrl, that was why the Messenger of God (SAAS) spoke the words, “Salman is of us, the people of the House.”
+
+It seems that this was after the emigration of the Messenger of God (SAAS) to Medina. He therefore sent his commanders to Yemen to inform people of what was good and to call upon them to believe in God, the Almighty and Glorious. First he dispatched [Khalid b. al-Walld](./Sahaba/Khālid%20ibn%20al-Walīd%20(خالد%20بن%20الوليد).md) and  [Ali b. Abu Talib](./Sahaba/‘Alī%20ibn%20Abī%20Ṭālib%20(علي%20بن%20أبي%20طالب).md). later [Abu Musa al-Ash'ari](./Sahaba/Abū%20Mūsā%20al-Ash‘arī%20(أبو%20موسى%20الأشعري).md) and [Mu'adh b. Jabal](./Sahaba/Mu‘ādh%20ibn%20Jabal%20(معاذ%20بن%20جبل).md) followed them, and Yemen and its people accepted Islam.
+
+
+Badhan died and his son Shahr b. Badhan ruled after him. It was he whom al-Aswad al- c Ansi killed after al-Aswad had pretended prophecy and taken Shahr’s wife, as we will report, and expelled from Yemen the deputies of the Messenger of God (SAAS). When al-Aswad was killed the authority of Islam returned.
 
 [previous](./7_Abraha_rebel_against_mecca_and_humiliated.md)  <======> [next](./8_kingship_revert_to_himyar.md)
 
