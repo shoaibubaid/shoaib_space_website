@@ -917,7 +917,7 @@ public:
 ```
 7. [Longest Subarray with Ones after Replacement (hard)](https://leetcode.com/problems/max-consecutive-ones-iii/)
 8. [Minimum size subarray SUM](https://leetcode.com/problems/minimum-size-subarray-sum/description/)
-9. [MInimum Size Substring (HARD)](https://leetcode.com/problems/minimum-window-substring/description/?envType=study-plan-v2&envId=top-interview-150)
+9. [Minimum Size Substring (HARD)](https://leetcode.com/problems/minimum-window-substring/description/?envType=study-plan-v2&envId=top-interview-150)
 10. [Problem Challenge 1: Permutation in a String (hard)](https://leetcode.com/problems/permutation-in-string/)
 11. [Problem Challenge 2: String Anagrams (hard)](https://leetcode.com/problems/find-all-anagrams-in-a-string/)
 12. [Problem Challenge 4: Words Concatenation (hard)](https://leetcode.com/problems/substring-with-concatenation-of-all-words/)
