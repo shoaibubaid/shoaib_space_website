@@ -34,6 +34,40 @@ public:
 ```
 
 ### 2. [Insert Interval (medium)](https://leetcode.com/problems/insert-interval/)
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+        vector<vector<int>> ans;
+        int i = 0;
+
+        // Intervals completely before newInterval
+        while (i < intervals.size() && intervals[i][1] < newInterval[0]) {
+            ans.push_back(intervals[i]);
+            i++;
+        }
+
+        // Merge overlapping intervals
+        while (i < intervals.size() && intervals[i][0] <= newInterval[1]) {
+            newInterval[0] = min(newInterval[0], intervals[i][0]);
+            newInterval[1] = max(newInterval[1], intervals[i][1]);
+            i++;
+        }
+
+        // Add the merged interval
+        ans.push_back(newInterval);
+
+        // Intervals completely after newInterval
+        while (i < intervals.size()) {
+            ans.push_back(intervals[i]);
+            i++;
+        }
+
+        return ans;
+    }
+};
+```
 ### 3. [Intervals Intersection (medium)](https://leetcode.com/problems/interval-list-intersections/description/)
 ### 4. [Overlapping Intervals](https://www.geeksforgeeks.org/check-if-any-two-intervals-overlap-among-a-given-set-of-intervals/)
 ### 5. [Problem Challenge 1: Minimum Meeting Rooms (hard)](https://www.geeksforgeeks.org/problems/attend-all-meetings-ii/1)
