@@ -6,8 +6,8 @@ excerpt:
 floats: bulb.png, cpu.png, gpu.png, keyboard.png, monitor.png, ram.png, star_yellow.png
 background: cs/dsa.png
 ---
-## 16. Greedy
-#### 1. [Lemonade]()
-#### 2. [Jump Game]()
-#### 3. [Assign cookies]()
-#### 4. [Fractional Knapsack]()
+# 16. Greedy
+## 1. [Lemonade]()
+## 2. [Jump Game]()
+## 3. [Assign cookies]()
+## 4. [Fractional Knapsack]()

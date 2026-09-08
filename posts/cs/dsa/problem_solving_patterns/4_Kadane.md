@@ -7,8 +7,8 @@ floats: bulb.png, cpu.png, gpu.png, keyboard.png, monitor.png, ram.png, star_yel
 background: cs/dsa.png
 ---
 
-## 4. Kadane Pattern
-#### 1. [Maximum subarray sum](https://leetcode.com/problems/maximum-subarray/?utm_source=chatgpt.com)
+# 4. Kadane Pattern
+## 1. [Maximum subarray sum](https://leetcode.com/problems/maximum-subarray/?utm_source=chatgpt.com)
 
 Given an integer array `nums`, find the *subarray* with the **largest sum**, and return its *sum*.
 ```cpp
@@ -31,7 +31,7 @@ public:
     }
 };
 ```
-#### 2. [Minimum Subarray Sum](https://www.geeksforgeeks.org/problems/smallest-sum-contiguous-subarray/1)
+## 2. [Minimum Subarray Sum](https://www.geeksforgeeks.org/problems/smallest-sum-contiguous-subarray/1)
 
 Given an array `arr[]`, find the sub-array containing at least one number which has the minimum sum and return its sum.
 ```cpp
@@ -54,7 +54,7 @@ class Solution {
     }
 };
 ```
-#### 3. [Maximum product subarray](https://leetcode.com/problems/maximum-product-subarray/?utm_source=chatgpt.com)
+## 3. [Maximum product subarray](https://leetcode.com/problems/maximum-product-subarray/?utm_source=chatgpt.com)
 
 Given an integer array `nums`, find a subarray that has the largest product, and return the product.
 
@@ -89,7 +89,7 @@ public:
 };
 ```
 
-#### 4. [Maximum subarray sum with one deletion](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/description/)
+## 4. [Maximum subarray sum with one deletion](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/description/)
 
 Given an array of integers, return the maximum sum for a non-empty subarray (contiguous elements) with at most one element deletion. In other words, you want to choose a subarray and optionally delete one element from it so that there is still at least one element left and the sum of the remaining elements is maximum possible.
 
@@ -119,5 +119,5 @@ public:
 ```
 
 
-#### 5. [Maximum absolute sum of any subarray](https://leetcode.com/problems/maximum-absolute-sum-of-any-subarray/)
-#### 6. [Maximum sum in circular array variant](https://leetcode.com/problems/maximum-sum-circular-subarray/?utm_source=chatgpt.com)
+## 5. [Maximum absolute sum of any subarray](https://leetcode.com/problems/maximum-absolute-sum-of-any-subarray/)
+## 6. [Maximum sum in circular array variant](https://leetcode.com/problems/maximum-sum-circular-subarray/?utm_source=chatgpt.com)

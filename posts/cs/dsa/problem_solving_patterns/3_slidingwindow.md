@@ -7,18 +7,18 @@ floats: bulb.png, cpu.png, gpu.png, keyboard.png, monitor.png, ram.png, star_yel
 background: cs/dsa.png
 ---
 
-## 3. Sliding Window
+# 3. Sliding Window
 
 [Sliding window Introduction Geeks for Geeks](https://www.geeksforgeeks.org/dsa/window-sliding-technique/)
 
-#### How to Identify Sliding Window Problems?
+### How to Identify Sliding Window Problems?
 - These problems generally require Finding Maximum/Minimum **Subarray, Substrings** which satisfy some specific condition.
 - The size of the subarray or substring ‘k’ will be given in some of the problems.
 - These problems can easily be solved in O(n2) time complexity using nested loops, using sliding window we can solve these in O(n) Time Complexity.
 - Required Time Complexity: O(n) or O(n log n)
 - Constraints: n <= 10^6
 
-#### 1. [Maximum Sum Subarray of Size K (easy)](https://www.geeksforgeeks.org/problems/max-sum-subarray-of-size-k5313/1)
+## 1. [Maximum Sum Subarray of Size K (easy)](https://www.geeksforgeeks.org/problems/max-sum-subarray-of-size-k5313/1)
 
 Given an array of integers `arr[]`  and a number `k`. Return the **maximum sum** of a subarray of size `k`.
 
@@ -48,7 +48,7 @@ class Solution {
     }
 };
 ```
-#### 2. [Smallest Subarray with a given sum (easy)](https://leetcode.com/problems/minimum-size-subarray-sum/)
+## 2. [Smallest Subarray with a given sum (easy)](https://leetcode.com/problems/minimum-size-subarray-sum/)
 
 Given an array of positive integers `nums` and a positive integer `target`, return the **minimal length** of a *subarray* whose sum is greater than or equal to `target`. If there is no such subarray, return `0` instead.
 
@@ -77,7 +77,7 @@ public:
     }
 };
 ```
-#### 3. [Longest Substring with K Distinct Characters (medium)](https://www.geeksforgeeks.org/problems/longest-k-unique-characters-substring0853/1)
+## 3. [Longest Substring with K Distinct Characters (medium)](https://www.geeksforgeeks.org/problems/longest-k-unique-characters-substring0853/1)
 
 You are given a string `s` consisting only lowercase alphabets and an integer `k`. Your task is to find the length of the **longest substring** that contains exactly `k` distinct characters.
 
@@ -120,7 +120,7 @@ class Solution {
 
 
 
-#### 4. [Fruits into Baskets (medium)](https://leetcode.com/problems/fruit-into-baskets/)
+## 4. [Fruits into Baskets (medium)](https://leetcode.com/problems/fruit-into-baskets/)
 
 You are visiting a farm that has a single row of fruit trees arranged from left to right. The trees are represented by an integer array `fruits` where `fruits[i]` is the type of fruit the `ith` tree produces.
 
@@ -164,7 +164,7 @@ public:
 };
 ```
 
-#### 5. [No-repeat Substring (hard)](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/)
+## 5. [No-repeat Substring (hard)](https://leetcode.com/problems/longest-substring-without-repeating-characters/description/)
 
 Given a string `s`, find the length of the **longest substring** without duplicate characters.
 
@@ -194,7 +194,7 @@ public:
 
 
 
-#### 6. [Longest Substring with Same Letters after Replacement (hard)](https://leetcode.com/problems/longest-repeating-character-replacement/)
+## 6. [Longest Substring with Same Letters after Replacement (hard)](https://leetcode.com/problems/longest-repeating-character-replacement/)
 
 You are given a string `s` and an integer `k`. You can choose any character of the string and change it to any other uppercase English character. You can perform this operation at most `k` times.
 
@@ -226,9 +226,9 @@ public:
     }
 };
 ```
-#### 7. [Longest Subarray with Ones after Replacement (hard)](https://leetcode.com/problems/max-consecutive-ones-iii/)
-#### 8. [Minimum size subarray SUM](https://leetcode.com/problems/minimum-size-subarray-sum/description/)
-#### 9. [Minimum Size Substring (HARD)](https://leetcode.com/problems/minimum-window-substring/description/?envType=study-plan-v2&envId=top-interview-150)
-#### 10. [Problem Challenge 1: Permutation in a String (hard)](https://leetcode.com/problems/permutation-in-string/)
-#### 11. [Problem Challenge 2: String Anagrams (hard)](https://leetcode.com/problems/find-all-anagrams-in-a-string/)
-#### 12. [Problem Challenge 4: Words Concatenation (hard)](https://leetcode.com/problems/substring-with-concatenation-of-all-words/)
+## 7. [Longest Subarray with Ones after Replacement (hard)](https://leetcode.com/problems/max-consecutive-ones-iii/)
+## 8. [Minimum size subarray SUM](https://leetcode.com/problems/minimum-size-subarray-sum/description/)
+## 9. [Minimum Size Substring (HARD)](https://leetcode.com/problems/minimum-window-substring/description/?envType=study-plan-v2&envId=top-interview-150)
+## 10. [Problem Challenge 1: Permutation in a String (hard)](https://leetcode.com/problems/permutation-in-string/)
+## 11. [Problem Challenge 2: String Anagrams (hard)](https://leetcode.com/problems/find-all-anagrams-in-a-string/)
+## 12. [Problem Challenge 4: Words Concatenation (hard)](https://leetcode.com/problems/substring-with-concatenation-of-all-words/)

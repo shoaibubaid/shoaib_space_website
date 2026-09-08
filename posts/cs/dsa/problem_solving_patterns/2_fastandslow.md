@@ -7,9 +7,9 @@ floats: bulb.png, cpu.png, gpu.png, keyboard.png, monitor.png, ram.png, star_yel
 background: cs/dsa.png
 ---
 
-## 2. Fast and Slow Pointers
+# 2. Fast and Slow Pointers
 
-#### 1. [Middle of the LinkedList (easy)](https://leetcode.com/problems/middle-of-the-linked-list/)
+## 1. [Middle of the LinkedList (easy)](https://leetcode.com/problems/middle-of-the-linked-list/)
 
 Given the `head` of a singly linked list, return the middle node of the linked list.
 
@@ -44,7 +44,7 @@ public:
 };
 ```
 
-#### 2. [LinkedList Cycle (easy)](https://leetcode.com/problems/linked-list-cycle/)
+## 2. [LinkedList Cycle (easy)](https://leetcode.com/problems/linked-list-cycle/)
 
 
 Given `head`, the head of a linked list, determine if the linked list has a cycle in it.
@@ -89,7 +89,7 @@ public:
     }
 };
 ```
-#### 3. [Start of LinkedList Cycle (medium)](https://leetcode.com/problems/linked-list-cycle-ii/)
+## 3. [Start of LinkedList Cycle (medium)](https://leetcode.com/problems/linked-list-cycle-ii/)
 
 Given the `head` of a linked list, return the `node` where the cycle begins. If there is no cycle, return `null`.
 
@@ -141,7 +141,7 @@ public:
     }
 };
 ```
-#### 4. [Happy Number (medium)](https://leetcode.com/problems/happy-number/)
+## 4. [Happy Number (medium)](https://leetcode.com/problems/happy-number/)
 
 
 Write an algorithm to determine if a number `n` is happy.
@@ -189,7 +189,7 @@ public:
     }
 };
 ```
-#### 5. [FIND DUPLICATE NUMBER](https://leetcode.com/problems/find-the-duplicate-number/description/)
+## 5. [FIND DUPLICATE NUMBER](https://leetcode.com/problems/find-the-duplicate-number/description/)
 
 Given an array of integers `nums` containing `n + 1` integers where each integer is in the range `[1, n]` inclusive.
 
@@ -260,6 +260,6 @@ public:
 ```
 
 
-#### 6. [Problem Challenge 1: Palindrome LinkedList (medium)](https://leetcode.com/problems/palindrome-linked-list/)
-#### 7. [Problem Challenge 2: Rearrange a LinkedList (medium)](https://leetcode.com/problems/reorder-list/)
-#### 8. [Problem Challenge 3: Cycle in a Circular Array (hard)](https://leetcode.com/problems/circular-array-loop/)
+## 6. [Problem Challenge 1: Palindrome LinkedList (medium)](https://leetcode.com/problems/palindrome-linked-list/)
+## 7. [Problem Challenge 2: Rearrange a LinkedList (medium)](https://leetcode.com/problems/reorder-list/)
+## 8. [Problem Challenge 3: Cycle in a Circular Array (hard)](https://leetcode.com/problems/circular-array-loop/)
