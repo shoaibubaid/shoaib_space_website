@@ -249,11 +249,12 @@ According to Ibn Ishaq, the progeny of Rabi'a b. Nasr included **al-Nu'man b. al
 
  _Al-Nu'man b. al-Mundhir b. al-Nu'man b. al-Mundhir b. 'Amr b. 'Adi b. Rabi'a b. Nasr._
 
+
 This al-Nu'man served as the viceroy over al-Hira for the Persian kings; the Arabs regularly sent delegations to him and offered him praise. This is the account provided by Muhammad b. Ishaq regarding al-Nu'man b. al-Mundhir belonging to the line of Rabi'a b. Nasr, according to the majority of people.
 
 Ibn Ishaq further related that when the sword of al-Nu'man b. al-Mundhir was brought to the Commander of the Faithful, **'Umar b. al-Khattab**, he asked **Jubayr b. Mut'im** about its origin. Jubayr replied, “It is from the remains of Qanas b. Ma'ad b. 'Adnan.” Ibn Ishaq noted, however, that the identity of that person remained unclear.
 
-
+[More info about Nu'man in 8th chapter](./8_kingship_revert_to_himyar.md##Sayf-goes-to-the-Chosroe-of-Persian-Empire)
 
 ![alhira.png](./pictures/alhira.png)
 

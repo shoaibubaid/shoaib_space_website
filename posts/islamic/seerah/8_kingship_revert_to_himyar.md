@@ -7,7 +7,7 @@ floats: lantern.png, moon.png, arabbooks.png, palmtree.png, prayer_mat.png
 background: seerah/7_seerah.png
 ---
 
-[previous](./7_Abraha_rebel_against_mecca_and_humiliated.md)  <======> [next](./8_kingship_revert_to_himyar.md)
+[previous](./7_Abraha_rebel_against_mecca_and_humiliated.md)  <======> [next](./9_satirun.md)
 
 
 ## After Abraha's death
@@ -155,6 +155,5 @@ It seems that this was after the emigration of the Messenger of God (SAAS) to Me
 
 Badhan died and his son Shahr b. Badhan ruled after him. It was he whom al-Aswad al- c Ansi killed after al-Aswad had pretended prophecy and taken Shahr’s wife, as we will report, and expelled from Yemen the deputies of the Messenger of God (SAAS). When al-Aswad was killed the authority of Islam returned.
 
-[previous](./7_Abraha_rebel_against_mecca_and_humiliated.md)  <======> [next](./8_kingship_revert_to_himyar.md)
-
+[previous](./7_Abraha_rebel_against_mecca_and_humiliated.md)  <======> [next](./9_satirun.md)
 
