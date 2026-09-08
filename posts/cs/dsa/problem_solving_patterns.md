@@ -993,8 +993,8 @@ public:
 
             int temp = current_max;
 
-            current_max = max(x, x*current_max, x*current_min);
-            current_min = max(x, x*temp, x*current_min);
+            current_max = max({x, x*current_max, x*current_min});
+            current_min = min({x, x*temp, x*current_min});
 
             max_product = max(max_product, current_max);
         }
