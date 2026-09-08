@@ -7,7 +7,7 @@ floats: bulb.png, cpu.png, gpu.png, keyboard.png, monitor.png, ram.png, star_yel
 background: cs/dsa.png
 ---
 ## 16. Greedy
-1. [Lemonade]()
-1. [Jump Game]()
-1. [Assign cookies]()
-1. [Fractional Knapsack]()
+#### 1. [Lemonade]()
+#### 2. [Jump Game]()
+#### 3. [Assign cookies]()
+#### 4. [Fractional Knapsack]()

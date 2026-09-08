@@ -21,7 +21,7 @@ Use the two pointer approach when you see any of these:
 
 
 Examples
-1. [Pair with Target Sum (easy)](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/) 
+#### 1. [Pair with Target Sum (easy)](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/) 
 
 Here we have a Sorted Input and asking for pairs, so we go for two pointer approach.
 
@@ -64,7 +64,7 @@ public:
 };
 ```
 
-2. [Rearrange 0 and 1](https://www.geeksforgeeks.org/problems/segregate-0s-and-1s5106/1)
+#### 2. [Rearrange 0 and 1](https://www.geeksforgeeks.org/problems/segregate-0s-and-1s5106/1)
 
 Given an array `arr[]` consisting of only `0`'s and `1`'s. Modify the array in-place to segregate 0s onto the left side and 1s onto the right side of the array.
 
@@ -118,7 +118,7 @@ class Solution {
 };
 
 ```
-3. [Remove Duplicates (easy)](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
+#### 3. [Remove Duplicates (easy)](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
 
 Given the `head` of a sorted linked list, delete all duplicates such that each element appears only once. Return the linked list sorted as well.
 
@@ -159,7 +159,7 @@ public:
 };
 ```
 
-4. [Squaring a Sorted Array (easy)](https://leetcode.com/problems/squares-of-a-sorted-array/)
+#### 4. [Squaring a Sorted Array (easy)](https://leetcode.com/problems/squares-of-a-sorted-array/)
 
 Given an integer array `nums` sorted in non-decreasing order, return an array of the squares of each number sorted in non-decreasing order.
 
@@ -206,7 +206,7 @@ public:
     }
 };
 ```
-5. [Triplet Sum to Zero (medium)](https://leetcode.com/problems/3sum/)
+#### 5. [Triplet Sum to Zero (medium)](https://leetcode.com/problems/3sum/)
 
 Given an integer array `nums`, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k] == 0`.
 
@@ -253,7 +253,7 @@ public:
 };
 ```
 
-6. [Triplet Sum Close to Target (medium)](https://leetcode.com/problems/3sum-closest/)
+#### 6. [Triplet Sum Close to Target (medium)](https://leetcode.com/problems/3sum-closest/)
 
 ```cpp
 class Solution {
@@ -287,7 +287,7 @@ public:
     }
 };
 ```
-7. [Triplets with Smaller Sum (medium)](https://www.geeksforgeeks.org/problems/count-triplets-with-sum-smaller-than-x5549/1)
+#### 7. [Triplets with Smaller Sum (medium)](https://www.geeksforgeeks.org/problems/count-triplets-with-sum-smaller-than-x5549/1)
 
 ```cpp
 class Solution {
@@ -320,7 +320,7 @@ class Solution {
     }
 };
 ```
-8. [Subarrays with Product Less than a Target (medium)](https://leetcode.com/problems/subarray-product-less-than-k/)
+#### 8. [Subarrays with Product Less than a Target (medium)](https://leetcode.com/problems/subarray-product-less-than-k/)
 
 You are given an array of integers `nums` and an integer k.
 
@@ -355,7 +355,7 @@ public:
 };
 ```
 
-9. [Dutch National Flag Problem (medium)](https://leetcode.com/problems/sort-colors/description/)
+#### 9. [Dutch National Flag Problem (medium)](https://leetcode.com/problems/sort-colors/description/)
 
 You are given an array `nums` with `n` objects colored red, white, or blue, sort them **in-place** so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
 
@@ -433,6 +433,6 @@ public:
     }
 };
 ```
-10. [Problem Challenge 1: Quadruple Sum to Target (medium)](https://leetcode.com/problems/4sum/)
-11. [Problem Challenge 2: Comparing Strings containing Backspaces (medium)](https://leetcode.com/problems/backspace-string-compare/)
-12. [Problem Challenge 3: Minimum Window Sort (medium)](https://leetcode.com/problems/shortest-unsorted-continuous-subarray/)
+#### 10. [Problem Challenge 1: Quadruple Sum to Target (medium)](https://leetcode.com/problems/4sum/)
+#### 11. [Problem Challenge 2: Comparing Strings containing Backspaces (medium)](https://leetcode.com/problems/backspace-string-compare/)
+#### 12. [Problem Challenge 3: Minimum Window Sort (medium)](https://leetcode.com/problems/shortest-unsorted-continuous-subarray/)

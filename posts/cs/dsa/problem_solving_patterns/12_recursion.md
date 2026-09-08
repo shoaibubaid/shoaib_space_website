@@ -7,13 +7,13 @@ floats: bulb.png, cpu.png, gpu.png, keyboard.png, monitor.png, ram.png, star_yel
 background: cs/dsa.png
 ---
 ## 12. Recursion and Backtracking
-1. [Fibonnaci]()
-1. [Check if string is Pallindrome]()
-1. [Check if Array is Sorted]()
-1. [Sum of digits of a number]()
-1. [Remove occurences of a character in string]()
-1. [Generate parenthesis]()
-1. [Letter Combinations of phone number]()
-1. [Permutations]()
-1. [Combination Sum]()
-1. [Pallindrome partition]()
+#### 1. [Fibonnaci]()
+#### 2. [Check if string is Pallindrome]()
+#### 3. [Check if Array is Sorted]()
+#### 4. [Sum of digits of a number]()
+#### 5. [Remove occurences of a character in string]()
+#### 6. [Generate parenthesis]()
+#### 7. [Letter Combinations of phone number]()
+#### 8. [Permutations]()
+#### 9. [Combination Sum]()
+#### 10. [Pallindrome partition]()
