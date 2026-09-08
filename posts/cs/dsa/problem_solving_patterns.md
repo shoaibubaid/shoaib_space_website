@@ -924,6 +924,28 @@ public:
 
 ## 4. Kadane Pattern
 1. [Maximum subarray sum](https://leetcode.com/problems/maximum-subarray/?utm_source=chatgpt.com)
+
+Given an integer array `nums`, find the *subarray* with the **largest sum**, and return its *sum*.
+```cpp
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int sum = 0;
+        int max_sum = INT_MIN;
+
+        for(int right = 0; right < nums.size(); right++){
+            sum += nums[right];
+            max_sum = max(max_sum, sum);
+
+            if(sum < 0){
+                sum = 0;
+            }
+        }
+
+        return max_sum;
+    }
+};
+```
 2. [Minimum Subarray Sum](https://www.geeksforgeeks.org/problems/smallest-sum-contiguous-subarray/1)
 3. [Maximum product subarray](https://leetcode.com/problems/maximum-product-subarray/?utm_source=chatgpt.com)
 4. [Maximum subarray sum with one deletion](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/description/)
