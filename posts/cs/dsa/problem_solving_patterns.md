@@ -923,12 +923,12 @@ public:
 12. [Problem Challenge 4: Words Concatenation (hard)](https://leetcode.com/problems/substring-with-concatenation-of-all-words/)
 
 ## 4. Kadane Pattern
-1. [Maximum subarray sum]()
-1. [Minimum Subarray Sum]()
-1. [Maximum product subarray]()
-1. [Maximum subarray sum with one deletion]()
-1. [Maximum absolute sum of any subarray]()
-1. [Maximum sum in circular array variant]()
+1. [Maximum subarray sum](https://leetcode.com/problems/maximum-subarray/?utm_source=chatgpt.com)
+2. [Minimum Subarray Sum](https://www.geeksforgeeks.org/problems/smallest-sum-contiguous-subarray/1)
+3. [Maximum product subarray](https://leetcode.com/problems/maximum-product-subarray/?utm_source=chatgpt.com)
+4. [Maximum subarray sum with one deletion](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/description/)
+5. [Maximum absolute sum of any subarray](https://leetcode.com/problems/maximum-absolute-sum-of-any-subarray/)
+6. [Maximum sum in circular array variant](https://leetcode.com/problems/maximum-sum-circular-subarray/?utm_source=chatgpt.com)
 ## 5. Prefix Sum
 1. [Subarray Sum Equals K (EASY)]()
 1. [Find Pivot Index (EASY)]()
