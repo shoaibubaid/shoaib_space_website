@@ -1005,6 +1005,35 @@ public:
 ```
 
 4. [Maximum subarray sum with one deletion](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/description/)
+
+Given an array of integers, return the maximum sum for a non-empty subarray (contiguous elements) with at most one element deletion. In other words, you want to choose a subarray and optionally delete one element from it so that there is still at least one element left and the sum of the remaining elements is maximum possible.
+
+Note that the subarray needs to be non-empty after deleting one element.
+```cpp
+class Solution {
+public:
+    int maximumSum(vector<int>& arr) {
+        int sum_without_deletion = arr[0];
+        int sum_after_deletion = arr[0];
+        int ans = arr[0];
+
+        for(int i = 1; i < arr.size(); i++){
+
+            int prev_nodelete = sum_without_deletion;
+            int prev_onedelete = sum_after_deletion;
+
+            sum_without_deletion = max(arr[i], prev_nodelete + arr[i]);
+            sum_after_deletion = max(prev_nodelete, prev_onedelete + arr[i]);
+
+            ans = max(ans, max(sum_without_deletion, sum_after_deletion));
+        }
+
+        return ans;
+    }
+};
+```
+
+
 5. [Maximum absolute sum of any subarray](https://leetcode.com/problems/maximum-absolute-sum-of-any-subarray/)
 6. [Maximum sum in circular array variant](https://leetcode.com/problems/maximum-sum-circular-subarray/?utm_source=chatgpt.com)
 ## 5. Prefix Sum
