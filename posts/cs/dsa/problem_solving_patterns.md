@@ -947,7 +947,63 @@ public:
 };
 ```
 2. [Minimum Subarray Sum](https://www.geeksforgeeks.org/problems/smallest-sum-contiguous-subarray/1)
+
+Given an array `arr[]`, find the sub-array containing at least one number which has the minimum sum and return its sum.
+```cpp
+class Solution {
+  public:
+    int minSubarraySum(vector<int> &arr) {
+        // code here
+        int sum  = 0;
+        int min_sum = INT_MAX;
+        
+        for(int right = 0; right < arr.size(); right++){
+            sum += arr[right];
+            min_sum = min(min_sum, sum);
+            
+            if(sum > 0){
+                sum = 0;
+            }
+        }
+        return min_sum;
+    }
+};
+```
 3. [Maximum product subarray](https://leetcode.com/problems/maximum-product-subarray/?utm_source=chatgpt.com)
+
+Given an integer array `nums`, find a subarray that has the largest product, and return the product.
+
+The test cases are generated so that the answer will fit in a 32-bit integer.
+
+Note that the product of an array with a single element is the value of that element.
+
+```cpp
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        // The trick is to have both the minimum and maximum at each point
+
+        int current_max = nums[0];
+        int current_min = nums[0];
+        int max_product = nums[0];
+
+        for(int i = 1; i < nums.size(); i++){
+            
+            int x = nums[i];
+
+            int temp = current_max;
+
+            current_max = max(x, x*current_max, x*current_min);
+            current_min = max(x, x*temp, x*current_min);
+
+            max_product = max(max_product, current_max);
+        }
+
+        return max_product;
+    }
+};
+```
+
 4. [Maximum subarray sum with one deletion](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/description/)
 5. [Maximum absolute sum of any subarray](https://leetcode.com/problems/maximum-absolute-sum-of-any-subarray/)
 6. [Maximum sum in circular array variant](https://leetcode.com/problems/maximum-sum-circular-subarray/?utm_source=chatgpt.com)
