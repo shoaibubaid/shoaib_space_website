@@ -7,6 +7,9 @@ floats: bulb.png, cpu.png, gpu.png, keyboard.png, monitor.png, ram.png, star_yel
 background: cs/dsa.png
 ---
 # 13. Tree
+Tree Data Structure is a non-linear data structure in which a collection of elements known as nodes are connected to each other via edges such that there exists exactly one path between any two nodes.
+
+[Tree Data Structure](https://www.geeksforgeeks.org/dsa/tree-data-structure/)
 ## 1. Traversal	
 ### 1. [Inorder](https://leetcode.com/problems/binary-tree-inorder-traversal/description/)
 ### 2. [Preorder](https://leetcode.com/problems/binary-tree-preorder-traversal/description/)
@@ -21,10 +24,10 @@ background: cs/dsa.png
 ### 4. [Subtree of another TREE](https://leetcode.com/problems/subtree-of-another-tree/description/)
 ### 5. [Flip Equivalent Tree](https://leetcode.com/problems/flip-equivalent-binary-trees/description/)
 ## 3. Search	
-### 1. [LCA of Binary TREE](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/)
+### 1. [Lowest Common Ancestor of Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/)
 ### 2. [Binary Search Tree](https://leetcode.com/problems/search-in-a-binary-search-tree/)
-### 3. [LCA of BST](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/description/)
-### 4. [LCA of Deepest Leaves](https://leetcode.com/problems/lowest-common-ancestor-of-deepest-leaves/description/)
+### 3. [Lowest Common Ancestor of Binary Search Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/description/)
+### 4. [Lowest Common Ancestor of Deepest Leaves](https://leetcode.com/problems/lowest-common-ancestor-of-deepest-leaves/description/)
 ### 5. [Two Sum IV](https://leetcode.com/problems/two-sum-iv-input-is-a-bst/description/)
 ### 6. [Kth smallest element in BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/description/)
 ## 4. Validation	

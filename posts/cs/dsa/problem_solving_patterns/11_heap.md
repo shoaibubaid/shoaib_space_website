@@ -7,6 +7,15 @@ floats: bulb.png, cpu.png, gpu.png, keyboard.png, monitor.png, ram.png, star_yel
 background: cs/dsa.png
 ---
 # 11. Heap
+
+A Heap is a complete binary tree data structure that satisfies the heap property: 
+- In a min-heap, the value of each child is greater than or equal to its parent and 
+- In a max-heap, the value of each child is less than or equal to its parent. 
+
+Heaps are commonly used to implement priority queues, where the smallest (or largest) element is always at the root.
+
+[Heap Data structure GFG](https://www.geeksforgeeks.org/dsa/heap-data-structure/)
+
 ## 1. Kth
 ### 1. [kth smallest](https://www.geeksforgeeks.org/problems/kth-smallest-element5635/1)
 ### 2. [kth largest](https://leetcode.com/problems/kth-largest-element-in-an-array/description/)
