@@ -9,6 +9,36 @@ background: cs/dsa.png
 
 # 10. Binary Search
 ### 1. [Binary search basic](https://leetcode.com/problems/binary-search/)
+
+Given an array of integers `nums` which is sorted in ascending order, and an integer `target`, write a function to search `target` in `nums`. If target exists, then return its index. Otherwise, return `-1`.
+
+You must write an algorithm with O(log n) runtime complexity.
+
+```cpp
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int n = nums.size();
+        int left = 0;
+        int right = n-1;
+
+        while(left <= right){
+            int mid = (left + right)/2;
+
+            if(nums[mid] == target) return mid;
+            if(nums[mid] > target){
+                right = mid - 1;
+            }
+            else{
+                left = mid + 1;
+            }
+        }
+
+        return -1;
+    }
+};
+```
+
 ### 2. [Upper Bound/ Ceiling](https://www.geeksforgeeks.org/problems/ceil-in-a-sorted-array/1)
 ### 3. [First and Last position](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/)
 ### 4. [Count number of occurences](https://www.geeksforgeeks.org/problems/number-of-occurrence2259/1)
