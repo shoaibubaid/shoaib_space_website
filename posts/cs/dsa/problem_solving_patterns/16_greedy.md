@@ -7,7 +7,7 @@ floats: bulb.png, cpu.png, gpu.png, keyboard.png, monitor.png, ram.png, star_yel
 background: cs/dsa.png
 ---
 # 16. Greedy
-## 1. [Lemonade]()
-## 2. [Jump Game]()
-## 3. [Assign cookies]()
-## 4. [Fractional Knapsack]()
+### 1. [Lemonade](https://leetcode.com/problems/lemonade-change/)
+### 2. [Jump Game](https://leetcode.com/problems/jump-game/description/)
+### 3. [Assign cookies](https://leetcode.com/problems/assign-cookies/description/)
+### 4. [Fractional Knapsack](https://www.geeksforgeeks.org/problems/fractional-knapsack-1587115620/1)
