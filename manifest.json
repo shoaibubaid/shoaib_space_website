@@ -43,12 +43,14 @@
   "os": {
     "group": "Computer",
     "icon": "ti-cpu",
-    "color": "indigo",
+    "color": "amber",
     "label": "Operating Systems",
     "intro": "Explaining Operating Systems concepts in a structured way so that the future me can crack tech interviews",
     "posts": [
       "posts/cs/os/intro.md",
-      "posts/cs/os/1_os_intro.md"
+      "posts/cs/os/1_os_intro.md",
+      "posts/cs/os/2_process_threads.md",
+      "posts/cs/os/3_cpu_scheduling.md"
     ]
   },
 
