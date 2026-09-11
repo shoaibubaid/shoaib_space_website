@@ -1,0 +1,1009 @@
+---
+title: OS Unit 3 - CPU Scheduling
+subject: OS
+unit: 3
+id: OS-3
+tags: [scheduling, fcfs, sjf, srtf, priority, round-robin, hrrn, mlfq, lottery, multiprocessor, real-time, rms, edf, cfs, eevdf, gantt]
+prerequisites: [OS-1.4, OS-2.2, OS-2.5]
+next: OS-4
+readTime: 30 min read
+excerpt: Explaining what processes and threads are
+floats: bulb.png, cpu.png, gpu.png, keyboard.png, monitor.png, ram.png, star_yellow.png
+background: cs/os.png
+---
+
+# Unit 3: CPU Scheduling
+
+> **How to use this page.** Section IDs (`OS-3.3`) match the tags on practice questions. Arrows like **→ OS-4.8** point to where an idea is developed further; **← OS-2.2** points back to something this section depends on.
+
+Unit 2 left us with many processes and threads sitting in the Ready state, and one CPU (or a few cores). The *mechanism* for switching between them is the context switch (← OS-2.2). This unit is about the *policy*: **which** ready task should run next, and **for how long**. That choice decides whether a system feels snappy or sluggish, whether batch jobs finish quickly, and whether some task waits forever.
+
+---
+
+## OS-3.1 · Scheduling Criteria
+
+### The CPU–I/O burst cycle
+
+Processes do not use the CPU continuously. Execution alternates between a **CPU burst** (computing) and an **I/O burst** (waiting for a device), ending with a final CPU burst that terminates the process.
+
+```
+ load, add, store   read file    compute    write     compute   exit
+ |-- CPU burst --|-- I/O wait --|-- CPU --|-- I/O --|-- CPU --|
+```
+
+Measured burst lengths follow a characteristic curve: a **large number of short bursts** and a **small number of long bursts** (roughly exponential/hyperexponential).
+
+- **I/O-bound** process: many short CPU bursts (editors, shells, web servers).
+- **CPU-bound** process: a few long CPU bursts (compilers, video encoding, simulations).
+
+This shape matters: a good scheduler gives short bursts quick access to the CPU, so I/O-bound processes can issue their next I/O and keep devices busy.
+
+### Metrics
+
+For each process, given its **arrival time (AT)**, **burst time (BT)**, first time it gets the CPU, and **completion time (CT)**:
+
+| Metric | Definition | Formula |
+|---|---|---|
+| **Turnaround time (TAT)** | Total time from arrival to completion | `TAT = CT − AT` |
+| **Waiting time (WT)** | Total time spent in the **ready queue** | `WT = TAT − BT` (if no I/O) |
+| **Response time (RT)** | Time from arrival until it **first** gets the CPU | `RT = first run − AT` |
+
+If a process also does I/O, `WT = TAT − (CPU time) − (I/O time)`: waiting time only counts time spent ready-but-not-running.
+
+System-wide metrics:
+
+| Metric | Meaning | Goal |
+|---|---|---|
+| **CPU utilization** | Fraction of time the CPU does useful work | Maximize (40% to 90% in practice) |
+| **Throughput** | Processes completed per unit time | Maximize |
+| **Average turnaround** | Mean TAT across processes | Minimize (batch systems) |
+| **Average waiting** | Mean WT | Minimize |
+| **Average response** | Mean RT | Minimize (interactive systems) |
+| **Fairness** | Similar processes get similar CPU shares; nobody starves | Maintain |
+| **Predictability / variance** | Low variation in response time | Minimize (a consistent 200 ms often feels better than 50 ms average with 2 s spikes) |
+
+Also useful: **normalized turnaround** = TAT / BT. A value of 1 means the process never waited; a 1 ms job that took 100 ms has a much worse normalized turnaround than a 1 s job that took 1.1 s.
+
+### Criteria conflict
+
+- Minimizing **turnaround** favours running short jobs to completion (SJF).
+- Minimizing **response** favours giving everyone a slice quickly (round robin), which delays everyone's completion.
+- Maximizing **throughput** favours avoiding context switches; minimizing **response** needs more of them.
+- **Fairness** can conflict with all of the above.
+
+OSTEP puts it plainly: a scheduler optimized for turnaround will have poor response time, and vice versa. Every algorithm below is a point on this trade-off.
+
+---
+
+## OS-3.2 · Preemptive vs Non-Preemptive Scheduling
+
+### When scheduling decisions happen
+
+The scheduler may run when:
+
+1. A process switches from **Running → Blocked** (I/O request, `wait()`).
+2. A process switches from **Running → Ready** (timer interrupt).
+3. A process switches from **Blocked → Ready** (I/O completes).
+4. A process **terminates**.
+
+- **Non-preemptive (cooperative):** scheduling happens only at points 1 and 4. Once a process has the CPU, it keeps it until it blocks or exits.
+- **Preemptive:** scheduling can also happen at points 2 and 3. The OS can take the CPU away from a running process, typically on a **timer interrupt** or when a higher-priority process becomes ready.
+
+All modern general-purpose OSes are preemptive. Preemption needs hardware support (the timer ← OS-1.4) and creates a new problem: a process can be interrupted while updating shared data, which is why Unit 4 exists (→ OS-4.1).
+
+### Kernel preemption
+
+A separate question is whether the **kernel itself** can be preempted while running kernel code on behalf of a process.
+
+- **Non-preemptive kernel:** a process in kernel mode runs until it leaves the kernel, blocks, or yields. Simpler (fewer kernel races), but long system calls can delay urgent work.
+- **Preemptive kernel:** kernel code can be preempted except in critical regions (for example, while holding a spinlock). Needed for good real-time latency.
+
+Linux has been preemptible since 2.6 (configurable: `PREEMPT_NONE`, `PREEMPT_VOLUNTARY`, `PREEMPT`, and the fully real-time `PREEMPT_RT`, merged into mainline in 6.12).
+
+### The dispatcher
+
+The **scheduler** chooses the next process; the **dispatcher** gives it the CPU:
+
+1. Context switch (save old state, restore new state ← OS-2.2)
+2. Switch to user mode
+3. Jump to the correct location in the user program
+
+The time the dispatcher takes to stop one process and start another is the **dispatch latency**. It should be as small as possible because it runs on every switch.
+
+On Linux you can see how often a process was switched out, in `/proc/<pid>/status`:
+
+- `voluntary_ctxt_switches`: the process blocked or yielded (typical of I/O-bound processes)
+- `nonvoluntary_ctxt_switches`: the process was preempted (typical of CPU-bound processes)
+
+---
+
+## OS-3.3 · Scheduling Algorithms
+
+To compare algorithms we use one workload throughout this section. Times are in milliseconds. No I/O, no context-switch overhead unless stated.
+
+| Process | Arrival | Burst |
+|---|---|---|
+| P1 | 0 | 8 |
+| P2 | 1 | 4 |
+| P3 | 2 | 9 |
+| P4 | 3 | 5 |
+
+### First-Come, First-Served (FCFS)
+
+Run processes in order of arrival, each to completion. Non-preemptive. Implemented with a FIFO queue.
+
+```
+ | P1           | P2     | P3              | P4        |
+ 0              8        12                21          26
+```
+
+| | CT | TAT | WT | RT |
+|---|---|---|---|---|
+| P1 | 8 | 8 | 0 | 0 |
+| P2 | 12 | 11 | 7 | 7 |
+| P3 | 21 | 19 | 10 | 10 |
+| P4 | 26 | 23 | 18 | 18 |
+| **Avg** | | **15.25** | **8.75** | **8.75** |
+
+**Pros:** simple, no starvation (every process eventually reaches the front), minimal context switches.
+
+**Cons:** average waiting time depends heavily on arrival order. If bursts 24, 3, 3 arrive in that order, average WT = (0 + 24 + 27) / 3 = 17; in the order 3, 3, 24 it is (0 + 3 + 6) / 3 = 3.
+
+**Convoy effect.** One CPU-bound process and many I/O-bound processes. The CPU-bound process holds the CPU for a long burst; all I/O-bound processes finish their I/O and queue up behind it, so the **devices sit idle**. When it finally blocks, the I/O-bound processes run their tiny bursts quickly and all block on I/O, so now the **CPU sits idle**. The whole system moves at the pace of the slowest vehicle, like cars stuck behind a truck. Both CPU and device utilization suffer.
+
+FCFS is unsuitable for time-sharing systems, because one process can hold the CPU for a long time.
+
+### Shortest Job First (SJF)
+
+When the CPU becomes free, choose the process with the **smallest next CPU burst**. Non-preemptive. (A better name is "shortest-next-CPU-burst.") Ties are broken by FCFS.
+
+At t = 0 only P1 is present, so it runs to completion. At t = 8, P2 (4), P3 (9), P4 (5) are waiting; the shortest is P2, then P4, then P3.
+
+```
+ | P1           | P2     | P4        | P3              |
+ 0              8        12          17                26
+```
+
+| | CT | TAT | WT |
+|---|---|---|---|
+| P1 | 8 | 8 | 0 |
+| P2 | 12 | 11 | 7 |
+| P3 | 26 | 24 | 15 |
+| P4 | 17 | 14 | 9 |
+| **Avg** | | **14.25** | **7.75** |
+
+**SJF is optimal**: among non-preemptive algorithms, it gives the minimum average waiting time for a given set of processes that are all available at the same time.
+
+*Why (exchange argument):* suppose a schedule runs a longer job L immediately before a shorter job S. Swap them. S now finishes `|L|` earlier, and L finishes `|S|` later. Since `|S| < |L|`, the total waiting time drops. Repeating swaps until no longer job precedes a shorter one gives the SJF order, and no swap can improve it further.
+
+**Problems:**
+
+1. **The next burst length is unknown.** The OS cannot see the future. (Batch systems sometimes asked users for a time limit.)
+2. **Starvation:** a long job can wait forever if short jobs keep arriving.
+
+**Predicting the next burst: exponential averaging.** Let `tₙ` be the actual length of the n-th burst and `τₙ` the prediction for it. Then
+
+```
+ τₙ₊₁ = α · tₙ + (1 − α) · τₙ          with 0 ≤ α ≤ 1
+```
+
+- `α = 0`: history only; recent behaviour is ignored (τ never changes).
+- `α = 1`: only the last burst counts.
+- Common choice `α = 1/2`.
+
+Expanding the formula shows that older bursts get geometrically smaller weights: `τₙ₊₁ = α·tₙ + (1−α)α·tₙ₋₁ + (1−α)²α·tₙ₋₂ + ...`. See N2.
+
+### Shortest Remaining Time First (SRTF)
+
+The **preemptive** version of SJF. When a new process arrives, compare its burst with the **remaining** time of the running process; if the newcomer is shorter, preempt.
+
+Trace:
+
+- t = 0: only P1; it runs.
+- t = 1: P2 arrives with 4. P1 has 7 left. 4 < 7, so P2 preempts P1.
+- t = 2: P3 arrives with 9; P2 has 3 left. No preemption.
+- t = 3: P4 arrives with 5; P2 has 2 left. No preemption.
+- t = 5: P2 finishes. Remaining: P1 7, P3 9, P4 5. P4 runs.
+- t = 10: P4 finishes. P1 (7) runs, then P3.
+
+```
+ | P1 | P2      | P4        | P1             | P3              |
+ 0    1         5           10               17                26
+```
+
+| | CT | TAT | WT | RT |
+|---|---|---|---|---|
+| P1 | 17 | 17 | 9 | 0 |
+| P2 | 5 | 4 | 0 | 0 |
+| P3 | 26 | 24 | 15 | 15 |
+| P4 | 10 | 7 | 2 | 2 |
+| **Avg** | | **13.00** | **6.50** | **4.25** |
+
+SRTF is optimal for average waiting time among **all** algorithms (preemptive included), assuming burst lengths are known. It has the same two problems as SJF, and starvation is even more likely.
+
+### Priority scheduling
+
+Each process has a **priority**; the CPU goes to the highest-priority ready process. Can be preemptive or non-preemptive. SJF is the special case where priority = 1 / (predicted burst).
+
+**Convention warning:** some systems use low numbers for high priority (Linux kernel, most textbooks, including this page), others the reverse. Always read the question.
+
+Example (non-preemptive, all arrive at 0, lower number = higher priority):
+
+| Process | Burst | Priority |
+|---|---|---|
+| P1 | 10 | 3 |
+| P2 | 1 | 1 |
+| P3 | 2 | 4 |
+| P4 | 1 | 5 |
+| P5 | 5 | 2 |
+
+```
+ | P2 | P5       | P1                  | P3   | P4 |
+ 0    1          6                     16     18   19
+```
+
+Waiting times: P1 6, P2 0, P3 16, P4 18, P5 1. Average = 41 / 5 = **8.2**.
+
+Priorities can be:
+
+- **Internal (computed):** memory needs, number of open files, ratio of I/O to CPU burst.
+- **External (assigned):** importance, payment, user or administrator choice (Linux `nice`).
+- **Static** (fixed) or **dynamic** (changes over time).
+
+**Starvation (indefinite blocking)** is the major problem: a steady stream of high-priority processes keeps a low-priority process waiting forever. (Folklore says that when MIT's IBM 7094 was shut down in 1973, a low-priority job submitted in 1967 had still not run.)
+
+**Aging** is the fix: gradually raise the priority of processes that have waited a long time. For example, every second of waiting improves priority by one level; eventually any process reaches the top.
+
+Priority scheduling can also be combined with round robin for processes of equal priority.
+
+### Round Robin (RR)
+
+Designed for time-sharing. The ready queue is a FIFO; each process gets the CPU for at most one **time quantum** (time slice) `q`, then is preempted and put at the **tail** of the queue. If its burst ends before the quantum expires, it releases the CPU voluntarily.
+
+**Tie-breaking convention** (state it in exam answers): if a new process arrives at the same instant a quantum expires, the **new arrival is queued before** the preempted process. This is the most common convention; some books use the reverse.
+
+Trace with `q = 3`:
+
+- t = 0: queue [P1]. P1 runs 0 to 3 (5 left). P2, P3, P4 arrive at 1, 2, 3.
+- t = 3: queue [P2, P3, P4, P1]. P2 runs 3 to 6 (1 left).
+- t = 6: [P3, P4, P1, P2]. P3 runs 6 to 9 (6 left).
+- t = 9: [P4, P1, P2, P3]. P4 runs 9 to 12 (2 left).
+- t = 12: [P1, P2, P3, P4]. P1 runs 12 to 15 (2 left).
+- t = 15: P2 runs 15 to 16, **done**. Then P3 16 to 19 (3 left), P4 19 to 21 **done**, P1 21 to 23 **done**, P3 23 to 26 **done**.
+
+```
+ | P1 | P2 | P3 | P4 | P1 |P2| P3 | P4 | P1 | P3 |
+ 0    3    6    9    12   15 16   19   21   23   26
+```
+
+| | CT | TAT | WT | RT |
+|---|---|---|---|---|
+| P1 | 23 | 23 | 15 | 0 |
+| P2 | 16 | 15 | 11 | 2 |
+| P3 | 26 | 24 | 15 | 4 |
+| P4 | 21 | 18 | 13 | 6 |
+| **Avg** | | **20.00** | **13.50** | **3.00** |
+
+RR has the **best response time** of all algorithms here, and the **worst turnaround and waiting time**. That is the trade-off from OS-3.1 in numbers.
+
+**Choosing the quantum:**
+
+- `q` very large (larger than every burst): RR becomes **FCFS**.
+- `q` very small: RR approaches **processor sharing** (each of n processes appears to run on its own CPU at 1/n speed), but context-switch overhead dominates (← OS-1 N4).
+- Rule of thumb: **about 80% of CPU bursts should be shorter than q**. Quanta are typically 10 to 100 ms, while a context switch costs a few microseconds.
+- A **larger** quantum does **not** necessarily improve average turnaround, and a smaller one does not necessarily hurt it (see N3). Turnaround improves when most processes finish their burst within a single quantum.
+
+In an n-process RR system with quantum q, each process waits at most `(n − 1) × q` (plus switch overheads) before its next turn.
+
+### Highest Response Ratio Next (HRRN)
+
+A non-preemptive compromise between FCFS and SJF (from Stallings). When the CPU becomes free, compute for each waiting process:
+
+```
+                   waiting time + burst time        W + S
+ Response ratio = ---------------------------  =  -------
+                         burst time                   S
+```
+
+and pick the highest. The ratio starts at 1 and grows while a process waits.
+
+- Short jobs get high ratios quickly (they are favoured, like SJF).
+- A long job's ratio keeps rising as it waits, so it cannot starve (built-in aging).
+
+On our workload, HRRN happens to produce the same schedule as SJF:
+
+- At t = 8: P2 = (7 + 4) / 4 = 2.75, P3 = (6 + 9) / 9 = 1.67, P4 = (5 + 5) / 5 = 2.0. Pick P2.
+- At t = 12: P3 = (10 + 9) / 9 = 2.11, P4 = (9 + 5) / 5 = 2.8. Pick P4.
+
+N5 shows a workload where HRRN differs from both FCFS and SJF. HRRN still needs burst estimates.
+
+### Proportional-share scheduling: lottery and stride
+
+Instead of optimizing turnaround or response, these aim to give each process a **guaranteed fraction** of the CPU (OSTEP Chapter 9).
+
+**Lottery scheduling:** each process holds **tickets**. At each scheduling decision, pick a random ticket; its holder runs. A process with 75 of 100 tickets gets about 75% of the CPU over time.
+
+- Simple, needs almost no state, and new processes are easy to add.
+- Mechanisms: *ticket currency* (a user divides their tickets among their own jobs in local units), *ticket transfer* (a client lends tickets to a server working for it), *ticket inflation* (a process temporarily raises its own tickets, only among mutually trusting processes).
+- Weakness: fairness is only **probabilistic**; over short time scales, shares can deviate a lot.
+
+**Stride scheduling:** the deterministic version. Each process has `stride = L / tickets` (L is a large constant, such as 10,000) and a counter `pass`, starting at 0. Always run the process with the **lowest pass**, then add its stride to its pass.
+
+Example with tickets A = 100, B = 50, C = 250 (strides 100, 200, 40). Over 8 decisions, C runs 5 times, A twice, B once: exactly proportional to tickets at the end of each cycle. Weakness: global state; a new process must be given a sensible starting pass (setting it to 0 would let it monopolize the CPU).
+
+Linux CFS (→ OS-3.7) is a proportional-share scheduler in the stride family: "tickets" are weights derived from nice values, and "pass" is virtual runtime.
+
+### Algorithm comparison
+
+| Algorithm | Preemptive? | Needs burst length? | Starvation? | Best at | Worst at |
+|---|---|---|---|---|---|
+| FCFS | No | No | No | Simplicity, few switches | Waiting time, convoy effect |
+| SJF | No | Yes | Yes | Avg waiting (non-preemptive) | Long jobs, unknown bursts |
+| SRTF | Yes | Yes | Yes | Avg waiting (overall) | Long jobs, overhead |
+| Priority | Either | No | Yes (fix: aging) | Honouring importance | Low-priority jobs |
+| RR | Yes | No | No | Response time, fairness | Turnaround when bursts are similar |
+| HRRN | No | Yes | No | Balance short/long jobs | Needs estimates, no preemption |
+| Lottery / stride | Yes | No | No | Proportional shares | Response time guarantees |
+| MLFQ (→ OS-3.4) | Yes | No (learns) | Prevented by boost | General-purpose mixes | Tuning parameters |
+
+---
+
+## OS-3.4 · Multilevel Queue and Multilevel Feedback Queue
+
+### Multilevel queue (MLQ)
+
+Processes are **permanently** assigned to one of several queues by type, each with its own algorithm:
+
+```
+ highest priority
+   +----------------------------+
+   | real-time processes        |   e.g., priority / FCFS
+   +----------------------------+
+   | system processes           |
+   +----------------------------+
+   | interactive processes      |   e.g., RR
+   +----------------------------+
+   | batch processes            |   e.g., FCFS
+   +----------------------------+
+ lowest priority
+```
+
+Scheduling **between** queues:
+
+- **Fixed priority:** a lower queue runs only if all higher queues are empty. Lower queues can starve.
+- **Time slicing between queues:** for example 80% of CPU time to the interactive queue (RR) and 20% to the batch queue (FCFS).
+
+The drawback is inflexibility: a process's class is fixed at creation even if its behaviour changes.
+
+### Multilevel feedback queue (MLFQ)
+
+MLFQ lets processes **move between queues** based on observed behaviour. It tries to achieve two things at once without knowing burst lengths in advance:
+
+- Optimize **turnaround** by running short jobs first (like SJF).
+- Optimize **response time** for interactive jobs (like RR).
+
+The key idea: **learn from history**. A job that uses its whole quantum is probably CPU-bound, so push it down. A job that gives up the CPU quickly (waiting for keyboard or disk) is probably interactive, so keep it high. MLFQ was introduced by Corbató in CTSS (1962), work that contributed to his Turing Award.
+
+OSTEP develops MLFQ as a sequence of rules:
+
+> **Rule 1:** If Priority(A) > Priority(B), A runs (B does not).
+> **Rule 2:** If Priority(A) = Priority(B), A and B run in round robin using that queue's quantum.
+> **Rule 3:** When a job enters the system, it is placed in the **highest** priority queue.
+> **Rule 4:** Once a job uses up its **time allotment** at a given level (regardless of how many times it has given up the CPU), its priority is reduced (it moves down one queue).
+> **Rule 5:** After some time period **S**, move all jobs in the system to the topmost queue (**priority boost**).
+
+Why each rule exists:
+
+- **Rules 1 to 3** approximate SJF: every new job is assumed short and gets top priority. If it really is short, it finishes quickly. If not, it sinks, and the system has effectively learned it is long.
+- **Rule 4, first version** (move down when a job uses its entire quantum, stay put if it gives up the CPU early) had a flaw: **gaming**. A clever program could issue a trivial I/O just before its quantum expires and stay at the top forever. The final Rule 4 counts **total CPU time used at a level**, however it is split up, which defeats this trick.
+- **Rule 5** solves two problems:
+  - **Starvation:** with many interactive jobs, long jobs at the bottom would never run. The periodic boost guarantees them some CPU.
+  - **Changing behaviour:** a job that was CPU-bound and becomes interactive (a program that finishes a computation and starts taking user input) gets a chance to be treated as interactive again.
+
+### MLFQ parameters
+
+An MLFQ scheduler is defined by:
+
+- Number of queues
+- Scheduling algorithm within each queue (usually RR, often FCFS at the bottom)
+- **Quantum length per queue:** usually short at the top (interactive jobs, e.g., 8 to 10 ms) and longer at lower levels (CPU-bound jobs, e.g., 100+ ms, fewer switches)
+- Rules for upgrading (priority boost interval S, aging) and downgrading
+- Which queue a new process enters
+
+Silberschatz's standard example: Q0 is RR with q = 8 ms, Q1 is RR with q = 16 ms, Q2 is FCFS. A job entering Q0 that does not finish within 8 ms moves to Q1; if it does not finish within a further 16 ms, it moves to Q2. A job in a lower queue runs only if higher queues are empty, and is **preempted** if a job arrives in a higher queue. See N6.
+
+Choosing S and the quanta has no formula. OSTEP calls these "voodoo constants": set S too high and long jobs starve; too low and interactive jobs lose their advantage. Real systems tune them from experience or let administrators adjust them.
+
+**Real systems in the MLFQ family:** Solaris time-sharing class (a table of 60 levels with quanta and priority adjustments), Windows (priority boosts for jobs that finish waiting), FreeBSD's ULE, and BSD 4.3 (priority computed from recent CPU usage, which decays over time).
+
+MLFQ is the most general classic algorithm and also the most complex to configure. It gets good performance for short interactive jobs and fair progress for long CPU-bound jobs, without prior knowledge of burst lengths.
+
+---
+
+## OS-3.5 · Multiprocessor Scheduling
+
+With several CPUs, the scheduler must decide not only *which* task runs but also *where*. Here "processor" can mean a multicore CPU, a multi-socket machine, or hardware threads.
+
+### Asymmetric vs symmetric multiprocessing
+
+- **Asymmetric multiprocessing (AMP):** one master processor makes all scheduling decisions and runs kernel code; the others run only user code. Simple (only one CPU touches scheduler data), but the master becomes a bottleneck.
+- **Symmetric multiprocessing (SMP):** each processor schedules itself. This is what Linux, Windows, and macOS do.
+
+### One shared queue vs per-CPU queues
+
+OSTEP compares the two SMP designs:
+
+| | Single-queue (SQMS) | Multi-queue (MQMS) |
+|---|---|---|
+| Structure | One global ready queue; every CPU picks from it | Each CPU has its own ready queue |
+| Simplicity | Simple; reuses single-CPU policies | More complex |
+| Scalability | Poor: every CPU must **lock** the shared queue, causing contention as cores grow | Good: little sharing |
+| Cache affinity | Poor: tasks bounce between CPUs | Good: tasks tend to stay on one CPU |
+| Load balance | Automatic | Needs explicit **load balancing** |
+
+Modern schedulers use per-CPU queues plus load balancing.
+
+### Processor affinity
+
+When a task runs on a CPU, its data fills that CPU's caches (and TLB). If it migrates to another CPU, the caches on the new CPU are cold and must be refilled, and the old ones are invalidated. So schedulers try to keep a task on the same CPU: **processor affinity**.
+
+- **Soft affinity:** the OS tries to keep a task on the same CPU but may move it.
+- **Hard affinity:** the task is restricted to a specified set of CPUs. On Linux: `sched_setaffinity()` or `taskset -c 0,1 ./prog`.
+
+### Load balancing
+
+With per-CPU queues, one CPU can be overloaded while another is idle. Two approaches, usually combined:
+
+- **Push migration:** a periodic task checks loads and pushes tasks from busy CPUs to less busy ones.
+- **Pull migration (work stealing):** an idle CPU pulls a waiting task from a busy CPU's queue.
+
+Load balancing **conflicts with affinity**: moving a task balances load but loses its warm cache. Linux uses **scheduling domains** (hardware threads of one core, cores sharing an L3 cache, sockets, NUMA nodes) and balances more eagerly between nearby CPUs than between distant ones.
+
+### NUMA
+
+On a **Non-Uniform Memory Access** machine, each CPU socket has its own local memory; accessing another socket's memory is slower. The scheduler and memory allocator should cooperate: run a task on the node where its memory lives, and allocate its memory on the node where it runs (→ OS-6).
+
+### Multicore and hardware threads
+
+When a core waits for memory (a **memory stall**, which can take hundreds of cycles on a cache miss), it wastes time. Hardware multithreading (**SMT**, Intel's Hyper-Threading) gives each core two (or more) hardware threads with separate register sets; when one stalls, the core switches to the other in hardware.
+
+This creates **two levels of scheduling**:
+
+1. The OS picks which software thread runs on each **logical CPU** (hardware thread).
+2. The core decides which of its hardware threads issues instructions each cycle.
+
+Two hardware threads on one core share the execution units and L1/L2 caches, so they are **not** as good as two separate cores. A good OS scheduler knows this: with two busy tasks and two idle cores, it places them on different physical cores rather than on two hardware threads of the same core.
+
+**Heterogeneous multiprocessing** (ARM big.LITTLE, Intel P-cores and E-cores): cores differ in speed and power. The scheduler places demanding tasks on fast cores and background tasks on efficient cores, which saves energy.
+
+---
+
+## OS-3.6 · Real-Time Scheduling
+
+### Soft vs hard, and latency
+
+Recall (← OS-1.2): **hard** real-time means a missed deadline is a failure; **soft** real-time means missed deadlines only degrade service. The scheduler's job is to guarantee deadlines, so what matters is **worst-case latency**, not average performance.
+
+**Event latency** is the time from an event (sensor reading, interrupt) to the system's response. Two components the OS controls:
+
+- **Interrupt latency:** time from interrupt arrival to the start of the ISR. Includes finishing the current instruction and any period with interrupts disabled. Kernels must keep interrupt-disabled regions very short.
+- **Dispatch latency:** time to stop one process and start another. Has a **conflict phase** (preempting whatever is running in the kernel, and making lower-priority processes release resources the high-priority one needs) and a **dispatch phase**. A preemptive kernel is essential for low dispatch latency.
+
+### Periodic task model
+
+Real-time tasks are often **periodic**: every **period p**, the task becomes ready and needs **processing time t**, which must finish before its **deadline d** (usually d = p, the start of the next period). `0 ≤ t ≤ d ≤ p`.
+
+- **Utilization** of a task = `t / p`. Total utilization `U = Σ tᵢ / pᵢ`.
+- If `U > 1`, no algorithm on one CPU can meet all deadlines.
+- A real-time scheduler may use **admission control**: it admits a new task only if it can guarantee all deadlines, including existing ones.
+
+### Rate-Monotonic Scheduling (RMS)
+
+- **Static priorities**, assigned by period: **shorter period = higher priority** (a task that must run more often is more urgent).
+- Preemptive: a higher-priority task arriving preempts a lower one.
+- RMS is **optimal among static-priority algorithms**: if a task set cannot be scheduled by RMS, no static-priority assignment can schedule it.
+
+**Liu and Layland bound (1973).** For n independent periodic tasks with deadlines equal to periods, RMS is guaranteed to meet all deadlines if
+
+```
+ U ≤ n (2^(1/n) − 1)
+```
+
+| n | Bound |
+|---|---|
+| 1 | 100% |
+| 2 | 82.8% |
+| 3 | 78.0% |
+| 4 | 75.7% |
+| ∞ | ln 2 ≈ 69.3% |
+
+This is a **sufficient, not necessary** condition. A task set above the bound might still be schedulable (check by simulating up to the least common multiple of the periods, or by response-time analysis). Below the bound, it is always schedulable.
+
+### Earliest Deadline First (EDF)
+
+- **Dynamic priorities:** at each moment, run the ready task with the **earliest absolute deadline**.
+- Preemptive.
+- For independent preemptible tasks on one CPU (deadlines = periods), EDF meets all deadlines **if and only if U ≤ 1**. It can use the CPU fully.
+
+**Why not always EDF?**
+
+- Priorities change constantly, so it is more complex and has more runtime overhead.
+- **Behaviour under overload:** when U > 1, EDF can cause a *domino effect* where many tasks miss deadlines, while RMS degrades predictably: the lowest-priority (longest period) tasks miss first and the high-priority ones stay safe.
+- RMS fits naturally on fixed-priority RTOS kernels and is easier to certify.
+
+See N7 for a task set that RMS fails and EDF schedules.
+
+### Other real-time ideas
+
+- **Proportional share with admission control:** a task gets N of T shares and is admitted only if shares are available.
+- **Priority inversion** (a high-priority task waiting for a lock held by a low-priority task) is a scheduling hazard that crosses into synchronization; see **→ OS-4.8** and the Mars Pathfinder story.
+
+### POSIX and Linux real-time classes
+
+| Policy | Behaviour |
+|---|---|
+| `SCHED_FIFO` | Fixed priority (1 to 99). Runs until it blocks, yields, or a higher-priority task arrives. No time slicing among equal priorities. |
+| `SCHED_RR` | Like `SCHED_FIFO` but equal-priority tasks share the CPU in round robin with a quantum. |
+| `SCHED_DEADLINE` | Linux EDF with a *Constant Bandwidth Server*: a task declares (runtime, deadline, period), the kernel does admission control, and each task is limited to its declared runtime so a misbehaving one cannot hurt others. |
+| `SCHED_OTHER` / `SCHED_NORMAL` | Ordinary time-sharing (CFS/EEVDF → OS-3.7). |
+
+Real-time tasks always take precedence over normal tasks. As a safety net, Linux by default reserves 5% of each second for non-real-time tasks (`sched_rt_runtime_us = 950000` out of `sched_rt_period_us = 1000000`), so a runaway `SCHED_FIFO` loop does not lock up the machine completely.
+
+---
+
+## OS-3.7 · Real-World Schedulers
+
+### xv6
+
+xv6's scheduler (the one used in Mythili Vutukuru's course) is intentionally simple: each CPU runs an infinite loop in `scheduler()` that scans the process table for a `RUNNABLE` process, switches to it (`swtch`, ← OS-2.2), and when it yields back, continues scanning from the next slot. Every timer tick causes the running process to `yield()`. The result is **round robin with a one-tick quantum** and no priorities. Many course assignments ask you to replace it with priority, lottery, or MLFQ scheduling.
+
+### Linux: a short history
+
+| Kernel | Scheduler | Key idea |
+|---|---|---|
+| 2.4 | O(n) scheduler | Scanned all tasks at every decision; poor on many CPUs and many tasks |
+| 2.6.0 (2003) | **O(1)** scheduler | 140 priority levels; per-CPU *active* and *expired* arrays of queues plus a bitmap, so picking the next task was constant time; complicated heuristics to detect interactive tasks |
+| 2.6.23 (2007) | **CFS** (Completely Fair Scheduler) | Proportional sharing using virtual runtime and a red-black tree |
+| 6.6 (2023) | **EEVDF** | Replaces CFS's selection logic with Earliest Eligible Virtual Deadline First |
+| 6.12 (2024) | `sched_ext` | Scheduling policies written as BPF programs and loaded at runtime |
+
+### Scheduling classes and priorities
+
+Linux schedules by **class**, highest first: `stop` (internal) → `deadline` (`SCHED_DEADLINE`) → `rt` (`SCHED_FIFO`, `SCHED_RR`) → `fair` (`SCHED_NORMAL`, `SCHED_BATCH`) → `idle`. A lower class runs only when no higher class has a runnable task.
+
+The kernel uses priority values 0 to 139 (lower = higher priority):
+
+- 0 to 99: real-time priorities
+- 100 to 139: normal tasks, mapped from **nice values −20 to +19** (nice 0 = 120)
+
+### CFS: the idea
+
+CFS models an "ideal, precise multitasking CPU": with n runnable tasks of equal weight, each should receive exactly 1/n of the CPU at every moment. It tracks how far each task is from that ideal.
+
+- Each task has a **virtual runtime** (`vruntime`): the CPU time it has received, scaled by its weight.
+- **Always run the task with the smallest vruntime** (the one that has received the least of its fair share).
+- Runnable tasks are kept in a **red-black tree** ordered by vruntime. The leftmost node is the next task; picking is O(1) with a cached leftmost pointer, insertion O(log n).
+
+**Weights from nice values.** Nice 0 has weight 1024. Each nice step changes the weight by a factor of about 1.25, chosen so that a task gets about **10% more or less CPU per nice level** relative to a competitor.
+
+| nice | −20 | −10 | −5 | 0 | 1 | 5 | 10 | 19 |
+|---|---|---|---|---|---|---|---|---|
+| weight | 88761 | 9548 | 3121 | 1024 | 820 | 335 | 110 | 15 |
+
+**vruntime update:** when a task runs for real time Δ,
+
+```
+ vruntime += Δ × (1024 / weight)
+```
+
+A high-weight (low nice) task's vruntime grows slowly, so it stays near the left of the tree and runs more. A task's CPU share is `weight / Σ weights` of runnable tasks.
+
+**Time slices.** CFS has no fixed quantum. It aims to run every runnable task once within a **target latency** (historically 6 ms by default, scaled with CPU count) and never less than a **minimum granularity** (0.75 ms) per turn, so with many tasks the period stretches to avoid excessive switching. Each task's slice is its weight's share of that period.
+
+**Sleepers and newcomers.** A task that sleeps for a long time (I/O-bound) would come back with a tiny vruntime and monopolize the CPU. CFS instead sets a waking task's vruntime to at least slightly less than the current minimum vruntime of the queue: it gets to run soon (good responsiveness), but cannot claim all the time it missed. New tasks start near the current `min_vruntime` for the same reason.
+
+**Group scheduling.** Fairness per task means a user with 50 threads gets 50 times the CPU of a user with one. With **cgroups** (and "autogroup" per terminal session), CFS first divides CPU fairly between groups, then between tasks within a group (→ OS-12.2).
+
+### EEVDF (current Linux)
+
+EEVDF keeps weights and virtual time but changes how the next task is chosen:
+
+- Each task has a **lag**: how much CPU it is owed compared with its ideal fair share (positive = owed, negative = received too much).
+- A task is **eligible** if its lag ≥ 0.
+- Each task also has a **virtual deadline** = its eligible time + its requested slice / weight.
+- The scheduler picks the **eligible task with the earliest virtual deadline**.
+
+Benefits over CFS: latency-sensitive tasks can request **shorter slices** and get earlier deadlines (so they run sooner) without getting more total CPU, and it replaces many of CFS's hand-tuned heuristics with a single principled rule. For interviews: "CFS picks the smallest vruntime; EEVDF picks the earliest virtual deadline among tasks that are not ahead of their fair share."
+
+### Windows
+
+- **32 priority levels**: 16 to 31 are the *real-time* class, 1 to 15 the *variable* class, 0 reserved for the memory manager's zero-page thread.
+- Preemptive priority scheduling with round robin within a level; the scheduler is called the **dispatcher**.
+- Threads in the variable class get **dynamic boosts**: a thread released from waiting (especially on keyboard or mouse I/O) gets a temporary boost that decays back to its base priority; the **foreground** window's process typically gets a longer quantum.
+- An **idle thread** runs when nothing else is ready.
+
+This is MLFQ-like behaviour: interactive threads that wait a lot are favoured, CPU-bound threads sink to their base priority.
+
+---
+
+## OS-3.8 · Solving Scheduling Numericals
+
+### Method
+
+1. **Draw a table** of processes with AT, BT (and priority if needed). Sort by arrival.
+2. **Build the Gantt chart** step by step. At each decision point (arrival, completion, quantum expiry), list the ready processes and apply the rule. Write down the ready queue at every step for RR.
+3. **Mark idle periods** when no process is ready.
+4. Read off **CT** for each process, then compute `TAT = CT − AT`, `WT = TAT − BT`, `RT = first start − AT`.
+5. Compute averages, throughput (`n / total time`), and CPU utilization (`busy time / total time`).
+
+### Conventions to state explicitly
+
+- **Ties:** break by arrival time, then by process number.
+- **RR arrivals vs preempted process** at the same instant: new arrival first (unless the question says otherwise).
+- **Preemptive SJF/priority:** preemption happens only when a *strictly* better process arrives; equal does not preempt.
+- **Context-switch overhead:** decide whether it is charged before the first process, and when switching from idle. State your assumption (see N1).
+- **Priority direction:** lower number = higher priority, or the reverse.
+
+### Common mistakes
+
+- Starting the next process before it has **arrived**. The CPU idles instead.
+- Using **burst time** instead of **remaining time** in SRTF comparisons.
+- Forgetting to re-add a preempted process to the RR queue, or adding it in the wrong position.
+- Computing waiting time as "start − arrival" for preemptive algorithms. For preemptive schedules, use `WT = TAT − BT`, which counts every waiting interval.
+- Counting I/O time as waiting time.
+
+---
+
+## Quick Revision Sheet
+
+- TAT = CT − AT; WT = TAT − BT; RT = first run − AT.
+- Criteria conflict: turnaround (SJF-like) vs response (RR-like).
+- Non-preemptive: switch only when a process blocks or exits. Preemptive: also on timer or on arrival of a better process.
+- Dispatcher = context switch + user mode + jump. Dispatch latency is pure overhead.
+- FCFS: simple, convoy effect, no starvation.
+- SJF: optimal average waiting time (non-preemptive); needs burst prediction: τₙ₊₁ = α·tₙ + (1−α)·τₙ.
+- SRTF: preemptive SJF; optimal average waiting overall; starvation.
+- Priority: starvation, fixed by aging.
+- RR: best response, worse turnaround; q huge = FCFS; ~80% of bursts < q.
+- HRRN: ratio = (W + S) / S; favours short jobs without starving long ones.
+- Lottery (random tickets) and stride (deterministic pass values) give proportional shares.
+- MLFQ: new jobs at top; use up allotment → move down; periodic boost prevents starvation and handles changing behaviour; accounting prevents gaming.
+- Multiprocessor: per-CPU queues, affinity vs load balancing (push/pull), NUMA, SMT is not a real core.
+- RMS: static, shorter period = higher priority; guaranteed if U ≤ n(2^(1/n) − 1). EDF: dynamic, schedulable iff U ≤ 1.
+- Linux: classes deadline > rt > fair > idle. CFS: smallest vruntime in a red-black tree; vruntime += Δ·1024/weight; each nice level ≈ 10% CPU. EEVDF since 6.6.
+
+---
+
+## Worked Numerical Problems
+
+### N1 · FCFS with idle time and switch overhead (OS-3.1, OS-3.8)
+
+**Question.** Three processes are scheduled FCFS. Every dispatch (including the first, and including dispatch after the CPU has been idle) costs 1 ms of dispatcher time.
+
+| Process | Arrival | Burst |
+|---|---|---|
+| P1 | 0 | 3 |
+| P2 | 5 | 4 |
+| P3 | 6 | 2 |
+
+Find the average turnaround and waiting time, and the CPU utilization (useful work only).
+
+**Answer.**
+
+```
+ |disp| P1        |idle|disp| P2           |disp| P3     |
+ 0    1           4    5    6              10   11       13
+```
+
+| | CT | TAT | WT (= TAT − BT) |
+|---|---|---|---|
+| P1 | 4 | 4 | 1 |
+| P2 | 10 | 5 | 1 |
+| P3 | 13 | 7 | 5 |
+| **Avg** | | **5.33** | **2.33** |
+
+Useful work = 3 + 4 + 2 = 9 ms out of 13 ms, so utilization = **69.2%**. The rest is 3 ms of dispatch overhead and 1 ms idle. (Here waiting time includes dispatch time. State this when answering.)
+
+### N2 · Predicting burst lengths (OS-3.3)
+
+**Question.** Using exponential averaging with α = 0.5 and an initial guess τ₀ = 10 ms, the observed CPU bursts of a process are 6, 4, 6, 4, 13, 13, 13 ms. Compute each prediction. What happens with α = 0 and α = 1?
+
+**Answer.** τₙ₊₁ = 0.5·tₙ + 0.5·τₙ:
+
+| n | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+|---|---|---|---|---|---|---|---|---|
+| Prediction τₙ | 10 | 8 | 6 | 6 | 5 | 9 | 11 | 12 |
+| Actual tₙ | 6 | 4 | 6 | 4 | 13 | 13 | 13 | |
+
+For example, τ₁ = 0.5(6) + 0.5(10) = 8, and τ₅ = 0.5(13) + 0.5(5) = 9. The prediction lags behind the change in behaviour but catches up over a few bursts.
+
+- α = 0: every prediction stays 10; the process's behaviour is ignored.
+- α = 1: each prediction equals the previous burst (8 after seeing 6? No: τ₁ = 6, τ₂ = 4, ...). The predictor reacts instantly but is thrown off by any single unusual burst.
+
+### N3 · Effect of the quantum (OS-3.3)
+
+**Question.** Three CPU-bound processes arrive at time 0, each needing 10 ms. Ignoring switch overhead, compute average turnaround and response time under RR with q = 10, q = 5, and q = 1.
+
+**Answer.**
+
+- **q = 10** (same as FCFS): completions 10, 20, 30. Avg TAT = **20**. First runs at 0, 10, 20: avg RT = **10**.
+- **q = 5:** P1 0–5, P2 5–10, P3 10–15, P1 15–20, P2 20–25, P3 25–30. Completions 20, 25, 30. Avg TAT = **25**. RT: 0, 5, 10, avg **5**.
+- **q = 1:** processes take turns every 1 ms; they finish at 28, 29, 30. Avg TAT = **29**. RT: 0, 1, 2, avg **1**.
+
+With equal-length jobs, a smaller quantum makes **turnaround worse** (everyone finishes near the end) while **response gets better**. Add real switch overhead and small quanta look worse still: with 0.1 ms per switch and q = 1, about 29 switches add roughly 3 ms, 10% extra.
+
+### N4 · Preemptive priority (OS-3.3)
+
+**Question.** Lower number = higher priority. Preemptive.
+
+| Process | Arrival | Burst | Priority |
+|---|---|---|---|
+| P1 | 0 | 5 | 3 |
+| P2 | 1 | 3 | 1 |
+| P3 | 2 | 8 | 4 |
+| P4 | 3 | 2 | 2 |
+
+**Answer.**
+
+- t = 0: P1 runs. t = 1: P2 (priority 1) preempts P1 (4 left).
+- t = 3: P4 (priority 2) arrives; P2 (priority 1) is still higher, so P2 continues.
+- t = 4: P2 finishes. Ready: P1 (3), P3 (4), P4 (2). P4 runs.
+- t = 6: P4 finishes. P1 runs to 10; P3 runs 10 to 18.
+
+```
+ | P1 | P2        | P4     | P1           | P3                  |
+ 0    1           4        6              10                    18
+```
+
+| | CT | TAT | WT | RT |
+|---|---|---|---|---|
+| P1 | 10 | 10 | 5 | 0 |
+| P2 | 4 | 3 | 0 | 0 |
+| P3 | 18 | 16 | 8 | 8 |
+| P4 | 6 | 3 | 1 | 1 |
+| **Avg** | | **8.0** | **3.5** | **2.25** |
+
+### N5 · HRRN vs FCFS vs SJF (OS-3.3)
+
+**Question.** Compare average turnaround under FCFS, SJF (non-preemptive), and HRRN.
+
+| Process | A | B | C | D | E |
+|---|---|---|---|---|---|
+| Arrival | 0 | 2 | 4 | 6 | 8 |
+| Burst | 3 | 6 | 4 | 5 | 2 |
+
+**Answer.**
+
+**FCFS:** A 0–3, B 3–9, C 9–13, D 13–18, E 18–20. TAT: 3, 7, 9, 12, 12. Avg = 43 / 5 = **8.6**.
+
+**SJF:** A 0–3; at 3 only B is present, B 3–9; at 9, C (4), D (5), E (2) are waiting: E 9–11, C 11–15, D 15–20. TAT: 3, 7, 11, 14, 3. Avg = 38 / 5 = **7.6**.
+
+**HRRN:** A 0–3, B 3–9. At t = 9:
+- C: (5 + 4) / 4 = 2.25
+- D: (3 + 5) / 5 = 1.6
+- E: (1 + 2) / 2 = 1.5 → **C** runs 9–13.
+
+At t = 13:
+- D: (7 + 5) / 5 = 2.4
+- E: (5 + 2) / 2 = 3.5 → **E** runs 13–15, then D 15–20.
+
+TAT: A 3, B 7, C 9, D 14, E 7. Avg = 40 / 5 = **8.0**.
+
+HRRN lands between FCFS and SJF: it let C (which had waited longer) go before the very short E, trading a little average turnaround for fairness to waiting jobs.
+
+### N6 · MLFQ trace (OS-3.4)
+
+**Question.** Three queues: Q0 (RR, q = 8), Q1 (RR, q = 16), Q2 (FCFS). Strict priority between queues; a job arriving in a higher queue preempts a lower one, and the preempted job keeps its remaining allotment at its level (OSTEP-style accounting). (a) Jobs A (30 ms), B (6 ms), C (20 ms) arrive at t = 0. Find completion times. (b) Repeat with an additional job D (4 ms) arriving at t = 25.
+
+**Answer.**
+
+(a)
+- Q0: A 0–8 (22 left, moves to Q1), B 8–14 (**done**), C 14–22 (12 left, moves to Q1).
+- Q1: A 22–38 (6 left, moves to Q2), C 38–50 (**done**, needed only 12).
+- Q2: A 50–56 (**done**).
+
+Completion: A 56, B 14, C 50. Avg TAT = 120 / 3 = **40**. B, the short job, finished almost immediately: MLFQ behaved like SJF without knowing the burst lengths.
+
+(b) Same until t = 25, when A is running in Q1 (it has used 3 of its 16 ms). D enters Q0 and preempts A.
+- D 25–29 (**done**).
+- A resumes in Q1 with 13 ms of allotment left: 29–42 (6 left, moves to Q2).
+- C 42–54 (**done**). A in Q2: 54–60 (**done**).
+
+Completion: A 60, B 14, C 54, D 29 (TAT 4). The new short job gets through in exactly its burst time.
+
+### N7 · RMS vs EDF (OS-3.6)
+
+**Question.** Two periodic tasks with deadline = period: T1 (p = 50, t = 25) and T2 (p = 80, t = 35). (a) Compute U and compare with the RMS bound. (b) Simulate RMS. (c) Simulate EDF up to t = 160.
+
+**Answer.**
+
+(a) U = 25/50 + 35/80 = 0.5 + 0.4375 = **0.9375**. RMS bound for n = 2 is 0.828, so RMS is not guaranteed. EDF needs U ≤ 1, so EDF will succeed.
+
+(b) RMS: T1 has the shorter period, so higher priority.
+- T1 runs 0–25. T2 runs 25–50 (25 of 35 done).
+- t = 50: T1's second instance arrives and preempts T2. T1 runs 50–75.
+- T2 resumes 75–85 and finishes its last 10 ms at t = 85. Its deadline was **80**: **missed**.
+
+(c) EDF:
+- t = 0: T1 deadline 50, T2 deadline 80. T1 runs 0–25; T2 runs 25–60 (at t = 50, T1's new deadline is 100 > 80, so T2 keeps the CPU). T2 done at 60 ✓.
+- T1 (deadline 100) runs 60–85 ✓. At t = 80, T2 arrives with deadline 160; T1 (100) keeps running.
+- T2 runs 85–100. At t = 100, T1 arrives with deadline 150 < 160, so it preempts: T1 100–125 ✓.
+- T2 resumes 125–145 (15 + 20 = 35 done) ✓ before 160. CPU idle 145–150; T1 150–175.
+
+All deadlines met. EDF succeeded where static priorities failed.
+
+### N8 · CFS shares and vruntime (OS-3.7)
+
+**Question.** Two CPU-bound tasks run on one CPU under CFS: A at nice 0 (weight 1024) and B at nice 5 (weight 335). Target latency is 6 ms. (a) What CPU share does each get? (b) What slice does each get per 6 ms period? (c) How much does each one's vruntime advance per period? (d) What are the shares for nice 0 vs nice 1 (weight 820)?
+
+**Answer.**
+
+(a) Total weight 1359. A: 1024 / 1359 = **75.4%**. B: 335 / 1359 = **24.6%**.
+
+(b) A: 0.754 × 6 ≈ **4.52 ms**. B: 0.246 × 6 ≈ **1.48 ms**.
+
+(c) A: 4.52 × 1024 / 1024 = 4.52. B: 1.48 × 1024 / 335 ≈ 4.52. **Both advance by the same virtual amount.** That is exactly what "fair" means in CFS: equal vruntime progress, unequal real time.
+
+(d) 1024 / 1844 = 55.5% vs 820 / 1844 = 44.5%. One nice level makes about a **10 percentage point** difference, as designed.
+
+---
+
+## Scenario Questions (Test Your Understanding)
+
+### S1 · The idle disks (OS-3.3)
+
+A batch server runs FCFS. Monitoring shows the CPU is busy 100% of the time for long stretches while the disks are idle, then the disks are busy while the CPU is idle, alternating. There is one video-encoding job and many small database queries. What is happening, and which change fixes it?
+
+<details><summary>Answer</summary>
+
+The **convoy effect**. The encoder (CPU-bound) holds the CPU for a long burst; the I/O-bound queries finish their disk I/O and wait behind it, so the disks go idle. When the encoder finally blocks, the queries run their tiny bursts at once and all go to the disk, leaving the CPU idle.
+
+A preemptive algorithm (RR or MLFQ) fixes it: the encoder is preempted every quantum, so queries get the CPU quickly and keep the disks busy while the encoder computes. MLFQ does even better, because the queries stay in high-priority queues and the encoder sinks.
+
+</details>
+
+### S2 · Choosing a quantum for a desktop (OS-3.3)
+
+An OS designer proposes q = 1 ms for "maximum responsiveness"; another proposes q = 500 ms for "maximum throughput." What goes wrong with each?
+
+<details><summary>Answer</summary>
+
+**1 ms:** each switch has a direct cost (microseconds) and a larger indirect cost from cold caches and TLB (← OS-2 N7). With 1 ms slices, that becomes a noticeable fraction of CPU time, and long jobs finish later. Most interactive bursts are already shorter than 10 ms, so they gain almost nothing from 1 ms.
+
+**500 ms:** with a few CPU-bound tasks ready, a keystroke may wait several hundred ms before the editor runs, which users notice as lag (it approaches FCFS behaviour). Typical quanta are 10 to 100 ms, chosen so most bursts complete within one slice.
+
+</details>
+
+### S3 · The job that never ran (OS-3.3)
+
+A cluster uses SJF with accurate job-length estimates. A 6-hour simulation has been in the queue for three days, while short jobs flow through constantly. What is the problem, and name two scheduling fixes.
+
+<details><summary>Answer</summary>
+
+**Starvation.** With a steady supply of shorter jobs, SJF always prefers them and the long job is never picked.
+
+Fixes: **aging** (raise the job's effective priority as it waits), or **HRRN**, whose ratio (W + S) / S keeps growing for the waiting job until it wins. MLFQ's periodic priority boost serves the same purpose. A fixed share (for example, via stride scheduling) would also guarantee progress.
+
+</details>
+
+### S4 · Gaming the scheduler (OS-3.4)
+
+Under an MLFQ that demotes a job only when it uses its **entire** quantum in one go, a student writes a CPU-heavy program that performs a tiny file write every 9 ms (the quantum is 10 ms). What happens, and how does OSTEP's final Rule 4 stop it?
+
+<details><summary>Answer</summary>
+
+The program gives up the CPU just before each quantum ends, so the scheduler sees an "interactive" job and keeps it at the highest priority. It gets nearly 90% of the CPU and starves genuinely long jobs and pushes down everyone else.
+
+OSTEP's final Rule 4 tracks **total CPU time used at a level**, regardless of how often the job gives up the CPU. After it has used its allotment (say 10 ms in total, across several short bursts), it is demoted anyway. Its little I/O calls no longer help it.
+
+</details>
+
+### S5 · More threads, more CPU (OS-3.7)
+
+On a shared Linux server, user Alice runs one CPU-bound process, and user Bob runs a program with 20 CPU-bound threads. Without group scheduling, what share does Alice get on one core? Why? How does Linux fix this?
+
+<details><summary>Answer</summary>
+
+CFS is fair **per task**, and each thread is a task (← OS-2.5). With 21 equal-weight tasks, Alice gets 1/21 ≈ **4.8%**, Bob 95%.
+
+With **group scheduling** via cgroups (or autogroup, which groups by session), CFS first shares the CPU between groups (Alice's and Bob's: 50% each), then among the tasks inside each group. Bob's 20 threads then split his 50%.
+
+</details>
+
+### S6 · The editor stays snappy (OS-3.7)
+
+A kernel compile at nice 0 saturates all cores. A text editor, also at nice 0, still responds instantly to keystrokes. Under CFS, why does the editor get the CPU quickly even though both have the same weight?
+
+<details><summary>Answer</summary>
+
+The editor spends almost all its time asleep waiting for keystrokes, so its vruntime barely grows. The compiler's vruntime grows continuously. When a key is pressed, the editor wakes with a vruntime near the queue's minimum (CFS sets it slightly below `min_vruntime`, but not so far below that it could monopolize the CPU). It is at or near the left of the red-black tree and is picked almost immediately. It runs a tiny burst and sleeps again. Same weight, but its **usage** is low, so it is always "owed" CPU. Under EEVDF, it is likewise eligible with an early virtual deadline.
+
+</details>
+
+### S7 · Slower after migration (OS-3.5)
+
+A latency-critical service runs fine on CPU 2. After the load balancer moves it to CPU 14, which is on the other socket, its latency rises by 30% for a while, and some of the slowdown persists. Explain both effects and suggest a fix.
+
+<details><summary>Answer</summary>
+
+The temporary slowdown: CPU 14's caches and TLB contain none of the service's data (lost **cache affinity**), so it takes many misses until they warm up.
+
+The persistent slowdown: on a **NUMA** machine, the service's memory was allocated on CPU 2's node. From the other socket, every memory access that misses the cache goes over the interconnect to remote memory, which is slower.
+
+Fixes: pin the service with **hard affinity** (`taskset`, `sched_setaffinity`) to CPUs of one node, and bind its memory to that node (`numactl`); or rely on Linux's automatic NUMA balancing, which migrates pages toward the node where the task runs.
+
+</details>
+
+### S8 · Response vs turnaround in one table (OS-3.3)
+
+Using the workload in OS-3.3, a manager sees that RR (q = 3) gives average waiting 13.5 while SRTF gives 6.5, and asks why any interactive system would use RR. Give the argument for RR.
+
+<details><summary>Answer</summary>
+
+Average response time: RR 3.0 vs SRTF 4.25, and P3 in SRTF waited **15 ms** before running at all. Interactive users care about the time to *first* response (seeing that the system reacted), not when a long computation finally completes.
+
+Also, SRTF needs exact burst lengths, which the OS does not have, and it can starve long jobs. RR needs no knowledge and guarantees every process a turn within (n − 1) × q. For interactive systems, predictable, quick response usually matters more than minimum average waiting time.
+
+</details>
+
+### S9 · A runaway real-time task (OS-3.6)
+
+A developer sets their audio thread to `SCHED_FIFO` priority 99 to reduce glitches. A bug makes it spin in an infinite loop on a single-core device. What happens to the rest of the system? What would happen without Linux's RT throttling?
+
+<details><summary>Answer</summary>
+
+`SCHED_FIFO` tasks run until they block or yield, and they always beat normal tasks. With RT throttling (default 950 ms of every 1000 ms), normal tasks, including the shell, share only the remaining **5%**. The system becomes extremely sluggish but still usable enough to find and kill the thread.
+
+Without throttling, the looping thread would never be preempted by any normal task, so the shell, the GUI, and even `kill` would never run. On a single core the system would appear frozen. This is why real-time privileges require `CAP_SYS_NICE` or an rlimit, and why `SCHED_DEADLINE`'s runtime limit is safer.
+
+</details>
+
+### S10 · Why fixed priorities in a spacecraft? (OS-3.6)
+
+EDF can use 100% of the CPU while RMS guarantees only about 69% to 83%. Why do many safety-critical systems still use RMS (fixed priorities)?
+
+<details><summary>Answer</summary>
+
+Predictability under **overload**. If a task overruns (bursts can be longer than estimated), RMS fails gracefully: the lowest-priority (least frequent) tasks miss deadlines while critical high-rate tasks are protected. EDF can cause a cascade where many tasks miss deadlines.
+
+Fixed priorities are also simpler: low scheduling overhead, easy to analyze and certify, supported by every RTOS. Many real task sets are schedulable by RMS well above the Liu–Layland bound (the bound is only sufficient), so the wasted capacity is often small.
+
+</details>
+
+### S11 · Why no OS runs SRTF (OS-3.3, OS-3.4)
+
+SRTF is provably optimal for average waiting time. Why do general-purpose OSes not implement it, and what do they do instead?
+
+<details><summary>Answer</summary>
+
+The OS does not know how long the next CPU burst will be. It could only predict (for example, exponential averaging), and a wrong prediction destroys the optimality. SRTF also starves long jobs and does not address response time.
+
+Instead, OSes approximate "short jobs first" **without predictions**: MLFQ and priority boosts learn from past behaviour (a task that blocks quickly stays high priority), and CFS/EEVDF favour tasks that have used little CPU recently. Tasks that behave like short bursts naturally run first.
+
+</details>
+
+### S12 · Two tasks on a hyper-threaded quad core (OS-3.5)
+
+A machine has 4 physical cores with 2 hardware threads each (8 logical CPUs). Two CPU-heavy tasks are started. The scheduler places both on logical CPUs 0 and 1, which are the two hardware threads of physical core 0, while cores 1 to 3 stay idle. Why is this bad, and what should a good scheduler do?
+
+<details><summary>Answer</summary>
+
+Two hardware threads of one core share its execution units and L1/L2 caches. Two CPU-heavy tasks compete for the same units, so each runs significantly slower than it would on its own core (SMT typically gives only a modest combined gain, not 2×).
+
+A topology-aware scheduler (Linux scheduling domains) spreads busy tasks across **physical cores first**, then uses sibling hardware threads only when all cores are busy. The exception is power saving: packing tasks onto fewer cores can let the others sleep.
+
+</details>
+
+---
+
+## References and Further Reading
+
+- **OSTEP:** Chapter 7 *Scheduling: Introduction* (FIFO, SJF, STCF, RR, turnaround vs response); Chapter 8 *Scheduling: The Multi-Level Feedback Queue* (the five rules, gaming, boost); Chapter 9 *Scheduling: Proportional Share* (lottery, stride, CFS); Chapter 10 *Multiprocessor Scheduling* (SQMS vs MQMS, affinity, migration).
+- **The Linux Programming Interface:** Chapter 35 *Process Priorities and Scheduling* (nice values, `SCHED_FIFO`/`SCHED_RR`, `sched_setscheduler`, CPU affinity).
+- **Mythili Vutukuru, IIT Bombay OS lectures:** the CPU scheduling lecture and the xv6 scheduler (`scheduler()`, `sched()`, `yield()` in `proc.c`); popular assignments modify it into priority or lottery scheduling.
+- **Silberschatz, Galvin, Gagne**, *Operating System Concepts*, Chapter 5 (for the standard exam-style examples, real-time scheduling, and Linux/Windows case studies).
+- Liu and Layland, "Scheduling Algorithms for Multiprogramming in a Hard-Real-Time Environment" (1973); Linux kernel documentation `sched-design-CFS` and `sched-eevdf`; `man 7 sched`, `man 1 chrt`, `man 1 taskset`.
+
+---
+
+**Next:** Unit 4, Process Synchronization (→ OS-4). Preemption means a thread can be stopped at *any* instruction, including halfway through updating shared data. The next unit is about making that safe.

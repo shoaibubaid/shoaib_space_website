@@ -1,12 +1,12 @@
 ---
-title: "OS Unit 1: Introduction and OS Structure"
+title: OS Unit 1 -  Introduction and OS Structure
 subject: OS
 unit: 1
 id: OS-1
 tags: [kernel, system-calls, interrupts, dual-mode, boot]
 prerequisites: []
 next: OS-2
-readTime: 9 min read
+readTime: 30 min read
 excerpt: What is Operating Systems
 floats: bulb.png, cpu.png, gpu.png, keyboard.png, monitor.png, ram.png, star_yellow.png
 background: cs/os.png
