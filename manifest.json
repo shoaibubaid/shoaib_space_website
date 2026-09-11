@@ -40,6 +40,19 @@
     ]
   },
 
+  "os": {
+    "group": "Computer",
+    "icon": "ti-cpu",
+    "color": "indigo",
+    "label": "Operating Systems",
+    "intro": "Explaining Operating Systems concepts in a structured way so that the future me can crack tech interviews",
+    "posts": [
+      "posts/cs/os/intro.md",
+      "posts/cs/os/1_os_intro.md"
+    ]
+  },
+
+
   "dsa": {
     "group": "Computer",
     "icon": "ti-cpu",
