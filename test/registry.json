@@ -4,12 +4,15 @@
     {
       "id": "OS",
       "name": "Operating Systems",
-      "notesUrl": "../notes/os/{file}",
+      "icon": "ti-cpu",
+      "color": "amber",
+      "notesCategory": "os",
+      "notesPath": "posts/cs/os/{file}",
       "units": [
         {
           "unit": 1,
           "title": "Introduction and OS Structure",
-          "questions": "questions/os/1.json",
+          "questions": "test/questions/os/1.json",
           "notes": "1.md",
           "sections": {
             "OS-1.1": "Role of an operating system",
@@ -24,7 +27,7 @@
         {
           "unit": 2,
           "title": "Processes and Threads",
-          "questions": "questions/os/2.json",
+          "questions": "test/questions/os/2.json",
           "notes": "2.md",
           "sections": {
             "OS-2.1": "The process concept",
@@ -39,7 +42,7 @@
         {
           "unit": 3,
           "title": "CPU Scheduling",
-          "questions": "questions/os/3.json",
+          "questions": "test/questions/os/3.json",
           "notes": "3.md",
           "sections": {
             "OS-3.1": "Scheduling criteria",
@@ -55,7 +58,7 @@
         {
           "unit": 4,
           "title": "Process Synchronization",
-          "questions": "questions/os/4.json",
+          "questions": "test/questions/os/4.json",
           "notes": "4.md",
           "sections": {
             "OS-4.1": "Race conditions and the critical-section problem",
@@ -71,7 +74,7 @@
         {
           "unit": 5,
           "title": "Deadlocks",
-          "questions": "questions/os/5.json",
+          "questions": "test/questions/os/5.json",
           "notes": "5.md",
           "sections": {
             "OS-5.1": "System model and the four necessary conditions",
@@ -85,7 +88,7 @@
         {
           "unit": 6,
           "title": "Memory Management",
-          "questions": "questions/os/6.json",
+          "questions": "test/questions/os/6.json",
           "notes": "6.md",
           "sections": {
             "OS-6.1": "Address binding, logical vs physical addresses, and the MMU",
@@ -100,7 +103,7 @@
         {
           "unit": 7,
           "title": "Virtual Memory",
-          "questions": "questions/os/7.json",
+          "questions": "test/questions/os/7.json",
           "notes": "7.md",
           "sections": {
             "OS-7.1": "Demand paging",
@@ -115,7 +118,7 @@
         {
           "unit": 8,
           "title": "File Systems",
-          "questions": "questions/os/8.json",
+          "questions": "test/questions/os/8.json",
           "notes": "8.md",
           "sections": {
             "OS-8.1": "The file concept",
@@ -130,7 +133,7 @@
         {
           "unit": 9,
           "title": "Disk and Storage",
-          "questions": "questions/os/9.json",
+          "questions": "test/questions/os/9.json",
           "notes": "9.md",
           "sections": {
             "OS-9.1": "Hard disk drives",
@@ -144,7 +147,7 @@
         {
           "unit": 10,
           "title": "I/O Systems",
-          "questions": "questions/os/10.json",
+          "questions": "test/questions/os/10.json",
           "notes": "10.md",
           "sections": {
             "OS-10.1": "I/O hardware",
@@ -157,7 +160,7 @@
         {
           "unit": 11,
           "title": "Protection and Security",
-          "questions": "questions/os/11.json",
+          "questions": "test/questions/os/11.json",
           "notes": "11.md",
           "sections": {
             "OS-11.1": "Goals and principles of protection",
@@ -170,7 +173,7 @@
         {
           "unit": 12,
           "title": "Virtualization and Modern OS",
-          "questions": "questions/os/12.json",
+          "questions": "test/questions/os/12.json",
           "notes": "12.md",
           "sections": {
             "OS-12.1": "Virtual machines and hypervisors",
@@ -182,27 +185,30 @@
       ]
     },
     {
-      "id": "CN",
-      "name": "Computer Networks",
-      "notesUrl": "../notes/cn/{file}",
-      "units": []
-    },
-    {
-      "id": "COA",
-      "name": "Computer Organization and Architecture",
-      "notesUrl": "../notes/coa/{file}",
-      "units": []
-    },
-    {
-      "id": "DBMS",
-      "name": "Database Management Systems",
-      "notesUrl": "../notes/dbms/{file}",
-      "units": []
-    },
-    {
       "id": "DSA",
       "name": "Data Structures and Algorithms",
-      "notesUrl": "../notes/dsa/{file}",
+      "icon": "ti-binary-tree",
+      "color": "teal",
+      "notesCategory": "dsa",
+      "notesPath": "posts/cs/dsa/{file}",
+      "units": []
+    },
+    {
+      "id": "ARCH",
+      "name": "Computer Architecture",
+      "icon": "ti-cpu",
+      "color": "coral",
+      "notesCategory": "architecture",
+      "notesPath": "posts/cs/architecture/{file}",
+      "units": []
+    },
+    {
+      "id": "SYSD",
+      "name": "System Design",
+      "icon": "ti-sitemap",
+      "color": "indigo",
+      "notesCategory": "system_design",
+      "notesPath": "posts/cs/system_design/{file}",
       "units": []
     }
   ]

@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/dist/tabler-icons.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.2/styles/atom-one-dark.min.css">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="test.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.2/highlight.min.js"></script>
 </head>
@@ -137,11 +138,174 @@
       <div id="talks-grid" class="category-grid"></div>
     </section>
 
+    <!-- ===================== PRACTICE TEST: SETUP ===================== -->
+    <section id="view-test-setup" class="view" hidden>
+      <a href="#" class="back-link" data-nav="blog"><i class="ti ti-arrow-left"></i> blog</a>
+      <h2 class="handwritten section-title">practice test</h2>
+      <p class="t-lede">Pick a subject and topics, choose how many questions and how long, then start. Nothing is saved — refreshing the page clears the test and its results.</p>
+
+      <div id="t-error" class="t-error" role="alert" hidden></div>
+
+      <fieldset class="t-step">
+        <legend>subject</legend>
+        <div id="t-subjects" class="t-subjects" role="radiogroup" aria-label="Subject"></div>
+      </fieldset>
+
+      <fieldset class="t-step" id="t-topic-step" hidden>
+        <legend>topics</legend>
+        <div class="t-tools">
+          <button type="button" class="t-link" data-all="yes">select all</button>
+          <button type="button" class="t-link" data-all="no">clear</button>
+        </div>
+        <div id="t-topics" class="t-topics"></div>
+      </fieldset>
+
+      <fieldset class="t-step" id="t-diff-step" hidden>
+        <legend>difficulty</legend>
+        <div class="t-chips" id="t-diffs">
+          <label class="t-chip"><input type="checkbox" class="t-cb" value="easy" checked> easy <span class="t-count" data-dc="easy"></span></label>
+          <label class="t-chip"><input type="checkbox" class="t-cb" value="medium" checked> medium <span class="t-count" data-dc="medium"></span></label>
+          <label class="t-chip"><input type="checkbox" class="t-cb" value="hard" checked> hard <span class="t-count" data-dc="hard"></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="t-step" id="t-len-step" hidden>
+        <legend>length and time</legend>
+        <p class="t-pool" id="t-pool" aria-live="polite"></p>
+        <div class="t-fields">
+          <label class="t-field">
+            <span class="t-field-label">questions</span>
+            <input type="number" id="t-count" min="1" value="25" inputmode="numeric">
+          </label>
+          <div class="t-presets" id="t-presets">
+            <button type="button" class="t-btn t-btn-sm" data-n="10">10</button>
+            <button type="button" class="t-btn t-btn-sm" data-n="25">25</button>
+            <button type="button" class="t-btn t-btn-sm" data-n="50">50</button>
+            <button type="button" class="t-btn t-btn-sm" data-n="all">all</button>
+          </div>
+        </div>
+        <div class="t-fields">
+          <label class="t-field">
+            <span class="t-field-label">minutes</span>
+            <input type="number" id="t-minutes" min="1" value="38" inputmode="numeric">
+          </label>
+          <button type="button" class="t-btn t-btn-sm" id="t-suggest">1.5 min per question</button>
+          <label class="t-inline"><input type="checkbox" class="t-cb" id="t-untimed"> untimed</label>
+        </div>
+      </fieldset>
+
+      <div class="t-start" id="t-start-row" hidden>
+        <button type="button" class="t-btn t-btn-primary" id="t-start"><i class="ti ti-player-play"></i> start test</button>
+        <p class="t-note">keys during the test: 1–4 or a–d to answer · arrows to move · m to mark</p>
+      </div>
+    </section>
+
+    <!-- ===================== PRACTICE TEST: RUNNING ===================== -->
+    <section id="view-test" class="view" hidden>
+      <div class="t-bar">
+        <div class="t-bar-info">
+          <span class="t-bar-subject" id="t-bar-subject"></span>
+          <span class="t-bar-progress" id="t-bar-progress"></span>
+        </div>
+        <div class="t-clock" id="t-clock" role="timer"></div>
+        <div class="t-bar-actions">
+          <button type="button" class="t-btn t-btn-sm t-sheet-toggle" id="t-sheet-toggle"><i class="ti ti-layout-grid"></i></button>
+          <button type="button" class="t-btn t-btn-sm" id="t-quit">quit</button>
+          <button type="button" class="t-btn t-btn-sm t-btn-primary" id="t-submit">submit</button>
+        </div>
+      </div>
+
+      <div class="t-layout">
+        <article class="t-qpane" aria-live="polite">
+          <div class="t-qmeta" id="t-qmeta"></div>
+          <div class="t-qtext" id="t-qtext"></div>
+          <div class="t-options" id="t-options" role="radiogroup" aria-label="Answer options"></div>
+          <div class="t-qactions">
+            <div>
+              <button type="button" class="t-btn t-btn-sm" id="t-mark"><i class="ti ti-flag"></i> mark for review</button>
+              <button type="button" class="t-btn t-btn-sm" id="t-clear">clear</button>
+            </div>
+            <div>
+              <button type="button" class="t-btn t-btn-sm" id="t-prev"><i class="ti ti-arrow-left"></i> previous</button>
+              <button type="button" class="t-btn t-btn-sm t-btn-primary" id="t-next">next <i class="ti ti-arrow-right"></i></button>
+            </div>
+          </div>
+        </article>
+
+        <aside class="t-sheet" id="t-sheet" aria-label="Answer sheet">
+          <div class="t-sheet-head">
+            <h3>answer sheet</h3>
+            <button type="button" class="t-btn t-btn-sm t-sheet-close" id="t-sheet-close">close</button>
+          </div>
+          <p class="t-sheet-counts" id="t-sheet-counts"></p>
+          <div class="t-grid" id="t-sheet-grid"></div>
+          <ul class="t-legend">
+            <li><span class="t-dot done"></span> answered</li>
+            <li><span class="t-dot seen"></span> seen</li>
+            <li><span class="t-dot"></span> not seen</li>
+            <li><span class="t-dot flag"></span> marked</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================== PRACTICE TEST: RESULTS ===================== -->
+    <section id="view-test-result" class="view" hidden>
+      <h2 class="handwritten section-title">how it went</h2>
+      <p class="t-score" id="t-score"></p>
+      <div class="t-bar-graph" id="t-graph" aria-hidden="true"></div>
+      <p class="t-note" id="t-time-note"></p>
+
+      <div class="t-result-actions">
+        <button type="button" class="t-btn t-btn-primary" id="t-again"></button>
+        <button type="button" class="t-btn" id="t-retake"><i class="ti ti-rotate"></i> retake these</button>
+        <button type="button" class="t-btn" id="t-new"><i class="ti ti-plus"></i> new test</button>
+      </div>
+
+      <div class="t-rgrid">
+        <section class="t-rblock">
+          <h3>answer sheet</h3>
+          <p class="t-rsub">tap a number to jump to it below</p>
+          <div class="t-grid" id="t-rsheet"></div>
+          <ul class="t-legend">
+            <li><span class="t-dot ok"></span> correct</li>
+            <li><span class="t-dot no"></span> wrong</li>
+            <li><span class="t-dot"></span> not answered</li>
+          </ul>
+        </section>
+        <section class="t-rblock">
+          <h3>by section</h3>
+          <p class="t-rsub">weakest first — open the notes from the section id</p>
+          <div id="t-by-topic"></div>
+          <h3 class="gap">by difficulty</h3>
+          <div id="t-by-diff"></div>
+        </section>
+      </div>
+
+      <section class="t-review">
+        <div class="t-review-head">
+          <h3>review</h3>
+          <div class="t-filters" id="t-filters" role="tablist" aria-label="Filter questions"></div>
+        </div>
+        <ol class="t-rv-list" id="t-rv-list"></ol>
+      </section>
+    </section>
+
+    <dialog id="t-dialog" class="t-dialog">
+      <h3>submit the test?</h3>
+      <p id="t-dialog-body"></p>
+      <div class="t-dialog-actions">
+        <button type="button" class="t-btn t-btn-sm" id="t-dialog-cancel">keep working</button>
+        <button type="button" class="t-btn t-btn-sm t-btn-primary" id="t-dialog-ok">submit</button>
+      </div>
+    </dialog>
+
   </main>
 
   <footer class="footer">made with tea and questionable sleep schedule</footer>
 </div>
 
 <script src="script.js"></script>
+<script src="test.js"></script>
 </body>
 </html>
