@@ -1,0 +1,1142 @@
+[
+ {
+  "id": "OS-1-001",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.1"
+  ],
+  "difficulty": "easy",
+  "question": "Which statement best describes the two main jobs of an operating system?",
+  "options": [
+   "Compiling source code and linking libraries into executables",
+   "Providing a graphical desktop and a web browser",
+   "Storing files on disk and running exactly one program at a time",
+   "Providing convenient abstractions over hardware, and managing and protecting shared resources"
+  ],
+  "answer": 3,
+  "explanation": "An OS turns awkward hardware into abstractions (files, processes, address spaces) and decides who gets which resource, while preventing programs from harming each other. Compilers, GUIs, and browsers are user-level software, not the OS's core responsibilities.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-002",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.1"
+  ],
+  "difficulty": "medium",
+  "question": "A kernel developer replaces the FCFS scheduling algorithm with round robin without touching the code that saves and restores registers. This is an example of:",
+  "options": [
+   "Replacing a monolithic kernel with a microkernel",
+   "Changing mechanism while keeping the policy",
+   "Changing policy while keeping the mechanism",
+   "Converting a batch system into a real-time system"
+  ],
+  "answer": 2,
+  "explanation": "Mechanism is how something is done (the context-switch code); policy is which or when (which process runs next). Separating them lets you swap FCFS for round robin without rewriting the switching mechanism.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-003",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.1"
+  ],
+  "difficulty": "easy",
+  "question": "On a typical Linux system, which of these runs in kernel mode?",
+  "options": [
+   "The page-fault handler",
+   "The bash shell",
+   "The ls utility",
+   "glibc's printf()"
+  ],
+  "answer": 0,
+  "explanation": "The page-fault handler is part of the kernel's memory manager. The shell, library functions like printf, and utilities like ls are ordinary user-mode programs, even though they are commonly considered part of 'the operating system' in the broad sense.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-004",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.1"
+  ],
+  "difficulty": "hard",
+  "question": "Two running copies of the same program each print the address of a global variable and both print `0x601040`, yet each copy stores a different value there. What explains this?",
+  "options": [
+   "The linker assigns each copy a different address, but printf hides it",
+   "Each process has its own virtual address space, which the OS maps to different physical memory",
+   "Each CPU core keeps a separate cached copy of the variable",
+   "The OS copies the variable between the processes on every context switch"
+  ],
+  "answer": 1,
+  "explanation": "Printed addresses are virtual. Both processes use the same virtual address, but their page tables map it to different physical frames. This is memory virtualization, one of OSTEP's three pillars.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-005",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.1"
+  ],
+  "difficulty": "medium",
+  "question": "Journaling in a file system primarily addresses which of OSTEP's three pillars?",
+  "options": [
+   "Scheduling",
+   "Virtualization",
+   "Concurrency",
+   "Persistence"
+  ],
+  "answer": 3,
+  "explanation": "Journaling keeps on-disk data consistent across crashes and power loss, which is persistence. Virtualization covers CPU and memory illusions; concurrency covers correct behaviour with many threads. Scheduling is a topic, not one of the three pillars.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-006",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.2"
+  ],
+  "difficulty": "easy",
+  "question": "The primary goal of a multiprogramming system is to:",
+  "options": [
+   "Allow many users to log in at once through terminals",
+   "Maximize CPU utilization by running another job when the current one waits for I/O",
+   "Guarantee that every job meets a deadline",
+   "Minimize response time for interactive users"
+  ],
+  "answer": 1,
+  "explanation": "Multiprogramming keeps several jobs in memory so that when one blocks on I/O, the CPU can work on another. Minimizing interactive response time is the goal of time-sharing, and deadlines belong to real-time systems.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-007",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.2"
+  ],
+  "difficulty": "medium",
+  "question": "Which hardware feature is essential for a time-sharing system but not required for basic multiprogramming?",
+  "options": [
+   "Direct memory access (DMA)",
+   "More than one CPU",
+   "A hard disk",
+   "A timer interrupt that lets the OS preempt the running job"
+  ],
+  "answer": 3,
+  "explanation": "Basic multiprogramming switches only when a job voluntarily blocks for I/O. Time-sharing must switch every few milliseconds regardless of what the job does, which requires a hardware timer that interrupts the running program and returns control to the kernel.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-008",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.2"
+  ],
+  "difficulty": "hard",
+  "question": "Processes spend 75% of their time waiting for I/O. Using the approximation CPU utilization ≈ 1 − pⁿ, what is the minimum number of processes in memory needed for at least 90% utilization?",
+  "options": [
+   "8",
+   "9",
+   "4",
+   "10"
+  ],
+  "answer": 1,
+  "explanation": "We need 0.75ⁿ ≤ 0.1. n ≥ ln 0.1 / ln 0.75 ≈ 8.004. Check n = 8: 0.75⁸ ≈ 0.1001, slightly above 0.1, giving 89.99%. So n = 9 is the minimum (0.75⁹ ≈ 0.075, utilization ≈ 92.5%).",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-009",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.2"
+  ],
+  "difficulty": "medium",
+  "question": "Which of the following is a hard real-time system?",
+  "options": [
+   "A web server",
+   "An online multiplayer game server",
+   "A video streaming player",
+   "An airbag deployment controller"
+  ],
+  "answer": 3,
+  "explanation": "In a hard real-time system, missing a deadline is a failure: an airbag that fires late is useless. Video playback, games, and web servers degrade gracefully when late, which makes them soft real-time at most.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-010",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.2"
+  ],
+  "difficulty": "hard",
+  "question": "Why do hard real-time systems typically avoid demand paging?",
+  "options": [
+   "Demand paging slows down every memory instruction, including those that hit in memory",
+   "Demand paging uses more memory than the system has",
+   "Real-time systems never have secondary storage",
+   "A page fault can add a large, unpredictable delay, making worst-case response time impossible to bound"
+  ],
+  "answer": 3,
+  "explanation": "Hard real-time correctness depends on guaranteed worst-case timing. A page fault may require a disk or flash read taking milliseconds at an unpredictable moment. RTOSes therefore avoid paging or lock all memory, trading flexibility for predictability.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-011",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.2"
+  ],
+  "difficulty": "easy",
+  "question": "In symmetric multiprocessing (SMP):",
+  "options": [
+   "Processors do not share main memory",
+   "Each processor runs a different operating system",
+   "One master processor runs the OS and assigns work to the others",
+   "Every processor runs the OS and can execute kernel code and any task"
+  ],
+  "answer": 3,
+  "explanation": "In SMP all processors are peers: each schedules itself and can run kernel code. Asymmetric multiprocessing uses a master processor, which is simpler but becomes a bottleneck. Processors without shared memory describe a distributed system.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-012",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.2"
+  ],
+  "difficulty": "medium",
+  "question": "What distinguishes a distributed system from a multiprocessor system?",
+  "options": [
+   "It can only run one process at a time",
+   "Its nodes have separate memories and communicate over a network",
+   "It does not need an operating system",
+   "Its processors share one main memory and one bus"
+  ],
+  "answer": 1,
+  "explanation": "A multiprocessor is tightly coupled: several CPUs share memory. A distributed system is loosely coupled: independent computers, each with its own memory and OS, cooperate by exchanging messages over a network.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-013",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.2"
+  ],
+  "difficulty": "hard",
+  "question": "A time-sharing system has 20 users, each always ready to run. The quantum is 40 ms and each context switch costs 10 ms. After a user's quantum ends, what is the worst-case time before that user runs again?",
+  "options": [
+   "800 ms",
+   "760 ms",
+   "950 ms",
+   "1,000 ms"
+  ],
+  "answer": 2,
+  "explanation": "The other 19 users each get a quantum plus a switch before this user is chosen again: 19 × (40 + 10) = 950 ms. Using 20 users gives 1,000 ms, and ignoring switch costs gives 760 ms; both are common mistakes.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-014",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.3"
+  ],
+  "difficulty": "easy",
+  "question": "Which event is asynchronous with respect to the instruction currently executing?",
+  "options": [
+   "A divide-by-zero exception",
+   "A system call trap",
+   "A page fault",
+   "A keyboard interrupt"
+  ],
+  "answer": 3,
+  "explanation": "A device interrupt can arrive between any two instructions and is unrelated to what the CPU is running. Page faults, traps, and divide errors are synchronous: they are caused by the current instruction and recur if it is re-executed with the same state.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-015",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.3"
+  ],
+  "difficulty": "hard",
+  "question": "After the kernel successfully handles a page fault (the page is now in memory), where does execution resume?",
+  "options": [
+   "At the beginning of the process's main function",
+   "In the process's SIGSEGV handler",
+   "At the same instruction that faulted, which is executed again",
+   "At the instruction after the one that faulted"
+  ],
+  "answer": 2,
+  "explanation": "A page fault is a fault: the faulting instruction did not complete, so after the kernel loads the page and fixes the page table, it returns to that same instruction, which now succeeds. Traps (system calls), in contrast, resume at the next instruction.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-016",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.3"
+  ],
+  "difficulty": "hard",
+  "question": "A C program on Linux executes an integer division by zero and has no signal handlers installed. What happens?",
+  "options": [
+   "The kernel re-executes the instruction until it succeeds",
+   "The CPU raises a divide-error exception, and the kernel sends SIGFPE, terminating the process",
+   "The floating-point unit raises a device interrupt that is queued for later",
+   "The CPU stores infinity in the result and execution continues"
+  ],
+  "answer": 1,
+  "explanation": "Integer division by zero is a synchronous fault that cannot be fixed. The kernel's handler converts it into SIGFPE, whose default action is to terminate the process (with a core dump). Nothing is retried, since retrying would fault again.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-017",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.3"
+  ],
+  "difficulty": "medium",
+  "question": "Why must the x86 instruction that loads the interrupt descriptor table (`lidt`) be privileged?",
+  "options": [
+   "Because it changes the process's page tables",
+   "Because user programs never receive interrupts",
+   "Because it is too slow to run in user mode",
+   "Otherwise a user program could point interrupts at its own code and take over the machine"
+  ],
+  "answer": 3,
+  "explanation": "The IDT tells the CPU where to jump, in kernel mode, on every interrupt and exception. If a user program could replace it, the next timer or keyboard interrupt would run the attacker's code with full privileges. The kernel sets it up once at boot.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-018",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.3"
+  ],
+  "difficulty": "hard",
+  "question": "A device delivers data at 200 KB/s (take 1 KB = 1,000 bytes), raising an interrupt for every 2 bytes. Each interrupt costs 5 µs of CPU time. What fraction of the CPU does handling this device consume?",
+  "options": [
+   "25%",
+   "100%",
+   "50%",
+   "10%"
+  ],
+  "answer": 2,
+  "explanation": "Interrupts per second = 200,000 / 2 = 100,000. CPU time = 100,000 × 5 µs = 0.5 s per second, i.e., 50%. This is why bulk devices use DMA, which interrupts once per large block instead of every few bytes.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-019",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.3"
+  ],
+  "difficulty": "hard",
+  "question": "A cache access takes 2 ns. On a miss, data comes from DRAM, adding 100 ns (so a miss costs 102 ns in total). What hit ratio gives an effective access time of 5 ns?",
+  "options": [
+   "99%",
+   "98%",
+   "97%",
+   "95%"
+  ],
+  "answer": 2,
+  "explanation": "EAT = h × 2 + (1 − h) × 102 = 102 − 100h. Setting 102 − 100h = 5 gives h = 0.97. Because the miss penalty is so large, small changes in hit ratio have big effects on average access time.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-020",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.3"
+  ],
+  "difficulty": "easy",
+  "question": "Caching is effective in computer systems mainly because of:",
+  "options": [
+   "Locality of reference",
+   "The dual-mode bit",
+   "Direct memory access",
+   "The high cost of DRAM"
+  ],
+  "answer": 0,
+  "explanation": "Programs tend to reuse recently accessed data (temporal locality) and access data near recently used data (spatial locality). That is why a small fast cache can serve most accesses, at every level from CPU caches to the TLB to the page cache.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-021",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.3"
+  ],
+  "difficulty": "medium",
+  "question": "Why does Linux split interrupt handling into a 'top half' and a 'bottom half'?",
+  "options": [
+   "The top half handles odd-numbered interrupts and the bottom half even-numbered ones",
+   "The top half runs in user mode and the bottom half in kernel mode",
+   "The top half does minimal urgent work quickly, and deferrable work runs later with interrupts enabled",
+   "The bottom half runs only when the system is idle"
+  ],
+  "answer": 2,
+  "explanation": "Interrupt handlers may run with interrupts disabled, so they must be short. Linux acknowledges the device in the top half and defers heavier processing to softirqs, tasklets, threaded handlers, or workqueues, which run later and can be preempted.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-022",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.3"
+  ],
+  "difficulty": "hard",
+  "question": "For which device is polling likely to be more efficient than interrupts?",
+  "options": [
+   "A keyboard used by a human typist",
+   "A hard disk with 10 ms average seek time",
+   "A slow line printer",
+   "A very fast device whose operations usually finish sooner than an interrupt could be handled"
+  ],
+  "answer": 3,
+  "explanation": "Handling an interrupt costs microseconds of saving state, running the handler, and switching back. If the device finishes faster than that, spinning briefly is cheaper. For slow devices, polling wastes the CPU while the device works, so interrupts are better.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-023",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.3"
+  ],
+  "difficulty": "medium",
+  "question": "Roughly how much slower is a random access to a hard disk than an access to DRAM?",
+  "options": [
+   "About 100 times slower",
+   "About a billion times slower",
+   "About 100,000 times slower",
+   "About 10 times slower"
+  ],
+  "answer": 2,
+  "explanation": "DRAM access is roughly 100 ns; a random HDD access is roughly 5 to 10 ms. The ratio is about 10⁵. This enormous gap motivates caching, buffering, page replacement policies, and disk scheduling throughout the OS.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-024",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.4"
+  ],
+  "difficulty": "medium",
+  "question": "Which of the following is NOT a privileged instruction on x86?",
+  "options": [
+   "`hlt` (halt the CPU)",
+   "The `syscall` instruction",
+   "Loading the CR3 register",
+   "`cli` (disable interrupts)"
+  ],
+  "answer": 1,
+  "explanation": "`syscall` must be usable from user mode: it is the controlled doorway into the kernel, always landing at an address the kernel configured. Loading CR3 (page tables), disabling interrupts, and halting the CPU could all break isolation, so they trap if attempted in user mode.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-025",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.4"
+  ],
+  "difficulty": "easy",
+  "question": "The CPU's mode bit indicates:",
+  "options": [
+   "Whether the current process is CPU-bound or I/O-bound",
+   "Whether interrupts are currently pending",
+   "Whether the running program is 32-bit or 64-bit",
+   "Whether the CPU is currently executing in kernel mode or user mode"
+  ],
+  "answer": 3,
+  "explanation": "The mode bit (on x86, the current privilege level in the low bits of CS) tells the hardware whether privileged instructions and kernel memory are allowed. It changes only on traps, interrupts, exceptions, and return-from-trap instructions.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-026",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.4"
+  ],
+  "difficulty": "medium",
+  "question": "On a modern OS, what prevents a user process stuck in `while(1);` from monopolizing its CPU forever?",
+  "options": [
+   "The MMU, which detects infinite loops",
+   "The mode bit, which limits how long user code may run",
+   "The timer interrupt, which periodically returns control to the kernel",
+   "The syscall instruction, which the loop eventually executes"
+  ],
+  "answer": 2,
+  "explanation": "The loop makes no system calls, so the OS would never run without help. The kernel programs a hardware timer; when it fires, the interrupt handler runs in kernel mode and the scheduler can switch to another process. Setting the timer is privileged, so the loop cannot disable it.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-027",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.4"
+  ],
+  "difficulty": "hard",
+  "question": "A user program on x86 Linux executes `cli` to stop interrupts from disturbing its loop. What happens?",
+  "options": [
+   "The instruction is silently ignored and the program continues",
+   "Interrupts stay disabled until the program executes `sti`",
+   "The whole machine hangs because the timer can no longer fire",
+   "The CPU raises a general protection fault, and the kernel terminates the process with a signal"
+  ],
+  "answer": 3,
+  "explanation": "`cli` is privileged in user mode (with the normal I/O privilege level). The CPU traps with a general protection fault, and Linux sends SIGSEGV, killing the process. The instruction never takes effect, preserving the kernel's ability to regain control via the timer.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-028",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.4"
+  ],
+  "difficulty": "hard",
+  "question": "Process A calls `getpid()`. Which of the following occurs?",
+  "options": [
+   "A context switch to init, which returns the PID",
+   "A mode switch into the kernel and back to A, but no context switch",
+   "A context switch to the kernel process and back",
+   "Neither a mode switch nor a context switch"
+  ],
+  "answer": 1,
+  "explanation": "A system call enters kernel mode (mode switch) and returns to the same process. The kernel is not a separate process to switch to. A context switch happens only if the kernel decides to run a different process, which a simple getpid() does not cause.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-029",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.4"
+  ],
+  "difficulty": "hard",
+  "question": "Process A calls `read()` on an empty pipe. Which sequence best describes what happens?",
+  "options": [
+   "Mode switch into the kernel; the kernel blocks A; the scheduler runs another process (a context switch)",
+   "The read returns 0 immediately, with no mode switch",
+   "Mode switch only; A spins in the kernel until data arrives",
+   "Context switch first, then a mode switch when data arrives"
+  ],
+  "answer": 0,
+  "explanation": "The system call enters the kernel. With no data and writers still present, the kernel puts A to sleep on the pipe's wait queue and switches to another process. When data arrives, A becomes ready and later resumes. Every context switch involves a mode switch, but not vice versa.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-030",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.4"
+  ],
+  "difficulty": "hard",
+  "question": "Which of the following is NOT a reason the CPU switches to a separate kernel stack when a process traps into the kernel?",
+  "options": [
+   "The kernel stack is faster because it always resides in the CPU cache",
+   "Another thread of the process could modify the user stack during the system call",
+   "The user stack pointer might be invalid or deliberately malicious",
+   "Kernel data left on the user stack would be visible to the user program"
+  ],
+  "answer": 0,
+  "explanation": "The real reasons are trust and isolation: the kernel cannot rely on a user-controlled stack pointer, other threads share the user stack, and kernel data must not leak. Speed is not the reason; kernel stacks live in ordinary memory.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-031",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.4"
+  ],
+  "difficulty": "medium",
+  "question": "In a cooperative (non-preemptive) multitasking OS, when does the OS regain control from a running program?",
+  "options": [
+   "Every time the hardware timer fires",
+   "Only when the program makes a system call, explicitly yields, or causes an exception",
+   "After each machine instruction",
+   "Whenever another process becomes ready"
+  ],
+  "answer": 1,
+  "explanation": "Without timer-based preemption, the OS runs only when the program enters it. A buggy program in an infinite loop without system calls therefore hangs the whole machine, which is what happened on early Mac OS and Windows 3.x.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-032",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.4"
+  ],
+  "difficulty": "hard",
+  "question": "Each timer interrupt, including the scheduling decision and a context switch, costs 20 µs. What is the shortest timer interval that keeps this overhead at or below 1% of CPU time?",
+  "options": [
+   "20 ms",
+   "1 ms",
+   "200 µs",
+   "2 ms"
+  ],
+  "answer": 3,
+  "explanation": "Overhead = 20 µs / interval ≤ 0.01, so interval ≥ 2,000 µs = 2 ms. A shorter interval improves responsiveness but increases overhead: at 1 ms it would be 2%, at 200 µs it would be 10%.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-033",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.4"
+  ],
+  "difficulty": "hard",
+  "question": "Which two hardware features together implement OSTEP's 'limited direct execution'?",
+  "options": [
+   "Multiple cores and hardware threads",
+   "CPU caches and the TLB",
+   "Dual-mode operation and a timer interrupt",
+   "Paging and DMA"
+  ],
+  "answer": 2,
+  "explanation": "Programs run directly on the CPU for speed. Dual mode stops them from executing dangerous operations, and the timer guarantees the OS regains control even from a program that never yields. Paging adds memory protection, but the core CPU mechanism is these two.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-034",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.4"
+  ],
+  "difficulty": "easy",
+  "question": "On x86, mainstream operating systems run the kernel and user programs in which privilege rings?",
+  "options": [
+   "Ring 0 for the kernel and ring 3 for user programs",
+   "Ring 3 for the kernel and ring 0 for user programs",
+   "All code runs in ring 0",
+   "Ring 1 for the kernel and ring 2 for user programs"
+  ],
+  "answer": 0,
+  "explanation": "x86 defines four rings, but Linux, Windows, and macOS use only two: ring 0 (most privileged) for the kernel and ring 3 for user code. The current privilege level is stored in the low 2 bits of the CS register.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-035",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.4"
+  ],
+  "difficulty": "hard",
+  "question": "Why could MS-DOS viruses easily hook the keyboard interrupt, while a Linux user process cannot?",
+  "options": [
+   "DOS programs were compiled with special privileges by default",
+   "Linux encrypts its interrupt vector table",
+   "Keyboards on modern PCs no longer use interrupts",
+   "DOS ran in real mode with no privilege levels or memory protection, so any program could overwrite the interrupt vector table"
+  ],
+  "answer": 3,
+  "explanation": "Protection requires hardware support. Real mode had no user/kernel distinction and no memory protection, so the interrupt table at address 0 was ordinary writable memory. On Linux, the IDT lives in kernel memory, and loading or modifying it requires kernel mode.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-036",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.5"
+  ],
+  "difficulty": "easy",
+  "question": "How does a user program request a service, such as reading a file, from the kernel?",
+  "options": [
+   "By calling the kernel's read function directly at its address",
+   "By writing a request into the kernel's memory",
+   "By sending a signal to process 1",
+   "By making a system call, which traps into the kernel at an entry point the kernel defined"
+  ],
+  "answer": 3,
+  "explanation": "User code cannot jump into kernel code or touch kernel memory. It places a system call number and arguments in registers and executes a trap instruction (syscall on x86-64), which switches to kernel mode at a fixed, kernel-configured address.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-037",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.5"
+  ],
+  "difficulty": "medium",
+  "question": "Which of these C library functions never makes a system call?",
+  "options": [
+   "fopen()",
+   "printf()",
+   "malloc() when the heap must grow",
+   "strlen()"
+  ],
+  "answer": 3,
+  "explanation": "strlen only scans memory the process already owns. printf eventually calls write when its buffer is flushed, fopen calls open, and malloc calls brk or mmap when it needs more memory from the kernel.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-038",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.5"
+  ],
+  "difficulty": "hard",
+  "question": "Which C library function makes a system call only sometimes, depending on its internal state?",
+  "options": [
+   "strlen()",
+   "malloc()",
+   "memcpy()",
+   "write()"
+  ],
+  "answer": 1,
+  "explanation": "malloc serves most requests from memory it already obtained and calls brk() or mmap() only when it needs more from the kernel. strlen and memcpy never enter the kernel; write() is a thin wrapper that always makes the write system call.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-039",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.5"
+  ],
+  "difficulty": "hard",
+  "question": "Why are system calls identified by a number rather than by the address of the kernel function to run?",
+  "options": [
+   "Because numbers are shorter to pass in a register",
+   "Because kernel functions have no addresses",
+   "So user code cannot jump to arbitrary kernel addresses; the kernel validates the number and dispatches through its own table",
+   "So that different processes can use different system call tables"
+  ],
+  "answer": 2,
+  "explanation": "If user code supplied an address, it could enter the kernel in the middle of a function, skipping checks. Instead it supplies a number; the kernel checks it against the table size and calls the corresponding handler. The entry point itself is fixed by the kernel at boot.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-040",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.5"
+  ],
+  "difficulty": "hard",
+  "question": "On x86-64 Linux, where does a program place the system call number before executing `syscall`?",
+  "options": [
+   "In the rdi register",
+   "In the rax register",
+   "In the rsp register",
+   "On the top of the user stack"
+  ],
+  "answer": 1,
+  "explanation": "The convention is: rax holds the system call number; arguments go in rdi, rsi, rdx, r10, r8, r9; the return value comes back in rax. Passing values in registers avoids the kernel having to read the untrusted user stack.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-041",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.5"
+  ],
+  "difficulty": "hard",
+  "question": "The raw `write` system call returns −9 in rax. What does the glibc `write()` wrapper return to its caller?",
+  "options": [
+   "0, with errno set to 9",
+   "−9, with errno unchanged",
+   "9, the number of bytes written",
+   "−1, with errno set to 9 (EBADF)"
+  ],
+  "answer": 3,
+  "explanation": "Linux system calls return a negative error code in the range −4095 to −1. The wrapper converts this to the POSIX convention: return −1 and set errno to the positive code. Error 9 is EBADF (bad file descriptor).",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-042",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.5"
+  ],
+  "difficulty": "hard",
+  "question": "A process calls `read(fd, buf, 4096)` where `buf` points into kernel memory. What does Linux do?",
+  "options": [
+   "Panics the kernel to protect it from corruption",
+   "Kills the process with SIGKILL before reading",
+   "Refuses to copy there and fails the call (typically with EFAULT), because it checks that the destination lies in user space",
+   "Copies the data there, since the kernel has access to all memory"
+  ],
+  "answer": 2,
+  "explanation": "Without a check, the kernel would overwrite its own memory with attacker-chosen data. Functions like copy_to_user verify that the whole range belongs to user space and handle faults safely, so the call fails with EFAULT instead.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-043",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.5"
+  ],
+  "difficulty": "hard",
+  "question": "A program calls `printf(\"x\\n\")` 1,000 times. Under `strace` in a terminal it shows about 1,000 `write` calls; with stdout redirected to a file, only a few. Why?",
+  "options": [
+   "printf detects strace and changes behaviour",
+   "The kernel merges writes to files but not to terminals",
+   "stdout is line-buffered when connected to a terminal and fully buffered when redirected to a file",
+   "strace cannot trace writes to files"
+  ],
+  "answer": 2,
+  "explanation": "stdio decides buffering at startup. For a terminal it flushes at every newline, so each line becomes one write. For a file it fills a buffer of several KB and writes only when full or at exit, drastically reducing system calls.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-044",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.5"
+  ],
+  "difficulty": "hard",
+  "question": "Writing 2,000,000 bytes costs 0.5 µs of fixed overhead per `write()` call plus 1 ns per byte copied. Approximately how long does it take using a 4,096-byte user buffer (one `write()` per full buffer)?",
+  "options": [
+   "About 2.2 ms",
+   "About 20 ms",
+   "About 1.0 s",
+   "About 0.25 ms"
+  ],
+  "answer": 0,
+  "explanation": "Calls = ⌈2,000,000 / 4,096⌉ = 489. Fixed cost ≈ 489 × 0.5 µs ≈ 0.24 ms; copy cost = 2,000,000 × 1 ns = 2 ms. Total ≈ 2.24 ms. Writing one byte per call would take about 1 s, almost all fixed overhead.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-045",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.5"
+  ],
+  "difficulty": "hard",
+  "question": "A benchmark calls `clock_gettime()` 10 million times, but `strace` shows no `clock_gettime` system calls. Why?",
+  "options": [
+   "strace cannot trace time-related calls",
+   "It is served by the vDSO, kernel-provided code that reads time data in user mode without trapping",
+   "The compiler removed the calls as dead code",
+   "The kernel batches identical system calls into one"
+  ],
+  "answer": 1,
+  "explanation": "Linux maps a small shared object, the vDSO, into every process. It reads timekeeping data the kernel exposes in a read-only page, so calls like clock_gettime and gettimeofday run entirely in user mode, costing nanoseconds instead of a full kernel entry.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-046",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.5"
+  ],
+  "difficulty": "medium",
+  "question": "Which category of system call does `ioctl()` belong to?",
+  "options": [
+   "Information maintenance",
+   "Process control",
+   "Device management",
+   "Protection"
+  ],
+  "answer": 2,
+  "explanation": "ioctl sends device-specific commands (eject a disk, set terminal speed, configure a network interface) to a driver. It is the escape hatch for device operations that do not fit read and write.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-047",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.5"
+  ],
+  "difficulty": "hard",
+  "question": "Output goes to a terminal. A program runs `printf(\"A\");` (no newline), then `fprintf(stderr, \"B\");`, then returns from main normally. What appears on the screen?",
+  "options": [
+   "BA",
+   "A only",
+   "AB",
+   "B only"
+  ],
+  "answer": 0,
+  "explanation": "stdout is line-buffered to a terminal, so 'A' waits in the buffer (no newline). stderr is unbuffered, so 'B' appears immediately. When main returns, exit() flushes stdout, printing 'A'. The screen shows BA.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-048",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.5"
+  ],
+  "difficulty": "easy",
+  "question": "Why do programmers normally use an API such as POSIX (through a library like glibc) instead of invoking system calls directly?",
+  "options": [
+   "Because APIs run in kernel mode and are faster",
+   "Because raw system calls are forbidden for user programs",
+   "Because system calls can only be made from assembly language by the kernel",
+   "Portability and convenience: the same code works across systems, and the library adds buffering and error handling"
+  ],
+  "answer": 3,
+  "explanation": "System call numbers and conventions differ between operating systems and architectures. A standard API hides these differences and adds useful features, so the same POSIX program compiles on Linux, macOS, and BSD.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-049",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.6"
+  ],
+  "difficulty": "easy",
+  "question": "Linux is best described as:",
+  "options": [
+   "A monolithic kernel with loadable modules",
+   "An exokernel",
+   "A strictly layered kernel",
+   "A microkernel"
+  ],
+  "answer": 0,
+  "explanation": "All major Linux services (scheduler, memory manager, file systems, drivers, networking) run in kernel mode in one address space. Loadable modules add flexibility, but modules run in kernel mode too, so it remains monolithic.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-050",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.6"
+  ],
+  "difficulty": "medium",
+  "question": "What is the main performance drawback of a microkernel design?",
+  "options": [
+   "Device drivers must be written in assembly language",
+   "It cannot support multiple processors",
+   "Services communicate through IPC messages, requiring extra mode switches and often context switches",
+   "The kernel is too large to fit in memory"
+  ],
+  "answer": 2,
+  "explanation": "In a microkernel, file systems and drivers are user-level servers. One application request may pass through several servers, each hop costing a trap into the kernel and a switch between processes, whereas a monolithic kernel uses ordinary function calls.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-051",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.6"
+  ],
+  "difficulty": "hard",
+  "question": "A network driver dereferences a NULL pointer. What is the likely outcome on MINIX 3 (driver as a user-level server) versus Linux (driver as a loadable module)?",
+  "options": [
+   "Linux isolates modules in separate address spaces, so only the module is unloaded",
+   "MINIX 3: only the driver process dies and can be restarted; Linux: a kernel oops or panic affecting the whole system",
+   "Both systems panic, since drivers always run in kernel mode",
+   "MINIX 3 panics, while Linux kills only the process that used the network"
+  ],
+  "answer": 1,
+  "explanation": "A Linux module runs in kernel mode in the kernel's address space; a fault there is a kernel fault. In MINIX 3 the driver is an ordinary process, so the fault kills only it, and a reincarnation server can restart it.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-052",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.6"
+  ],
+  "difficulty": "hard",
+  "question": "An application reads an uncached file block. In a microkernel, the file system and the disk driver are separate user-level servers, and every message is one user-to-kernel crossing. How many crossings are needed at minimum, compared with a monolithic kernel?",
+  "options": [
+   "6 versus 1",
+   "3 versus 2",
+   "4 in the microkernel versus 1 in the monolithic kernel",
+   "2 versus 1"
+  ],
+  "answer": 2,
+  "explanation": "Microkernel: app → file server (1), file server → driver (2), driver → file server with data (3), file server → app (4). Monolithic: one system call; the file system and driver interact through function calls inside the kernel.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-053",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.6"
+  ],
+  "difficulty": "hard",
+  "question": "Which benefit of a microkernel does a modular monolithic kernel like Linux NOT provide?",
+  "options": [
+   "Running drivers at full kernel speed",
+   "Loading and unloading drivers at run time",
+   "Fault isolation of device drivers",
+   "Adding drivers without recompiling the kernel"
+  ],
+  "answer": 2,
+  "explanation": "Linux modules can be loaded at run time without rebuilding the kernel, and they run as fast as built-in code. But they execute in kernel mode in the kernel's address space, so a buggy module can crash or compromise the whole system.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-054",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.6"
+  ],
+  "difficulty": "medium",
+  "question": "What is the main difficulty with a strictly layered OS design?",
+  "options": [
+   "Layers cannot be tested independently",
+   "Components often depend on each other, so a clean ordering of layers is hard to define, and requests pass through many layers",
+   "Only one layer can run in kernel mode",
+   "Layered systems cannot support virtual memory"
+  ],
+  "answer": 1,
+  "explanation": "Each layer may use only the layers below it. But the memory manager may need the disk driver and the disk driver may need memory buffers. Crossing many layers per request also adds overhead, so pure layering is rare in practice.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-055",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.6"
+  ],
+  "difficulty": "hard",
+  "question": "Apple's XNU kernel (macOS, iOS) is best described as:",
+  "options": [
+   "An exokernel with library operating systems",
+   "A pure microkernel with BSD services running as user-level servers",
+   "A fork of the Linux kernel",
+   "A hybrid that combines the Mach microkernel with BSD components, all running together in kernel space"
+  ],
+  "answer": 3,
+  "explanation": "XNU started from Mach, but for performance the BSD layer (processes, networking, file systems) and I/O Kit run in the same kernel address space. That combination of microkernel structure with monolithic placement is why it is called hybrid.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-056",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.7"
+  ],
+  "difficulty": "easy",
+  "question": "On most modern Linux distributions, the first user process (PID 1) is:",
+  "options": [
+   "systemd",
+   "GRUB",
+   "The BIOS",
+   "The kernel itself"
+  ],
+  "answer": 0,
+  "explanation": "After initializing, the kernel starts the init process with PID 1, which on most distributions is systemd. It starts services and login prompts and adopts orphaned processes. GRUB is the bootloader, which runs before the kernel.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-057",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.7"
+  ],
+  "difficulty": "medium",
+  "question": "How many bytes of a 512-byte Master Boot Record are available for boot code?",
+  "options": [
+   "510",
+   "512",
+   "446",
+   "448"
+  ],
+  "answer": 2,
+  "explanation": "The MBR holds 446 bytes of boot code, a 64-byte partition table (4 entries × 16 bytes), and the 2-byte signature 0x55AA. 446 bytes is too little for a real bootloader, so it only loads a larger second stage.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-058",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.7"
+  ],
+  "difficulty": "hard",
+  "question": "An MBR partition entry stores sector numbers as 32-bit values. What is the largest disk MBR can address if the disk uses 4 KB logical sectors?",
+  "options": [
+   "16 TiB",
+   "2 TiB",
+   "32 TiB",
+   "4 TiB"
+  ],
+  "answer": 0,
+  "explanation": "2³² sectors × 4,096 bytes = 2³² × 2¹² = 2⁴⁴ bytes = 16 TiB. With traditional 512-byte sectors the limit is 2⁴¹ bytes = 2 TiB, which is one reason GPT (with 64-bit addresses) replaced MBR.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-059",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.7"
+  ],
+  "difficulty": "medium",
+  "question": "How does UEFI booting differ from legacy BIOS booting?",
+  "options": [
+   "UEFI reads a bootloader file from a FAT-formatted EFI System Partition (and can verify its signature), instead of running code from sector 0",
+   "UEFI requires the MBR partition scheme",
+   "UEFI skips hardware initialization entirely",
+   "UEFI loads the kernel directly into the CPU cache"
+  ],
+  "answer": 0,
+  "explanation": "Legacy BIOS runs the 446 bytes of code in the MBR. UEFI understands GPT partitions and FAT file systems, loads an ordinary .efi file from the EFI System Partition, and with Secure Boot can refuse bootloaders that are not properly signed.",
+  "notes": "1.md"
+ },
+ {
+  "id": "OS-1-060",
+  "subject": "OS",
+  "unit": 1,
+  "tags": [
+   "OS-1.7"
+  ],
+  "difficulty": "hard",
+  "question": "Why does Linux typically boot with an initramfs?",
+  "options": [
+   "It replaces the bootloader on UEFI systems",
+   "It stores the kernel's page tables",
+   "It provides drivers and tools needed to mount the real root file system, such as storage or disk-encryption modules",
+   "It holds the swap space during boot"
+  ],
+  "answer": 2,
+  "explanation": "The kernel may not have built-in drivers for the disk controller, RAID, LVM, or encryption holding the root file system. The bootloader loads an initramfs into memory; the kernel uses it to load those modules and unlock or assemble the root device, then switches to the real root.",
+  "notes": "1.md"
+ }
+]

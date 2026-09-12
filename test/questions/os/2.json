@@ -1,0 +1,2092 @@
+[
+ {
+  "id": "OS-2-001",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.1"
+  ],
+  "difficulty": "easy",
+  "question": "Which statement about programs and processes is correct?",
+  "options": [
+   "A process is the executable file stored on disk",
+   "A program and a process are the same thing",
+   "A process is a program in execution with its own state, and one program can be running as several processes at once",
+   "Each program can have at most one process at a time"
+  ],
+  "answer": 2,
+  "explanation": "A program is a passive file (such as an ELF executable). A process is an active instance: registers, memory, open files. Three terminals running bash are three processes of one program.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-002",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.1"
+  ],
+  "difficulty": "easy",
+  "question": "Where are a C function's local (automatic) variables stored?",
+  "options": [
+   "On the stack",
+   "In the BSS segment",
+   "In the text segment",
+   "In the heap"
+  ],
+  "answer": 0,
+  "explanation": "Each function call pushes a stack frame holding its local variables, arguments, and return address. The frame is popped when the function returns, which is why returning a pointer to a local variable is a bug.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-003",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.1"
+  ],
+  "difficulty": "easy",
+  "question": "Memory returned by `malloc()` comes from:",
+  "options": [
+   "The kernel's memory",
+   "The heap (or, for large requests, a separate memory-mapped region)",
+   "The text segment",
+   "The stack"
+  ],
+  "answer": 1,
+  "explanation": "malloc manages the heap, growing it with brk() for small allocations; glibc serves large allocations with anonymous mmap() in the memory-mapped region. Either way it is dynamically allocated memory in the process's own address space, not the stack.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-004",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.1"
+  ],
+  "difficulty": "medium",
+  "question": "Inside a function, `static int calls;` is declared without an initializer. Where is `calls` stored?",
+  "options": [
+   "On the stack",
+   "In the BSS segment",
+   "In the heap",
+   "In the text segment"
+  ],
+  "answer": 1,
+  "explanation": "`static` gives the variable static storage duration: it exists for the whole program run, not per call. Uninitialized (zero-initialized) static data lives in BSS; initialized static data would be in the data segment.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-005",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.1"
+  ],
+  "difficulty": "medium",
+  "question": "Why doesn't a global array `int big[10000000];` (uninitialized) make the executable file about 40 MB larger?",
+  "options": [
+   "The array is stored in the kernel, not the executable",
+   "Global arrays are allocated on the heap at run time",
+   "It is in BSS; the executable records only its size, and the loader provides zero-filled memory",
+   "The compiler compresses large arrays"
+  ],
+  "answer": 2,
+  "explanation": "The BSS section occupies no space in the file, since its contents are all zero. At load time the kernel maps zero-filled pages for it, and physical memory is used only for pages actually touched.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-006",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.1"
+  ],
+  "difficulty": "hard",
+  "question": "At global scope: `const char *s = \"hi\";`. Where do `s` and the string `\"hi\"` reside?",
+  "options": [
+   "Both are on the stack",
+   "`s` is in BSS and the string is in the heap",
+   "`s` is in the data segment; the characters of `\"hi\"` are in read-only data near the code",
+   "Both are in the text segment and cannot be modified"
+  ],
+  "answer": 2,
+  "explanation": "`s` is an initialized global pointer variable, so it lives in the data segment (it can be changed to point elsewhere). The string literal is stored in a read-only section; writing to it through s causes a segmentation fault.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-007",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.1"
+  ],
+  "difficulty": "medium",
+  "question": "Which of the following is NOT typically stored in a process control block (PCB)?",
+  "options": [
+   "The contents of the process's heap",
+   "A pointer to the open-file table",
+   "The scheduling priority",
+   "Saved register values"
+  ],
+  "answer": 0,
+  "explanation": "The PCB holds the bookkeeping needed to manage and resume the process: identifiers, state, saved CPU context, scheduling data, memory-management pointers, open files, signals. The heap's contents live in the process's address space, not in the PCB.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-008",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.1"
+  ],
+  "difficulty": "hard",
+  "question": "Does the large gap between the heap and the stack in a process's address space consume physical memory?",
+  "options": [
+   "No, because the gap is stored on disk in swap space",
+   "Yes: the whole address space is reserved in RAM when the process starts",
+   "No: it is unmapped virtual address space, and physical frames are allocated only for pages actually used",
+   "Yes, but only on 32-bit systems"
+  ],
+  "answer": 2,
+  "explanation": "Page tables contain no valid mappings for the gap, so it uses no frames and no swap. Touching an address there causes a page fault that the kernel treats as a segmentation fault, unless the stack or heap is being legitimately extended.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-009",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.1"
+  ],
+  "difficulty": "easy",
+  "question": "In the Linux kernel, the process control block is the structure:",
+  "options": [
+   "struct proc",
+   "struct task_struct",
+   "struct file",
+   "struct inode"
+  ],
+  "answer": 1,
+  "explanation": "Linux represents every process and thread as a task_struct. struct proc is xv6's (much smaller) PCB. inode and file describe files and open files.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-010",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.1"
+  ],
+  "difficulty": "medium",
+  "question": "In xv6's `struct proc`, which field records what a sleeping process is waiting for?",
+  "options": [
+   "context",
+   "kstack",
+   "tf",
+   "chan"
+  ],
+  "answer": 3,
+  "explanation": "sleep(chan, lock) sets p->chan and marks the process SLEEPING; wakeup(chan) makes all processes sleeping on that channel RUNNABLE. tf is the trap frame, context holds kernel registers saved by swtch, and kstack is the kernel stack.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-011",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.1"
+  ],
+  "difficulty": "hard",
+  "question": "Which part of a PCB holds meaningful data only while the process is NOT running on a CPU?",
+  "options": [
+   "The pointer to the parent process",
+   "The list of open files",
+   "The process ID",
+   "The saved CPU register context"
+  ],
+  "answer": 3,
+  "explanation": "While a process runs, its register values are in the CPU itself and change every instruction. They are copied into the PCB (or kernel stack) only when it is switched out, and restored when it resumes. The PID, open files, and parent stay valid throughout.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-012",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.1"
+  ],
+  "difficulty": "easy",
+  "question": "How can you see the memory layout (mapped regions) of a running Linux process?",
+  "options": [
+   "By reading /proc/<pid>/maps",
+   "By running `df -h`",
+   "By reading /etc/passwd",
+   "By running `ls -l` on the executable"
+  ],
+  "answer": 0,
+  "explanation": "/proc/<pid>/maps lists every mapping: text, data, heap, stack, shared libraries, and memory-mapped files, with addresses and permissions. pmap presents the same information in a friendlier format.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-013",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.2"
+  ],
+  "difficulty": "easy",
+  "question": "A process waiting for a disk read to complete is in which state?",
+  "options": [
+   "Running",
+   "Terminated",
+   "Ready",
+   "Blocked (waiting)"
+  ],
+  "answer": 3,
+  "explanation": "A process that cannot continue until an event occurs, such as I/O completion, is blocked. It moves to Ready when the event happens, and to Running only when the scheduler picks it.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-014",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.2"
+  ],
+  "difficulty": "easy",
+  "question": "Which state transition cannot happen directly in the basic process-state model?",
+  "options": [
+   "Running → Ready",
+   "Ready → Running",
+   "Blocked → Running",
+   "Running → Blocked"
+  ],
+  "answer": 2,
+  "explanation": "When the awaited event occurs, a blocked process becomes Ready; it must then wait for the scheduler to dispatch it. The other three transitions are normal: blocking on I/O, being dispatched, and being preempted.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-015",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.2"
+  ],
+  "difficulty": "medium",
+  "question": "When the I/O that a blocked process was waiting for completes, the process moves to:",
+  "options": [
+   "The Terminated state",
+   "The New state",
+   "The Running state immediately",
+   "The Ready state"
+  ],
+  "answer": 3,
+  "explanation": "The interrupt handler marks the process ready and places it in the ready queue. Whether it runs immediately depends on the scheduler; on many systems a process waking from I/O gets a priority boost, but it still passes through Ready.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-016",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.2"
+  ],
+  "difficulty": "easy",
+  "question": "Which scheduler controls the degree of multiprogramming by deciding which jobs are admitted into memory?",
+  "options": [
+   "The medium-term scheduler (swapper)",
+   "The short-term (CPU) scheduler",
+   "The long-term (job) scheduler",
+   "The I/O scheduler"
+  ],
+  "answer": 2,
+  "explanation": "The long-term scheduler admits jobs and so decides how many processes compete for memory and CPU. The short-term scheduler picks the next ready process every few milliseconds; the medium-term scheduler swaps processes out and in.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-017",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.2"
+  ],
+  "difficulty": "medium",
+  "question": "Which scheduler swaps whole processes out to disk and back in to relieve memory pressure?",
+  "options": [
+   "The long-term scheduler",
+   "The dispatcher",
+   "The medium-term scheduler",
+   "The short-term scheduler"
+  ],
+  "answer": 2,
+  "explanation": "The medium-term scheduler (swapper) temporarily removes processes from memory, creating the ready-suspended and blocked-suspended states, and brings them back later. Modern systems mostly page out individual pages instead.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-018",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.2"
+  ],
+  "difficulty": "hard",
+  "question": "A process shown in state `D` by `ps` does not die for minutes after `kill -9`. It is not a zombie. Why?",
+  "options": [
+   "The process has installed a handler that catches SIGKILL",
+   "kill -9 only works on processes owned by root",
+   "It is in uninterruptible sleep inside the kernel (for example, waiting on unresponsive I/O); SIGKILL stays pending until it wakes",
+   "Processes in state D ignore SIGKILL permanently"
+  ],
+  "answer": 2,
+  "explanation": "State D is uninterruptible sleep: the kernel code path chose not to be woken by signals, often during disk or NFS I/O. Signals are acted on when the process is about to return to user mode, so SIGKILL waits until the I/O completes or times out. SIGKILL cannot be caught.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-019",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.2"
+  ],
+  "difficulty": "easy",
+  "question": "In the STAT column of Linux `ps`, a process marked `Z` is:",
+  "options": [
+   "Sleeping in an interruptible wait",
+   "Stopped by a signal",
+   "Running on a CPU",
+   "A zombie: terminated but not yet reaped by its parent"
+  ],
+  "answer": 3,
+  "explanation": "Z (shown as <defunct>) means the process has exited, its resources are freed, but its entry remains so the parent can collect the exit status with wait().",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-020",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.2"
+  ],
+  "difficulty": "hard",
+  "question": "Why can a process never move directly from Ready to Blocked?",
+  "options": [
+   "Because the ready queue is stored in the CPU",
+   "Because blocked processes must first be terminated",
+   "Because the long-term scheduler forbids it",
+   "A process blocks by requesting something (such as I/O or a lock), which it can only do while running"
+  ],
+  "answer": 3,
+  "explanation": "Blocking is caused by the process's own action: a system call that cannot complete immediately. A ready process is not executing, so it cannot make such a call. It must be dispatched (Running) first.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-021",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.2"
+  ],
+  "difficulty": "hard",
+  "question": "In xv6, a timer interrupt leads to a context switch. Where are the process's user-mode registers saved, and where are its kernel registers saved?",
+  "options": [
+   "User registers go into the trap frame on the kernel stack; callee-saved kernel registers go into the process's context via swtch",
+   "User registers go to the user stack; kernel registers are discarded",
+   "Both are saved in the per-CPU TSS",
+   "Both are saved into the PCB by the hardware"
+  ],
+  "answer": 0,
+  "explanation": "On the trap, hardware and alltraps push user state onto the kernel stack as the trap frame. When sched() calls swtch(), only callee-saved kernel registers need saving, because swtch is called like an ordinary C function; they go into p->context.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-022",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.2"
+  ],
+  "difficulty": "hard",
+  "question": "In xv6, how does the CPU get from running process A to running process B after a timer interrupt?",
+  "options": [
+   "The hardware task-switching mechanism in the TSS switches from A to B",
+   "A's kernel code calls sched(), which swtch()es to the per-CPU scheduler thread; the scheduler picks B and swtch()es into B's saved context",
+   "The timer handler loads B's registers directly into the CPU",
+   "A calls B's trap handler, which returns into B"
+  ],
+  "answer": 1,
+  "explanation": "xv6 never switches directly between processes. Every non-running process is suspended inside a call to sched() on its own kernel stack. The scheduler loop chooses the next RUNNABLE process, loads its page table (switchuvm), and swtch makes B's earlier sched() call return.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-023",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.2"
+  ],
+  "difficulty": "hard",
+  "question": "A direct context switch costs 2 µs. After each switch, the incoming process suffers 400 extra cache misses at 100 ns each. Processes alternate every 5 ms. Approximately what fraction of CPU time is switching overhead?",
+  "options": [
+   "About 2%",
+   "About 0.04%",
+   "About 0.8%",
+   "About 8%"
+  ],
+  "answer": 2,
+  "explanation": "Indirect cost = 400 × 100 ns = 40 µs; total per switch = 42 µs. Overhead = 42 / (5,000 + 42) ≈ 0.83%. Counting only the direct 2 µs gives 0.04%, which badly underestimates it: cold caches usually cost more than the switch itself.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-024",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.2"
+  ],
+  "difficulty": "hard",
+  "question": "Why is a context switch between two threads of the same process cheaper than one between two processes?",
+  "options": [
+   "Threads share a single program counter",
+   "Threads do not have registers to save",
+   "Thread switches are performed by hardware, not the kernel",
+   "The address space does not change, so no page-table switch or TLB flush is needed, and shared data stays warm in the caches"
+  ],
+  "answer": 3,
+  "explanation": "Each thread still has its own registers and stack to save and restore. But switching processes also reloads the page-table base (CR3) and, without PCIDs, invalidates the TLB; the new process then finds caches full of the old one's data.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-025",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.2"
+  ],
+  "difficulty": "hard",
+  "question": "Which of these does NOT by itself cause a context switch?",
+  "options": [
+   "The running process calling exit()",
+   "The running process blocking on disk I/O",
+   "A process calling getpid()",
+   "A timer interrupt ending the running process's quantum while others are ready"
+  ],
+  "answer": 2,
+  "explanation": "getpid enters the kernel and returns to the same process: a mode switch only. Quantum expiry with other ready processes, blocking, and exiting all require the scheduler to pick another process to run.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-026",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.2"
+  ],
+  "difficulty": "easy",
+  "question": "In which CPU mode does a context switch take place?",
+  "options": [
+   "Kernel mode",
+   "User mode",
+   "A special third mode used only for switching",
+   "Either mode, chosen by the process"
+  ],
+  "answer": 0,
+  "explanation": "Switching requires saving registers into kernel data structures, changing the page-table base, and switching kernel stacks, all privileged operations. It happens inside the kernel after a trap, interrupt, or exception.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-027",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.2"
+  ],
+  "difficulty": "hard",
+  "question": "A batch system's long-term scheduler admits only I/O-bound jobs. What is the most likely result?",
+  "options": [
+   "Both the CPU and devices are fully utilized",
+   "The CPU is saturated and the devices are idle",
+   "The ready queue is often empty and the CPU sits idle while devices are busy",
+   "Thrashing, because I/O-bound jobs use a lot of memory"
+  ],
+  "answer": 2,
+  "explanation": "I/O-bound jobs run short CPU bursts and then wait for devices. If every job is like this, they are mostly blocked at the same time, leaving nothing for the CPU. A good mix of I/O-bound and CPU-bound jobs keeps both busy.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-028",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.2"
+  ],
+  "difficulty": "hard",
+  "question": "During a context switch between two processes on x86, which register must be reloaded to switch the address space?",
+  "options": [
+   "The IDT register",
+   "CR3, the page-table base register",
+   "The GDT register",
+   "The instruction pointer only"
+  ],
+  "answer": 1,
+  "explanation": "CR3 holds the physical address of the top-level page table. Loading the new process's value makes all virtual addresses translate through its page tables. The IDT and GDT are system-wide and normally stay the same.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-029",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "easy",
+  "question": "What does fork() return in the child process?",
+  "options": [
+   "−1",
+   "The parent's PID",
+   "The child's own PID",
+   "0"
+  ],
+  "answer": 3,
+  "explanation": "fork returns 0 in the child and the child's PID in the parent, which is how the two copies tell themselves apart. The child can find its own PID with getpid() and its parent's with getppid().",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-030",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "easy",
+  "question": "What does a successful fork() return in the parent process?",
+  "options": [
+   "The parent's own PID",
+   "1",
+   "0",
+   "The PID of the newly created child"
+  ],
+  "answer": 3,
+  "explanation": "The parent receives the child's PID so it can later wait for or signal that specific child. The child receives 0.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-031",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "easy",
+  "question": "If fork() fails (for example, because the process limit is reached), what happens?",
+  "options": [
+   "The child is created but returns −1",
+   "It returns 0 in both processes",
+   "The calling process is terminated",
+   "It returns −1 in the calling process and no child is created"
+  ],
+  "answer": 3,
+  "explanation": "On failure, there is no child, so fork returns only once, in the parent, with −1 and errno set (such as EAGAIN or ENOMEM). Programs must check for this case.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-032",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "medium",
+  "question": "Immediately after fork(), which process runs first?",
+  "options": [
+   "Always the parent",
+   "Always the child",
+   "Both run on the same CPU in lockstep",
+   "It is not specified; it depends on the scheduler"
+  ],
+  "answer": 3,
+  "explanation": "Either may run first, and on a multicore machine both may run at once. Code that depends on the order without synchronization (such as wait()) has a race condition.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-033",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "medium",
+  "question": "Where does the child process begin executing after fork()?",
+  "options": [
+   "At the return from the fork() call, the same point as the parent",
+   "At the beginning of the program's entry point (_start)",
+   "At the beginning of main()",
+   "At a function specified as an argument to fork()"
+  ],
+  "answer": 0,
+  "explanation": "The child is a copy of the parent, including the program counter and stack, so both continue from the return of fork(). Only the return value differs. Creating a thread that starts at a given function is what pthread_create does.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-034",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "How many processes exist in total (including the original) after this code runs, assuming every fork succeeds?\n```c\nfor (int i = 0; i < 3; i++)\n    fork();\n```",
+  "options": [
+   "8",
+   "4",
+   "3",
+   "6"
+  ],
+  "answer": 0,
+  "explanation": "Every existing process forks in each iteration, doubling the count: 1 → 2 → 4 → 8. Seven new processes are created. The general rule for n unconditional forks in sequence is 2ⁿ processes.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-035",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "With output to a terminal, how many lines of `x` are printed?\n```c\nfork();\nfork();\nfork();\nprintf(\"x\\n\");\n```",
+  "options": [
+   "3",
+   "8",
+   "4",
+   "7"
+  ],
+  "answer": 1,
+  "explanation": "Three forks create 2³ = 8 processes, and each executes the printf once. Since the newline flushes the line-buffered terminal output before any later fork, there is no buffering duplication.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-036",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "How many processes exist in total (including the original) after this statement, assuming every fork succeeds?\n```c\nfork() && fork() || fork();\n```",
+  "options": [
+   "6",
+   "5",
+   "8",
+   "4"
+  ],
+  "answer": 1,
+  "explanation": "Parse as (A && B) || C. The original P does A (child C1 gets 0, so it skips B and does C, creating C4). P gets nonzero, does B; P gets nonzero, so it skips C. B's child C2 gets 0, so it does C, creating C3. Processes: P, C1, C2, C3, C4 = 5.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-037",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "How many processes exist in total (including the original) after this code, assuming every fork succeeds?\n```c\nif (fork() || fork())\n    fork();\n```",
+  "options": [
+   "3",
+   "6",
+   "4",
+   "5"
+  ],
+  "answer": 3,
+  "explanation": "P: first fork nonzero → condition true → forks again (P, C2). Child C1: first fork 0 → evaluates second fork. C1 gets nonzero → true → forks (C3). C1's child C4 gets 0 → false → no fork. Total: P, C1, C2, C3, C4 = 5.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-038",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "With stdout connected to a terminal and no `fflush`, how many `-` characters does this print?\n```c\nfor (int i = 0; i < 2; i++) {\n    fork();\n    printf(\"-\");\n}\n```",
+  "options": [
+   "3",
+   "6",
+   "4",
+   "8"
+  ],
+  "answer": 3,
+  "explanation": "Without a newline, each '-' stays in the stdio buffer. At the second fork, the buffer (already holding '-') is copied into the child. Each of the 4 final processes ends with '--' in its buffer and flushes it at exit: 4 × 2 = 8. With immediate output it would be 6.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-039",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "```c\nprintf(\"starting\\n\");\nif (fork() == 0) { printf(\"child\\n\"); return 0; }\nwait(NULL);\nprintf(\"parent\\n\");\n```\nRun in a terminal, `starting` appears once. Run as `./prog > log.txt`, it appears twice in the file. Why?",
+  "options": [
+   "When redirected, stdout is fully buffered, so \"starting\" is still in the buffer at fork and both processes flush a copy",
+   "The child re-executes main from the beginning",
+   "The shell runs the program twice when output is redirected",
+   "The kernel duplicates writes to files after fork"
+  ],
+  "answer": 0,
+  "explanation": "To a terminal, the newline flushes the line immediately, before fork. To a file, stdio buffers fully, so the unflushed text is part of the memory the child inherits. Fix it with fflush(stdout) before fork, or have the child exit with _exit().",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-040",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "medium",
+  "question": "What does the parent print?\n```c\nint x = 100;\nif (fork() == 0) { x++; return 0; }\nwait(NULL);\nprintf(\"%d\\n\", x);\n```",
+  "options": [
+   "It is unpredictable",
+   "101",
+   "102",
+   "100"
+  ],
+  "answer": 3,
+  "explanation": "After fork, the child has its own copy of the address space (implemented with copy-on-write). The child's increment modifies only its copy. The parent's x remains 100, regardless of the order in which they run.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-041",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "After fork(), parent and child both print `&x` and see the same address, but after the child modifies x they see different values. Why?",
+  "options": [
+   "The kernel swaps the values on every context switch",
+   "The address is physical, and the hardware keeps two versions of each byte",
+   "The printed address is virtual; after the write, copy-on-write maps that virtual page to different physical frames in the two processes",
+   "printf prints a relocated address that differs from the real one"
+  ],
+  "answer": 2,
+  "explanation": "fork copies page tables, so both processes use the same virtual addresses, initially mapping to shared read-only frames. The first write triggers a copy-on-write fault, giving the writer a private copy of the page.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-042",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "medium",
+  "question": "Which of the following is NOT inherited by a child created with fork()?",
+  "options": [
+   "Signal handlers (dispositions)",
+   "The current working directory",
+   "Open file descriptors",
+   "The parent's pending signals"
+  ],
+  "answer": 3,
+  "explanation": "The child starts with an empty set of pending signals, along with reset timers and resource-usage counters and a new PID. File descriptors, handlers, signal mask, cwd, environment, and memory contents are all inherited.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-043",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "Program A opens `log.txt` and then forks; parent and child each write 100 lines. Program B forks first, then each process opens `log.txt` separately and writes 100 lines. Which program is likely to lose lines, and why?",
+  "options": [
+   "Neither, because the kernel always appends",
+   "A, because inherited descriptors are closed when the parent writes",
+   "B, because each open() creates its own file offset, so the processes overwrite each other's data",
+   "A, because the child's descriptor is invalid after fork"
+  ],
+  "answer": 2,
+  "explanation": "In A, both descriptors refer to one open file description with a shared offset, so writes land one after another. In B, two separate open file descriptions each start at offset 0. Opening with O_APPEND would fix B.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-044",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "After a successful execve(), which of the following is preserved from before the call?",
+  "options": [
+   "The PID and open file descriptors not marked close-on-exec",
+   "Installed (caught) signal handlers",
+   "The stack and local variables",
+   "The contents of the heap"
+  ],
+  "answer": 0,
+  "explanation": "exec replaces the program image: code, data, heap, and stack are rebuilt from the new executable. The process identity remains (PID, parent, credentials, cwd, open descriptors without FD_CLOEXEC). Caught handlers reset to default because their code no longer exists.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-045",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "easy",
+  "question": "What does exec() return when it succeeds?",
+  "options": [
+   "1",
+   "It does not return, because the calling program has been replaced",
+   "0",
+   "The PID of the new program"
+  ],
+  "answer": 1,
+  "explanation": "On success, the old code no longer exists, so there is nothing to return to; execution starts at the new program's entry point. exec returns only on failure, with −1 and errno set.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-046",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "```c\nexecvp(argv[1], &argv[1]);\nprintf(\"Done running %s\\n\", argv[1]);\n```\nUsers report that the second line sometimes prints. When?",
+  "options": [
+   "When the new program calls exit(0)",
+   "Never; exec never returns",
+   "When the new program finishes running",
+   "When execvp fails, for example if the command does not exist or is not executable"
+  ],
+  "answer": 3,
+  "explanation": "exec returns only on failure (ENOENT, EACCES, ENOEXEC and so on). The correct code is perror(\"execvp\"); _exit(127); after the call. The message here is misleading because it prints only when nothing ran.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-047",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "medium",
+  "question": "According to OSTEP, why does UNIX split process creation into separate fork() and exec() calls?",
+  "options": [
+   "Because exec must always run in the parent",
+   "Because the hardware cannot create and load a process in one step",
+   "To make process creation faster than a single combined call",
+   "The child can adjust its environment (such as redirecting file descriptors) between fork and exec, before the new program starts"
+  ],
+  "answer": 3,
+  "explanation": "The shell forks, then in the child opens files and uses dup2 to set up redirections or pipes, then execs the program. The program simply uses file descriptors 0, 1, and 2, unaware of the redirection.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-048",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "To run `wc -l < in.txt > out.txt`, a shell forks. What should the child do before calling exec?",
+  "options": [
+   "Ask the kernel to redirect the parent's descriptors",
+   "Call exec first, then open the files inside wc",
+   "Open both files, dup2() them onto descriptors 0 and 1, and close the original descriptors",
+   "Pass the file names to wc as extra arguments"
+  ],
+  "answer": 2,
+  "explanation": "Descriptors survive exec. After dup2(in, 0) and dup2(out, 1), wc reads standard input and writes standard output as usual, but they now refer to the files. Closing the originals avoids leaking extra descriptors.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-049",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "medium",
+  "question": "What is a zombie process?",
+  "options": [
+   "A process whose parent has terminated",
+   "A process stuck in an infinite loop",
+   "A process that is blocked forever on I/O",
+   "A process that has terminated but whose parent has not yet collected its exit status with wait()"
+  ],
+  "answer": 3,
+  "explanation": "When a process exits, its memory and resources are released, but its process-table entry and exit status remain until the parent reaps it. A process whose parent died first is an orphan, a different situation.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-050",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "medium",
+  "question": "What happens to a process whose parent terminates first (an orphan)?",
+  "options": [
+   "It is re-parented to init (PID 1) or a designated subreaper, which will reap it",
+   "It keeps its old parent PID forever",
+   "It is killed immediately",
+   "It becomes a zombie"
+  ],
+  "answer": 0,
+  "explanation": "The kernel assigns orphans a new parent, traditionally init (PID 1) or a subreaper on modern Linux. That process calls wait(), so when the orphan exits it does not remain a zombie indefinitely.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-051",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "`ps` shows hundreds of `<defunct>` processes. `kill -9` on each has no effect. What are two ways to get rid of them?",
+  "options": [
+   "Reboot is the only way",
+   "Use kill -9 with root privileges",
+   "Make the parent reap them (with wait/waitpid, e.g. from a SIGCHLD handler), or terminate the parent so init adopts and reaps them",
+   "Send them SIGCONT first, then SIGKILL"
+  ],
+  "answer": 2,
+  "explanation": "Zombies are already dead; there is no code to receive a signal, so kill cannot affect them. Only reaping removes the entry. If the parent will not reap, killing it makes the zombies orphans; init adopts them and reaps them.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-052",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "A parent forks 10 children that all exit at about the same time. Its SIGCHLD handler is `void h(int s) { wait(NULL); }`. Afterwards, several children are still zombies. Why?",
+  "options": [
+   "wait() cannot be called inside a signal handler",
+   "Standard signals are not queued, so multiple SIGCHLDs collapse into fewer handler invocations, and each call reaps only one child",
+   "SIGCHLD is sent only for the first child",
+   "The children exited before the handler was installed, so they can never be reaped"
+  ],
+  "answer": 1,
+  "explanation": "While SIGCHLD is pending or blocked during the handler, further SIGCHLDs merge into it. The handler must reap every exited child each time: while (waitpid(-1, NULL, WNOHANG) > 0); preferably saving and restoring errno.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-053",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "A server forks a child for each of 100 requests per second. Each child exits after 1 second, but the server never calls wait(). The PID limit is 32,768, and 768 PIDs are used by other processes. Roughly how long until fork() starts failing?",
+  "options": [
+   "About 320 seconds",
+   "About 32 seconds",
+   "It never fails, since the children exit",
+   "About 3,200 seconds"
+  ],
+  "answer": 0,
+  "explanation": "Each child becomes a zombie and keeps its PID. Available PIDs = 32,768 − 768 = 32,000; at 100 per second, they run out in about 320 s (5.3 minutes). A per-user process limit may be hit even sooner.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-054",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "medium",
+  "question": "What is the difference between exit() and _exit()?",
+  "options": [
+   "There is no difference on Linux",
+   "exit() runs atexit handlers and flushes stdio buffers before terminating; _exit() terminates immediately without doing so",
+   "exit() is a system call and _exit() is a library function",
+   "_exit() only terminates the current thread"
+  ],
+  "answer": 1,
+  "explanation": "exit is the C library function; after cleanup it calls the _exit system call (exit_group on Linux). _exit skips user-space cleanup, so unflushed stdio data is lost.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-055",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "Why should a child process call _exit() rather than exit() when its exec() fails?",
+  "options": [
+   "exit() would terminate the parent as well",
+   "exit() would flush the copy of the parent's stdio buffers and run the parent's atexit handlers, duplicating output or side effects",
+   "exit() is not allowed in a child process",
+   "_exit() retries the exec automatically"
+  ],
+  "answer": 1,
+  "explanation": "The child inherited copies of the parent's unflushed buffers and registered handlers. Calling exit would output data the parent will also output, and could perform cleanup (removing temp files, flushing databases) meant for the parent.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-056",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "medium",
+  "question": "After `waitpid(pid, &status, 0)`, how should the parent obtain the child's exit code?",
+  "options": [
+   "Read the child's errno",
+   "Check WIFEXITED(status), then use WEXITSTATUS(status)",
+   "Use the return value of waitpid",
+   "Use the value of status directly"
+  ],
+  "answer": 1,
+  "explanation": "status encodes how the child terminated. WIFEXITED is true for normal termination, and WEXITSTATUS extracts the low 8 bits passed to exit. waitpid's return value is the child's PID.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-057",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "A child is killed by SIGSEGV. After the parent's waitpid, which is true?",
+  "options": [
+   "WIFEXITED(status) is true and WEXITSTATUS(status) is 139",
+   "WIFSIGNALED(status) is true and WTERMSIG(status) is 11",
+   "WIFEXITED(status) is true and WEXITSTATUS(status) is 11",
+   "waitpid returns −1 because the child crashed"
+  ],
+  "answer": 1,
+  "explanation": "A child terminated by a signal did not exit normally, so WIFSIGNALED is true and WTERMSIG gives the signal number (SIGSEGV is 11). The value 139 = 128 + 11 is how shells report it in $?, not what WEXITSTATUS returns.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-058",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "Why does fork() of a process using 2 GB of memory complete in milliseconds on Linux?",
+  "options": [
+   "Copy-on-write: fork copies only page tables, and pages are copied later only if either process writes them",
+   "The child shares the parent's memory permanently, with no copying ever",
+   "The copy is performed by DMA in the background",
+   "Linux compresses the memory before copying it"
+  ],
+  "answer": 0,
+  "explanation": "Parent and child initially share all frames, marked read-only. A write causes a protection fault, and the kernel copies just that page. Pages that are never written, including all code, are never copied.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-059",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "easy",
+  "question": "Which system call lets a parent block until one of its children terminates?",
+  "options": [
+   "exec()",
+   "wait() (or waitpid())",
+   "kill()",
+   "exit()"
+  ],
+  "answer": 1,
+  "explanation": "wait blocks until any child terminates (or returns immediately with a zombie's status), and waitpid can wait for a specific child or return immediately with WNOHANG.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-060",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "A process has running children, none of which has exited. What does `waitpid(-1, &s, WNOHANG)` return?",
+  "options": [
+   "0",
+   "−1 with errno ECHILD",
+   "It blocks until a child exits",
+   "The PID of the oldest child"
+  ],
+  "answer": 0,
+  "explanation": "WNOHANG makes waitpid return immediately. It returns 0 when children exist but none has changed state, a child's PID when one has, and −1 with ECHILD only when the process has no children at all.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-061",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "With vfork(), what does the child do, and what happens to the parent?",
+  "options": [
+   "The child runs in the parent's address space without copying, and the parent is suspended until the child calls exec or _exit",
+   "The parent is terminated and replaced by the child",
+   "The child shares memory permanently, and both run concurrently",
+   "The child gets a private copy of memory, and both run concurrently"
+  ],
+  "answer": 0,
+  "explanation": "vfork was an optimization for the common fork-then-exec pattern. Because the child borrows the parent's memory, modifying variables or returning from the calling function corrupts the parent. Copy-on-write made it mostly unnecessary.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-062",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "medium",
+  "question": "Windows has no fork(). Which call creates a new process and loads a program into it in one step?",
+  "options": [
+   "CreateFile",
+   "ExitProcess",
+   "CreateProcess",
+   "WaitForSingleObject"
+  ],
+  "answer": 2,
+  "explanation": "CreateProcess takes the executable and many parameters (including handles to pass and the working directory) and creates the process with its first thread. POSIX offers a similar combined operation with posix_spawn.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-063",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "How does xv6's fork() arrange for the child to see a return value of 0?",
+  "options": [
+   "It copies the parent's trap frame into the child and sets the child's saved eax register to 0",
+   "It patches the fork() call instruction in the child's code",
+   "The hardware returns 0 to any newly created process",
+   "It calls a special function in the child that returns 0"
+  ],
+  "answer": 0,
+  "explanation": "The child's trap frame determines the register values it has when it returns to user mode. Setting tf->eax = 0 makes the child's fork return 0, while the parent's system call returns the child's PID in its own eax.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-064",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.3"
+  ],
+  "difficulty": "hard",
+  "question": "How does xv6's fork() copy memory, compared with Linux?",
+  "options": [
+   "xv6 copies every page of the parent eagerly with copyuvm(); Linux uses copy-on-write and copies pages only when written",
+   "Both use copy-on-write",
+   "Both copy all pages eagerly",
+   "xv6 uses copy-on-write; Linux copies eagerly"
+  ],
+  "answer": 0,
+  "explanation": "xv6 keeps things simple: copyuvm allocates new frames and copies all user memory at fork time. Adding copy-on-write fork is a classic xv6 exercise. Linux shares frames read-only and copies lazily, making fork fast.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-065",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.4"
+  ],
+  "difficulty": "easy",
+  "question": "Once it has been set up, which IPC mechanism is usually fastest for exchanging large amounts of data?",
+  "options": [
+   "Message queues",
+   "Signals",
+   "Pipes",
+   "Shared memory"
+  ],
+  "answer": 3,
+  "explanation": "After the region is mapped into both processes, data is exchanged with ordinary loads and stores, with no system calls or kernel copies. Pipes and message queues copy every byte through the kernel, and signals carry no data at all.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-066",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.4"
+  ],
+  "difficulty": "medium",
+  "question": "What is the main disadvantage of shared memory compared with message passing?",
+  "options": [
+   "It can only be used between a parent and its child",
+   "It requires a network connection",
+   "The kernel copies every byte, making it slow",
+   "The processes must synchronize access themselves, or they will have race conditions"
+  ],
+  "answer": 3,
+  "explanation": "Message passing has built-in synchronization: a receive waits for a send. With shared memory, the kernel is involved only at setup, and concurrent updates must be coordinated with locks or semaphores.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-067",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.4"
+  ],
+  "difficulty": "medium",
+  "question": "A circular buffer with BUFFER_SIZE = 10 uses `in` and `out` indices, where `in == out` means empty and `(in + 1) % 10 == out` means full, with no separate count. How many items can it hold at most?",
+  "options": [
+   "5",
+   "9",
+   "10",
+   "11"
+  ],
+  "answer": 1,
+  "explanation": "If all 10 slots could be filled, in would wrap around to equal out, which is indistinguishable from empty. So one slot is always left unused and the capacity is N − 1 = 9.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-068",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.4"
+  ],
+  "difficulty": "hard",
+  "question": "A producer and consumer share the circular buffer from OS-2.4 with BUFFER_SIZE = 8, starting at in = out = 0. The producer has produced 30 items and the consumer has consumed 26. What are in, out, and the number of items in the buffer?",
+  "options": [
+   "in = 30, out = 26, items = 4",
+   "in = 6, out = 2, items = 4",
+   "in = 2, out = 6, items = 4",
+   "in = 6, out = 2, items = 7"
+  ],
+  "answer": 1,
+  "explanation": "Each index advances modulo 8: in = 30 mod 8 = 6, out = 26 mod 8 = 2. Items = (in − out + 8) mod 8 = 4, which matches 30 − 26 and is within the capacity of 7.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-069",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.4"
+  ],
+  "difficulty": "easy",
+  "question": "After `int fd[2]; pipe(fd);`, which descriptor is the read end?",
+  "options": [
+   "Both ends are readable",
+   "fd[0]",
+   "fd[1]",
+   "Neither; you must call open() on the pipe"
+  ],
+  "answer": 1,
+  "explanation": "fd[0] is for reading and fd[1] for writing. A handy mnemonic: 0 is standard input (read) and 1 is standard output (write).",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-070",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.4"
+  ],
+  "difficulty": "medium",
+  "question": "When does read() on a pipe return 0 (end of file)?",
+  "options": [
+   "After exactly PIPE_BUF bytes have been read",
+   "When the writer calls fflush()",
+   "Whenever the pipe is momentarily empty",
+   "When the pipe is empty and every write-end descriptor, in all processes, has been closed"
+  ],
+  "answer": 3,
+  "explanation": "If the pipe is empty but some process still holds a write end, read blocks, since more data could arrive. EOF is reported only when no writer can exist, which is why every process must close pipe ends it does not use.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-071",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.4"
+  ],
+  "difficulty": "hard",
+  "question": "A parent creates a pipe and forks. The child reads until read() returns 0, then prints a total. The parent writes data, closes its write end, and calls wait(). The child forgot to close its own copy of the write end. What happens?",
+  "options": [
+   "The kernel detects the leak and closes the descriptor automatically",
+   "The child receives SIGPIPE and dies",
+   "The child prints the total correctly, since the parent closed its write end",
+   "Both hang: the child's read never returns 0 because the child itself still holds a write end, so the parent waits forever"
+  ],
+  "answer": 3,
+  "explanation": "EOF requires all write ends to be closed. After consuming the data, the child blocks waiting for more input that only it could write. The parent blocks in wait(). A leaked descriptor causes this classic deadlock.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-072",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.4"
+  ],
+  "difficulty": "hard",
+  "question": "A process writes to a pipe whose read ends have all been closed. What happens?",
+  "options": [
+   "The write blocks until a reader appears",
+   "The data is written and later discarded, and write returns success",
+   "write returns 0",
+   "The process receives SIGPIPE (terminating it by default); if SIGPIPE is ignored or handled, write fails with EPIPE"
+  ],
+  "answer": 3,
+  "explanation": "Writing to a pipe that nobody can read is pointless, so the kernel signals the writer. This is why `yes | head -1` terminates: when head exits, yes gets SIGPIPE on its next write.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-073",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.4"
+  ],
+  "difficulty": "hard",
+  "question": "On Linux, two processes each write 8,000-byte messages to the same pipe with single write() calls. Can the messages be interleaved?",
+  "options": [
+   "No: every write() to a pipe is atomic",
+   "No: pipes allow only one writer at a time",
+   "Yes: only writes of at most PIPE_BUF (4,096) bytes are guaranteed atomic",
+   "Yes, but only if the pipe was created with O_NONBLOCK"
+  ],
+  "answer": 2,
+  "explanation": "POSIX guarantees that writes up to PIPE_BUF bytes are not interleaved with other writers' data (4,096 on Linux; POSIX requires at least 512). Larger writes may be split into pieces that mix with data from other writers.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-074",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.4"
+  ],
+  "difficulty": "medium",
+  "question": "Which mechanism lets two unrelated processes communicate through a pipe identified by a name in the file system?",
+  "options": [
+   "The fork() call",
+   "A FIFO (named pipe) created with mkfifo()",
+   "An anonymous pipe created with pipe()",
+   "A signal"
+  ],
+  "answer": 1,
+  "explanation": "Anonymous pipes have no name, so only related processes that inherit the descriptors can use them. A FIFO appears as a special file; any process with permission can open it for reading or writing.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-075",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.4"
+  ],
+  "difficulty": "easy",
+  "question": "Which signal can never be caught, blocked, or ignored?",
+  "options": [
+   "SIGSEGV",
+   "SIGTERM",
+   "SIGKILL",
+   "SIGINT"
+  ],
+  "answer": 2,
+  "explanation": "SIGKILL (and SIGSTOP) always take their default action, so an administrator can always stop a runaway process. SIGTERM, SIGINT, and SIGSEGV can all be handled or, except for some synchronous faults, ignored.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-076",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.4"
+  ],
+  "difficulty": "hard",
+  "question": "While a process has SIGCHLD pending (not yet delivered), five more SIGCHLD signals are generated. How many times will its SIGCHLD handler run for these?",
+  "options": [
+   "Six times",
+   "Zero times",
+   "Five times",
+   "Once"
+  ],
+  "answer": 3,
+  "explanation": "Standard signals are recorded as a single pending bit per signal number, not a count. Multiple occurrences while pending merge into one delivery. Real-time signals (SIGRTMIN and above) are queued instead.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-077",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.4"
+  ],
+  "difficulty": "hard",
+  "question": "Why is calling printf() inside a signal handler dangerous?",
+  "options": [
+   "The handler runs in kernel mode, where printf is unavailable",
+   "printf is a system call, which is not allowed in handlers",
+   "printf always blocks all signals",
+   "printf is not async-signal-safe: if the signal interrupted code already inside printf or malloc, re-entering can deadlock or corrupt state"
+  ],
+  "answer": 3,
+  "explanation": "A handler can run between any two instructions. If the main program was holding stdio's internal lock or was midway through updating a buffer, the handler's printf may wait for that lock forever or corrupt the buffer. Handlers should use async-signal-safe functions like write.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-078",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.4"
+  ],
+  "difficulty": "medium",
+  "question": "When does the kernel deliver a pending, unblocked signal to a process?",
+  "options": [
+   "Immediately, even if the process is in the middle of an instruction",
+   "Only when the process terminates",
+   "When the process is about to return from the kernel to user mode, such as after a system call or interrupt",
+   "Only when the process calls pause()"
+  ],
+  "answer": 2,
+  "explanation": "The kernel checks for pending signals on the path back to user mode. If one needs a handler, it arranges the user stack so that the process runs the handler first. A running process is interrupted by the timer often enough that delivery is quick.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-079",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.4"
+  ],
+  "difficulty": "hard",
+  "question": "A process is blocked in read() on a terminal when a signal arrives. Its handler was installed with sigaction() without SA_RESTART. After the handler returns, what does read() do?",
+  "options": [
+   "The process is terminated",
+   "It returns −1 with errno set to EINTR",
+   "It returns 0, indicating end of file",
+   "It resumes waiting for input as if nothing happened"
+  ],
+  "answer": 1,
+  "explanation": "Without SA_RESTART, a slow system call interrupted by a handled signal fails with EINTR, and the program must retry. With SA_RESTART, the kernel restarts many such calls automatically.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-080",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.4"
+  ],
+  "difficulty": "medium",
+  "question": "In message passing, using a blocking send together with a blocking receive is known as:",
+  "options": [
+   "Spooling",
+   "A rendezvous",
+   "A race condition",
+   "Busy waiting"
+  ],
+  "answer": 1,
+  "explanation": "With both operations blocking, sender and receiver must meet: the sender waits until the message is received, and the receiver waits until one is sent. A zero-capacity queue forces this behaviour.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-081",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.5"
+  ],
+  "difficulty": "easy",
+  "question": "Which of the following is shared by all threads of a process?",
+  "options": [
+   "The stack",
+   "The register set",
+   "The program counter",
+   "The heap and global variables"
+  ],
+  "answer": 3,
+  "explanation": "Threads share the whole address space (code, globals, heap), open files, and signal handlers. Each has its own stack, registers, program counter, and signal mask.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-082",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.5"
+  ],
+  "difficulty": "easy",
+  "question": "Which of the following is private to each thread?",
+  "options": [
+   "The code segment",
+   "Open file descriptors",
+   "The heap",
+   "Its stack"
+  ],
+  "answer": 3,
+  "explanation": "Each thread needs its own stack to hold its own chain of function calls and local variables. Everything else in the address space is shared.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-083",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.5"
+  ],
+  "difficulty": "medium",
+  "question": "In a multithreaded C program, how is `errno` handled?",
+  "options": [
+   "errno is a single global shared by all threads",
+   "errno is stored in the kernel and fetched by a system call",
+   "Each thread has its own errno (thread-local storage), so one thread's failure does not overwrite another's error code",
+   "errno is disabled in multithreaded programs"
+  ],
+  "answer": 2,
+  "explanation": "errno is defined as a per-thread value, so a system call failing in one thread does not change the errno another thread is about to examine.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-084",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.5"
+  ],
+  "difficulty": "medium",
+  "question": "One thread of a multithreaded process dereferences a NULL pointer and has no handler for SIGSEGV. What happens?",
+  "options": [
+   "Only the faulting thread is terminated",
+   "The signal is delivered to the main thread, which continues",
+   "The faulting thread is restarted",
+   "The entire process, including all its threads, is terminated"
+  ],
+  "answer": 3,
+  "explanation": "Signal dispositions are per process, and the default action for SIGSEGV terminates the whole process. Isolation between threads is weak: a crash in one kills them all.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-085",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.5"
+  ],
+  "difficulty": "hard",
+  "question": "In a process using a many-to-one user-level thread library, one thread calls a blocking read() on a socket with no data. What happens to the other threads?",
+  "options": [
+   "The blocked thread is migrated to a new kernel thread",
+   "They continue on other CPU cores",
+   "They all stop running, because the kernel blocks the process's only kernel thread",
+   "They continue, because the library switches to another thread"
+  ],
+  "answer": 2,
+  "explanation": "The kernel sees one schedulable entity. When it blocks in read(), the user-level library never gets control to switch threads. Libraries work around this with non-blocking I/O and select or poll.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-086",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.5"
+  ],
+  "difficulty": "medium",
+  "question": "What is the main advantage of user-level threads over kernel-level threads?",
+  "options": [
+   "The kernel can schedule them with priorities",
+   "A blocking system call blocks only one thread",
+   "They can run in parallel on multiple cores",
+   "Creating and switching threads requires no system calls, so it is very fast"
+  ],
+  "answer": 3,
+  "explanation": "User-level thread operations are ordinary function calls in a library that save and restore registers in user space. The other three options are advantages of kernel-level threads.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-087",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.5"
+  ],
+  "difficulty": "hard",
+  "question": "A process uses a many-to-one user-level thread library with 8 threads on a 4-core machine. How many of its threads can execute at the same instant?",
+  "options": [
+   "Eight",
+   "Four",
+   "Two",
+   "One"
+  ],
+  "answer": 3,
+  "explanation": "The kernel schedules the process's single kernel thread on one core at a time. The user-level threads are multiplexed onto it, so they run concurrently but never in parallel.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-088",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.5"
+  ],
+  "difficulty": "hard",
+  "question": "On Linux, what does getpid() return when called from a thread other than the main thread?",
+  "options": [
+   "0, since only the main thread has a PID",
+   "The thread group ID, which is the same for all threads of the process",
+   "The PID of the thread's creator",
+   "A unique ID for that thread"
+  ],
+  "answer": 1,
+  "explanation": "Every Linux thread is a task with its own TID. Threads of one process form a thread group whose ID (TGID) equals the first thread's TID. getpid returns the TGID; gettid returns the individual thread's ID.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-089",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.5"
+  ],
+  "difficulty": "hard",
+  "question": "Linux creates both processes and threads with clone(). Which flag makes the new task share the caller's address space?",
+  "options": [
+   "CLONE_NEWPID",
+   "CLONE_SIGHAND",
+   "CLONE_VM",
+   "CLONE_FILES"
+  ],
+  "answer": 2,
+  "explanation": "CLONE_VM shares memory. pthread_create also passes CLONE_FILES (file descriptor table), CLONE_FS, CLONE_SIGHAND (signal handlers), and CLONE_THREAD. CLONE_NEWPID creates a new PID namespace, used for containers.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-090",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.5"
+  ],
+  "difficulty": "hard",
+  "question": "A process has 3 threads, each doing 10 ms of computation, then a 30 ms blocking I/O, then 10 ms of computation. There is one CPU, I/Os of different threads overlap, and switching is free. How long until all threads finish with a many-to-one model versus a one-to-one model?",
+  "options": [
+   "150 ms (many-to-one) versus 70 ms (one-to-one)",
+   "120 ms versus 70 ms",
+   "90 ms versus 70 ms",
+   "150 ms versus 60 ms"
+  ],
+  "answer": 0,
+  "explanation": "Many-to-one: each blocking I/O blocks everything, so 3 × 50 = 150 ms. One-to-one: T1, T2, T3 compute 0–30; their I/Os end at 40, 50, 60; the CPU idles 30–40; T1 runs 40–50, T2 50–60, T3 60–70. Total 70 ms.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-091",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.5"
+  ],
+  "difficulty": "hard",
+  "question": "Why do Chrome and Firefox run tabs in separate processes rather than as threads of one process?",
+  "options": [
+   "Threads cannot display graphics",
+   "Isolation: a crash or compromise in one tab's process cannot corrupt or read the others, and each process can be sandboxed",
+   "Processes share memory more easily than threads",
+   "Processes are cheaper to create than threads"
+  ],
+  "answer": 1,
+  "explanation": "Threads are cheaper and share data easily, but one bad tab could crash or read the memory of all others. Separate processes provide hardware-enforced isolation and allow restricted sandboxes, at the cost of memory and IPC.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-092",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.5"
+  ],
+  "difficulty": "medium",
+  "question": "In a multithreaded process, which is per-process and which is per-thread?",
+  "options": [
+   "Signal handlers (dispositions) are per-process; signal masks are per-thread",
+   "Both handlers and masks are per-process",
+   "Both handlers and masks are per-thread",
+   "Handlers are per-thread; masks are per-process"
+  ],
+  "answer": 0,
+  "explanation": "Installing a handler with sigaction affects the whole process. Each thread can block different signals with pthread_sigmask, which lets a program route asynchronous signals to one dedicated thread.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-093",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.6"
+  ],
+  "difficulty": "medium",
+  "question": "Which threading model do Linux (NPTL) and Windows use for their native threads?",
+  "options": [
+   "One-to-one",
+   "Two-level",
+   "Many-to-one",
+   "Many-to-many"
+  ],
+  "answer": 0,
+  "explanation": "Each user thread is backed by its own kernel thread, giving true parallelism and per-thread blocking. Kernel thread operations became cheap enough that M:N's complexity was not worth it.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-094",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.6"
+  ],
+  "difficulty": "medium",
+  "question": "Go's goroutines, many of which run on a smaller number of OS threads, are an example of which model?",
+  "options": [
+   "One-to-many",
+   "Many-to-many (M:N)",
+   "Many-to-one",
+   "One-to-one"
+  ],
+  "answer": 1,
+  "explanation": "The Go runtime multiplexes many goroutines onto a pool of kernel threads, typically one per core, and moves goroutines off a thread that blocks in a system call. This gives cheap threads and parallelism.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-095",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.6"
+  ],
+  "difficulty": "hard",
+  "question": "Expected output is 0 1 2 3 (in some order), but runs print things like `1 2 4 4`. Why?\n```c\nint i;\nfor (i = 0; i < 4; i++)\n    pthread_create(&t[i], NULL, worker, &i);  // worker prints *(int *)arg\n```",
+  "options": [
+   "printf is not thread-safe, so it prints wrong numbers",
+   "The threads run before pthread_create returns, so they see stale values",
+   "Every thread receives a pointer to the same variable i, which the loop keeps changing before the threads read it",
+   "pthread_create copies the arguments in reverse order"
+  ],
+  "answer": 2,
+  "explanation": "Threads read *arg whenever they are scheduled, possibly after i has been incremented. After the loop, i is 4, so late threads print 4. Pass the value itself ((void *)(long)i) or give each thread its own storage.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-096",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.6"
+  ],
+  "difficulty": "hard",
+  "question": "A thread function returns a pointer to one of its local variables, and main reads through that pointer after pthread_join(). What is the result?",
+  "options": [
+   "The pointer is automatically moved to the heap",
+   "main reads the correct value, because pthread_join copies the stack",
+   "pthread_join fails with an error",
+   "Undefined behaviour: the thread's stack no longer exists after the thread terminates"
+  ],
+  "answer": 3,
+  "explanation": "Local variables live on the thread's stack, which is freed or reused when the thread exits. The value must be returned by value, stored in memory the caller owns, or allocated with malloc.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-097",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.6"
+  ],
+  "difficulty": "hard",
+  "question": "main() creates worker threads and then returns immediately without joining them. What happens to the workers?",
+  "options": [
+   "They are terminated, because returning from main calls exit(), which ends the whole process",
+   "They are moved to init",
+   "They become zombie threads that keep running",
+   "They keep running until they finish"
+  ],
+  "answer": 0,
+  "explanation": "Returning from main is equivalent to exit, which terminates every thread. Use pthread_join, or end main with pthread_exit() to let the other threads continue.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-098",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.6"
+  ],
+  "difficulty": "hard",
+  "question": "A multithreaded server sometimes hangs right after fork(): the child calls malloc() and never returns, while the parent is fine. What is the most likely cause?",
+  "options": [
+   "Another parent thread held malloc's internal lock at the moment of fork; the child's copy of that lock stays locked and no thread exists to release it",
+   "malloc cannot be called after fork in any program",
+   "fork() copies all threads, which then deadlock with each other",
+   "The child's heap was not copied"
+  ],
+  "answer": 0,
+  "explanation": "POSIX fork copies only the calling thread. Locks held by other threads are copied in the locked state. After fork in a multithreaded program, the child should call only async-signal-safe functions and exec promptly, or use posix_spawn.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-099",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.6"
+  ],
+  "difficulty": "medium",
+  "question": "What is the main purpose of a thread pool?",
+  "options": [
+   "To give each thread its own address space",
+   "To make each thread run faster",
+   "To avoid creating a thread per request and to bound the number of concurrent threads",
+   "To guarantee that threads never block"
+  ],
+  "answer": 2,
+  "explanation": "A fixed set of threads is created at startup and repeatedly takes tasks from a queue. This removes per-request creation cost and prevents an overload from creating thousands of threads.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-100",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.6"
+  ],
+  "difficulty": "hard",
+  "question": "With deferred cancellation (the pthreads default), when does a thread that has been cancelled actually terminate?",
+  "options": [
+   "Only when it calls pthread_exit() itself",
+   "When the process exits",
+   "Immediately, at whatever instruction it is executing",
+   "When it reaches a cancellation point, such as read() or pthread_testcancel()"
+  ],
+  "answer": 3,
+  "explanation": "Asynchronous cancellation could stop a thread while it holds a lock or is halfway through updating shared data. Deferred cancellation waits for well-defined points where the thread can run cleanup handlers and release resources.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-101",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.6"
+  ],
+  "difficulty": "medium",
+  "question": "Why is strtok() unsafe to use from multiple threads at the same time?",
+  "options": [
+   "It makes a system call that is not thread-safe",
+   "It always allocates memory with malloc",
+   "It modifies the string, which threads cannot do",
+   "It keeps hidden static state between calls, which concurrent calls overwrite; strtok_r() takes that state as a parameter"
+  ],
+  "answer": 3,
+  "explanation": "strtok remembers its position in a static variable. Two threads tokenizing different strings would corrupt each other's position. Reentrant versions like strtok_r keep that state in a caller-provided variable.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-102",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.6"
+  ],
+  "difficulty": "hard",
+  "question": "In a multithreaded process, another process sends it SIGUSR1 with kill(). Which thread receives it?",
+  "options": [
+   "Every thread receives its own copy",
+   "One arbitrary thread that does not have SIGUSR1 blocked",
+   "Always the main thread",
+   "The thread that most recently made a system call"
+  ],
+  "answer": 1,
+  "explanation": "Process-directed signals are delivered to any thread that does not block them. A common design blocks signals in all threads and dedicates one thread to receive them with sigwait(). Signals caused by a thread's own fault go to that thread.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-103",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.7"
+  ],
+  "difficulty": "easy",
+  "question": "Three tasks are interleaved on a single-core CPU so that all make progress. This is:",
+  "options": [
+   "Parallelism but not concurrency",
+   "Neither concurrency nor parallelism",
+   "Both concurrency and parallelism",
+   "Concurrency but not parallelism"
+  ],
+  "answer": 3,
+  "explanation": "Concurrency means tasks make progress during overlapping time periods, which a single core achieves by interleaving. Parallelism requires executing at the same instant, which needs multiple cores.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-104",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.7"
+  ],
+  "difficulty": "hard",
+  "question": "A program is 25% serial and 75% perfectly parallelizable. What is its maximum speedup on 4 cores according to Amdahl's law?",
+  "options": [
+   "About 1.75×",
+   "About 2.29×",
+   "4×",
+   "3×"
+  ],
+  "answer": 1,
+  "explanation": "Speedup = 1 / (S + (1 − S)/N) = 1 / (0.25 + 0.75/4) = 1 / 0.4375 ≈ 2.29. Even with 4 cores, the serial quarter limits the gain severely.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-105",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.7"
+  ],
+  "difficulty": "hard",
+  "question": "If 5% of a program is inherently serial, what is the maximum speedup possible with an unlimited number of cores?",
+  "options": [
+   "Unlimited",
+   "95×",
+   "5×",
+   "20×"
+  ],
+  "answer": 3,
+  "explanation": "As N → ∞, speedup approaches 1/S = 1/0.05 = 20. However many cores are added, the serial 5% still takes the same time.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-106",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.7"
+  ],
+  "difficulty": "hard",
+  "question": "A program shows a speedup of 2.5 on 4 cores. Assuming Amdahl's model holds exactly, what is its serial fraction and its maximum possible speedup?",
+  "options": [
+   "Serial fraction 40%; maximum speedup 2.5×",
+   "Serial fraction 10%; maximum speedup 10×",
+   "Serial fraction 20%; maximum speedup 5×",
+   "Serial fraction 25%; maximum speedup 4×"
+  ],
+  "answer": 2,
+  "explanation": "Solve 1 / (S + (1 − S)/4) = 2.5: S + (1 − S)/4 = 0.4 → 4S + 1 − S = 1.6 → S = 0.2. The maximum speedup is 1/S = 5.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-107",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.7"
+  ],
+  "difficulty": "medium",
+  "question": "Four threads each compute the sum of a different quarter of a large array. This is an example of:",
+  "options": [
+   "Pipelining",
+   "Data parallelism",
+   "A race condition",
+   "Task parallelism"
+  ],
+  "answer": 1,
+  "explanation": "The same operation is applied to different parts of the data in parallel. Task parallelism would have threads performing different operations, such as one decoding video while another decodes audio.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-108",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.7"
+  ],
+  "difficulty": "medium",
+  "question": "What does Gustafson's law argue, in contrast to Amdahl's?",
+  "options": [
+   "Adding cores eventually makes programs slower",
+   "Serial code can always be parallelized with enough effort",
+   "With more cores we usually solve larger problems, and the parallel part grows with problem size while the serial part stays fixed",
+   "Speedup is always exactly linear in the number of cores"
+  ],
+  "answer": 2,
+  "explanation": "Amdahl assumes a fixed problem size. Gustafson observes that people use extra cores for bigger problems; if the serial part does not grow, the serial fraction shrinks and scaled speedup can keep growing.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-109",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.7"
+  ],
+  "difficulty": "easy",
+  "question": "According to Amdahl's law, as the number of cores N grows without bound, the speedup approaches:",
+  "options": [
+   "1/S, where S is the serial fraction",
+   "1/(1 − S)",
+   "N",
+   "Infinity"
+  ],
+  "answer": 0,
+  "explanation": "The parallel term (1 − S)/N vanishes as N grows, leaving 1/S. The serial portion becomes the entire execution time.",
+  "notes": "2.md"
+ },
+ {
+  "id": "OS-2-110",
+  "subject": "OS",
+  "unit": 2,
+  "tags": [
+   "OS-2.7"
+  ],
+  "difficulty": "hard",
+  "question": "A server handles 5,000 requests per second on one core. Creating a process takes 200 µs and creating a thread takes 20 µs. What fraction of the core goes to creation alone with a process per request versus a thread per request?",
+  "options": [
+   "20% versus 2%",
+   "100% versus 10%",
+   "50% versus 5%",
+   "10% versus 1%"
+  ],
+  "answer": 1,
+  "explanation": "Processes: 5,000 × 200 µs = 1 s of work per second, saturating the core before any real work. Threads: 5,000 × 20 µs = 0.1 s, or 10%. A thread pool created at startup reduces this to nearly zero.",
+  "notes": "2.md"
+ }
+]

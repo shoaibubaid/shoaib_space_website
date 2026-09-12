@@ -47,10 +47,19 @@
     "label": "Operating Systems",
     "intro": "Explaining Operating Systems concepts in a structured way so that the future me can crack tech interviews",
     "posts": [
-      "posts/cs/os/intro.md",
-      "posts/cs/os/1_os_intro.md",
-      "posts/cs/os/2_process_threads.md",
-      "posts/cs/os/3_cpu_scheduling.md"
+      "posts/cs/os/0.md",
+      "posts/cs/os/1.md",
+      "posts/cs/os/2.md",
+      "posts/cs/os/3.md",
+      "posts/cs/os/4.md",
+      "posts/cs/os/5.md",
+      "posts/cs/os/6.md",
+      "posts/cs/os/7.md",
+      "posts/cs/os/8.md",
+      "posts/cs/os/9.md",
+      "posts/cs/os/10.md",
+      "posts/cs/os/11.md",
+      "posts/cs/os/12.md"
     ]
   },
 

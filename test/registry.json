@@ -1,0 +1,209 @@
+{
+  "version": 1,
+  "subjects": [
+    {
+      "id": "OS",
+      "name": "Operating Systems",
+      "notesUrl": "../notes/os/{file}",
+      "units": [
+        {
+          "unit": 1,
+          "title": "Introduction and OS Structure",
+          "questions": "questions/os/1.json",
+          "notes": "1.md",
+          "sections": {
+            "OS-1.1": "Role of an operating system",
+            "OS-1.2": "Types of operating systems",
+            "OS-1.3": "Computer system organization",
+            "OS-1.4": "Dual-mode operation and protection",
+            "OS-1.5": "System calls",
+            "OS-1.6": "Kernel architectures",
+            "OS-1.7": "The boot process"
+          }
+        },
+        {
+          "unit": 2,
+          "title": "Processes and Threads",
+          "questions": "questions/os/2.json",
+          "notes": "2.md",
+          "sections": {
+            "OS-2.1": "The process concept",
+            "OS-2.2": "Process states, scheduling queues, and context switching",
+            "OS-2.3": "Process creation and termination",
+            "OS-2.4": "Inter-process communication",
+            "OS-2.5": "Threads",
+            "OS-2.6": "Multithreading models and thread programming",
+            "OS-2.7": "Concurrency, parallelism, and Amdahl's law"
+          }
+        },
+        {
+          "unit": 3,
+          "title": "CPU Scheduling",
+          "questions": "questions/os/3.json",
+          "notes": "3.md",
+          "sections": {
+            "OS-3.1": "Scheduling criteria",
+            "OS-3.2": "Preemptive vs non-preemptive scheduling",
+            "OS-3.3": "Scheduling algorithms",
+            "OS-3.4": "Multilevel queue and MLFQ",
+            "OS-3.5": "Multiprocessor scheduling",
+            "OS-3.6": "Real-time scheduling",
+            "OS-3.7": "Real-world schedulers",
+            "OS-3.8": "Solving scheduling numericals"
+          }
+        },
+        {
+          "unit": 4,
+          "title": "Process Synchronization",
+          "questions": "questions/os/4.json",
+          "notes": "4.md",
+          "sections": {
+            "OS-4.1": "Race conditions and the critical-section problem",
+            "OS-4.2": "Software solutions",
+            "OS-4.3": "Hardware support for synchronization",
+            "OS-4.4": "Mutex locks and spinlocks",
+            "OS-4.5": "Semaphores",
+            "OS-4.6": "Monitors and condition variables",
+            "OS-4.7": "Classic synchronization problems",
+            "OS-4.8": "Liveness, priority inversion, and lock-free synchronization"
+          }
+        },
+        {
+          "unit": 5,
+          "title": "Deadlocks",
+          "questions": "questions/os/5.json",
+          "notes": "5.md",
+          "sections": {
+            "OS-5.1": "System model and the four necessary conditions",
+            "OS-5.2": "Resource-allocation graph and wait-for graph",
+            "OS-5.3": "Deadlock prevention",
+            "OS-5.4": "Deadlock avoidance",
+            "OS-5.5": "Deadlock detection and recovery",
+            "OS-5.6": "Ostrich approach; deadlock vs livelock vs starvation"
+          }
+        },
+        {
+          "unit": 6,
+          "title": "Memory Management",
+          "questions": "questions/os/6.json",
+          "notes": "6.md",
+          "sections": {
+            "OS-6.1": "Address binding, logical vs physical addresses, and the MMU",
+            "OS-6.2": "Linking, loading, shared libraries, and swapping",
+            "OS-6.3": "Contiguous allocation and fragmentation",
+            "OS-6.4": "Paging",
+            "OS-6.5": "The TLB",
+            "OS-6.6": "Page table structures",
+            "OS-6.7": "Segmentation"
+          }
+        },
+        {
+          "unit": 7,
+          "title": "Virtual Memory",
+          "questions": "questions/os/7.json",
+          "notes": "7.md",
+          "sections": {
+            "OS-7.1": "Demand paging",
+            "OS-7.2": "Copy-on-write and memory-mapped files",
+            "OS-7.3": "Page replacement",
+            "OS-7.4": "Belady's anomaly and stack algorithms",
+            "OS-7.5": "Allocation of frames",
+            "OS-7.6": "Thrashing, working set, and page-fault frequency",
+            "OS-7.7": "Kernel memory allocation and other considerations"
+          }
+        },
+        {
+          "unit": 8,
+          "title": "File Systems",
+          "questions": "questions/os/8.json",
+          "notes": "8.md",
+          "sections": {
+            "OS-8.1": "The file concept",
+            "OS-8.2": "Directory structures and links",
+            "OS-8.3": "Mounting, VFS, sharing, and locking",
+            "OS-8.4": "Allocation methods",
+            "OS-8.5": "Free-space management",
+            "OS-8.6": "Consistency and crash recovery",
+            "OS-8.7": "Case studies: FAT32, ext4, NTFS"
+          }
+        },
+        {
+          "unit": 9,
+          "title": "Disk and Storage",
+          "questions": "questions/os/9.json",
+          "notes": "9.md",
+          "sections": {
+            "OS-9.1": "Hard disk drives",
+            "OS-9.2": "Disk scheduling",
+            "OS-9.3": "Solid-state drives",
+            "OS-9.4": "Formatting, partitions, boot blocks, and bad blocks",
+            "OS-9.5": "RAID",
+            "OS-9.6": "Swap-space management"
+          }
+        },
+        {
+          "unit": 10,
+          "title": "I/O Systems",
+          "questions": "questions/os/10.json",
+          "notes": "10.md",
+          "sections": {
+            "OS-10.1": "I/O hardware",
+            "OS-10.2": "Polling, interrupts, and DMA",
+            "OS-10.3": "The kernel I/O subsystem",
+            "OS-10.4": "Blocking, non-blocking, and asynchronous I/O",
+            "OS-10.5": "Device drivers"
+          }
+        },
+        {
+          "unit": 11,
+          "title": "Protection and Security",
+          "questions": "questions/os/11.json",
+          "notes": "11.md",
+          "sections": {
+            "OS-11.1": "Goals and principles of protection",
+            "OS-11.2": "Access matrix, ACLs, capabilities, and UNIX permissions",
+            "OS-11.3": "Authentication",
+            "OS-11.4": "Threats",
+            "OS-11.5": "Defenses"
+          }
+        },
+        {
+          "unit": 12,
+          "title": "Virtualization and Modern OS",
+          "questions": "questions/os/12.json",
+          "notes": "12.md",
+          "sections": {
+            "OS-12.1": "Virtual machines and hypervisors",
+            "OS-12.2": "Containers",
+            "OS-12.3": "Real-time and distributed operating systems",
+            "OS-12.4": "Case studies: Linux, Windows, and Android"
+          }
+        }
+      ]
+    },
+    {
+      "id": "CN",
+      "name": "Computer Networks",
+      "notesUrl": "../notes/cn/{file}",
+      "units": []
+    },
+    {
+      "id": "COA",
+      "name": "Computer Organization and Architecture",
+      "notesUrl": "../notes/coa/{file}",
+      "units": []
+    },
+    {
+      "id": "DBMS",
+      "name": "Database Management Systems",
+      "notesUrl": "../notes/dbms/{file}",
+      "units": []
+    },
+    {
+      "id": "DSA",
+      "name": "Data Structures and Algorithms",
+      "notesUrl": "../notes/dsa/{file}",
+      "units": []
+    }
+  ]
+}

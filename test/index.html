@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Practice test</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="test.css">
+</head>
+<body>
+  <header class="site-bar">
+    <a class="back-link" href="../">Back to site</a>
+    <span class="site-bar-title">Practice test</span>
+  </header>
+
+  <main id="app">
+
+    <!-- ============ SETUP ============ -->
+    <section id="view-setup" class="view setup" aria-labelledby="setup-title">
+      <h1 id="setup-title">Set up a test</h1>
+      <p class="lede">Pick a subject and topics, choose how many questions and how much time, then start. Nothing is saved: refreshing the page clears the test and its results.</p>
+
+      <div id="setup-error" class="notice notice-error" role="alert" hidden></div>
+
+      <fieldset class="step">
+        <legend>Subject</legend>
+        <div id="subject-list" class="subject-list" role="radiogroup" aria-label="Subject"></div>
+      </fieldset>
+
+      <fieldset class="step" id="topic-step" hidden>
+        <legend>Topics</legend>
+        <div class="step-tools">
+          <button type="button" class="link-btn" data-action="select-all">Select all</button>
+          <button type="button" class="link-btn" data-action="select-none">Clear selection</button>
+        </div>
+        <div id="topic-list" class="topic-list"></div>
+      </fieldset>
+
+      <fieldset class="step" id="difficulty-step" hidden>
+        <legend>Difficulty</legend>
+        <div class="chip-row" id="difficulty-list">
+          <label class="chip"><input type="checkbox" value="easy" checked> Easy <span class="chip-count" data-diff-count="easy"></span></label>
+          <label class="chip"><input type="checkbox" value="medium" checked> Medium <span class="chip-count" data-diff-count="medium"></span></label>
+          <label class="chip"><input type="checkbox" value="hard" checked> Hard <span class="chip-count" data-diff-count="hard"></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="step" id="length-step" hidden>
+        <legend>Length and time</legend>
+        <p class="pool-line" id="pool-line" aria-live="polite"></p>
+        <div class="field-row">
+          <label class="field">
+            <span class="field-label">Number of questions</span>
+            <input type="number" id="q-count" min="1" value="25" inputmode="numeric">
+          </label>
+          <div class="preset-row" id="count-presets">
+            <button type="button" class="preset" data-count="10">10</button>
+            <button type="button" class="preset" data-count="25">25</button>
+            <button type="button" class="preset" data-count="50">50</button>
+            <button type="button" class="preset" data-count="all">All</button>
+          </div>
+        </div>
+        <div class="field-row">
+          <label class="field">
+            <span class="field-label">Time limit (minutes)</span>
+            <input type="number" id="q-minutes" min="1" value="38" inputmode="numeric">
+          </label>
+          <button type="button" class="preset" id="suggest-time">Use 1.5 min per question</button>
+          <label class="check-inline"><input type="checkbox" id="untimed"> No time limit</label>
+        </div>
+      </fieldset>
+
+      <div class="start-row" id="start-row" hidden>
+        <button type="button" class="btn btn-primary" id="start-btn">Start test</button>
+        <p class="hint">During the test: press 1–4 or A–D to answer, the arrow keys to move, M to mark for review.</p>
+      </div>
+    </section>
+
+    <!-- ============ TEST ============ -->
+    <section id="view-test" class="view test" hidden aria-label="Test in progress">
+      <div class="test-bar">
+        <div class="test-bar-info">
+          <span id="t-subject" class="t-subject"></span>
+          <span id="t-progress" class="t-progress"></span>
+        </div>
+        <div class="timer" id="t-timer" role="timer" aria-live="off"></div>
+        <div class="test-bar-actions">
+          <button type="button" class="btn btn-ghost sheet-toggle" id="sheet-toggle" aria-controls="answer-sheet" aria-expanded="false">Answer sheet</button>
+          <button type="button" class="btn btn-primary" id="submit-btn">Submit test</button>
+        </div>
+      </div>
+
+      <div class="test-grid">
+        <article class="question-pane" id="question-pane" aria-live="polite">
+          <div class="q-meta" id="q-meta"></div>
+          <div class="q-text" id="q-text"></div>
+          <div class="options" id="q-options" role="radiogroup" aria-label="Answer options"></div>
+          <div class="q-actions">
+            <div class="q-actions-left">
+              <button type="button" class="btn btn-ghost" id="mark-btn" aria-pressed="false">Mark for review</button>
+              <button type="button" class="btn btn-ghost" id="clear-btn">Clear answer</button>
+            </div>
+            <div class="q-actions-right">
+              <button type="button" class="btn btn-ghost" id="prev-btn">Previous</button>
+              <button type="button" class="btn btn-secondary" id="next-btn">Next</button>
+            </div>
+          </div>
+        </article>
+
+        <aside class="answer-sheet" id="answer-sheet" aria-label="Answer sheet">
+          <div class="sheet-head">
+            <h2>Answer sheet</h2>
+            <button type="button" class="btn btn-ghost sheet-close" id="sheet-close">Close</button>
+          </div>
+          <p class="sheet-counts" id="sheet-counts"></p>
+          <div class="sheet-grid" id="sheet-grid"></div>
+          <ul class="legend">
+            <li><span class="dot dot-answered"></span> Answered</li>
+            <li><span class="dot dot-visited"></span> Seen, not answered</li>
+            <li><span class="dot dot-unseen"></span> Not seen yet</li>
+            <li><span class="dot dot-marked"></span> Marked for review</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ RESULTS ============ -->
+    <section id="view-result" class="view result" hidden aria-labelledby="result-title">
+      <div class="result-head">
+        <h1 id="result-title">Results</h1>
+        <p id="r-summary" class="r-summary"></p>
+        <div class="score-bar" id="r-bar" aria-hidden="true"></div>
+        <p id="r-note" class="r-note"></p>
+      </div>
+
+      <div class="result-actions">
+        <button type="button" class="btn btn-primary" id="practice-mistakes">Practice mistakes</button>
+        <button type="button" class="btn btn-secondary" id="retake-btn">Retake these questions</button>
+        <button type="button" class="btn btn-ghost" id="new-test-btn">New test</button>
+      </div>
+
+      <div class="result-grid">
+        <section class="r-block">
+          <h2>Graded answer sheet</h2>
+          <p class="r-sub">Select a number to jump to that question.</p>
+          <div class="sheet-grid graded" id="r-sheet"></div>
+          <ul class="legend">
+            <li><span class="dot dot-correct"></span> Correct</li>
+            <li><span class="dot dot-wrong"></span> Wrong</li>
+            <li><span class="dot dot-unseen"></span> Not answered</li>
+          </ul>
+        </section>
+        <section class="r-block">
+          <h2>By topic</h2>
+          <p class="r-sub">Weakest sections first. Follow the section ID to its notes.</p>
+          <div id="r-topics"></div>
+          <h2 class="r-h2-gap">By difficulty</h2>
+          <div id="r-difficulty"></div>
+        </section>
+      </div>
+
+      <section class="review" aria-labelledby="review-title">
+        <div class="review-head">
+          <h2 id="review-title">Review</h2>
+          <div class="filter-row" id="review-filters" role="tablist" aria-label="Filter questions"></div>
+        </div>
+        <ol class="review-list" id="review-list"></ol>
+      </section>
+    </section>
+  </main>
+
+  <dialog id="submit-dialog" class="dialog" aria-labelledby="submit-dialog-title">
+    <h2 id="submit-dialog-title">Submit the test?</h2>
+    <p id="submit-dialog-body"></p>
+    <div class="dialog-actions">
+      <button type="button" class="btn btn-ghost" id="dialog-cancel">Keep working</button>
+      <button type="button" class="btn btn-primary" id="dialog-confirm">Submit test</button>
+    </div>
+  </dialog>
+
+  <script src="test.js" defer></script>
+</body>
+</html>
