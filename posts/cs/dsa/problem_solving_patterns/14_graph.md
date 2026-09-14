@@ -142,7 +142,7 @@ public:
 ```
 
 ### 5. [Number of Provinces](https://leetcode.com/problems/number-of-provinces/description/)
-
+### 6. [Rotten Oranges](https://leetcode.com/problems/rotting-oranges/)
 You are given an `m x n` grid where each cell can have one of three values:
 
 - 0 representing an empty cell,
@@ -206,15 +206,67 @@ public:
     }
 };
 ```
-
-
-### 6. [Rotten Oranges](https://leetcode.com/problems/rotting-oranges/)
 ### 7. [Cycle detection in undirected graph](https://www.geeksforgeeks.org/problems/detect-cycle-in-an-undirected-graph/1)
 ### 8. [Cycle detection in directed graph](https://www.geeksforgeeks.org/problems/detect-cycle-in-a-directed-graph/1)
 ### 9. [Topological sort](https://www.geeksforgeeks.org/problems/topological-sort/1)
 ### 10. [Bipartite Graph/ Graph Coloring](https://leetcode.com/problems/is-graph-bipartite/)
 ### 11. [Surrounded Regoins](https://leetcode.com/problems/surrounded-regions/)
 ### 12. [Shortest Path in Non-Weighted Graph](https://www.geeksforgeeks.org/problems/shortest-path-in-undirected-graph-having-unit-distance/1)
+
+Given an undirected graph with `V` vertices numbered from 0 to V-1 and `E` edges, where `edges[i] = [u, v]` denotes an undirected edge between vertex u and vertex v, given two vertices `src` and `dest`, find the length of the shortest path from src to dest. If there is no path between `src` and `dest`, return `-1`.
+
+Note: All edges have a unit weight of 1.
+
+```cpp
+
+class Solution {
+	public:
+	int shortestPath(int V, vector<vector<int>> &edges, int src, int dest) {
+		// Convert edge list to adjacency list
+         vector<vector<int>> adj(V);
+
+         for(auto edge : edges) {
+             int u = edge[0];
+             int v = edge[1];
+
+             adj[u].push_back(v);
+             adj[v].push_back(u);
+         }
+
+         // BFS
+         vector<bool> visited(V, false);
+         queue<pair<int, int>> q;
+
+         visited[src] = true;
+         q.push({src, 0});
+
+         while(!q.empty()) {
+
+             auto [node, distance] = q.front();
+             q.pop();
+
+             if(node == dest)
+                 return distance;
+
+             for(int neighbor : adj[node]) {
+
+                 if(!visited[neighbor]) {
+                     visited[neighbor] = true;
+                     q.push({neighbor, distance + 1});
+                 }
+             }
+         }
+
+         return -1;
+     
+		
+	}
+};
+
+```
+
+
+
 ### 13. [Dijkstra's Algorithm](https://www.geeksforgeeks.org/problems/implementing-dijkstra-set-1-adjacency-matrix/1)
 ### 14. [Network Delay](https://leetcode.com/problems/network-delay-time/)
 ### 15. [Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort/)
