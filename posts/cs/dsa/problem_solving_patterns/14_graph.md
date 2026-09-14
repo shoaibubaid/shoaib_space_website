@@ -79,16 +79,19 @@ An **island** is surrounded by water and is formed by connecting adjacent lands 
 
 **Example 1:**
 
-**Input**: 
+
 ```
-grid = [
-  ["1","1","1","1","0"],
-  ["1","1","0","1","0"],
-  ["1","1","0","0","0"],
-  ["0","0","0","0","0"]
-]
+Input:
+    grid = [
+        ["1","1","1","1","0"],
+        ["1","1","0","1","0"],
+        ["1","1","0","0","0"],
+        ["0","0","0","0","0"]
+    ]
+
+Output: 1
 ```
-**Output**: **1**
+
 
 
 ```cpp
@@ -139,6 +142,72 @@ public:
 ```
 
 ### 5. [Number of Provinces](https://leetcode.com/problems/number-of-provinces/description/)
+
+You are given an `m x n` grid where each cell can have one of three values:
+
+- 0 representing an empty cell,
+- 1 representing a fresh orange, or
+- 2 representing a rotten orange.
+
+Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten.
+
+Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible, return `-1`.
+
+```cpp
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        queue<vector<int>> q;
+        vector<vector<int>> visited(m,vector<int>(n,false));
+        vector<vector<int>> surround_array = {{-1,0}, {0, 1}, {1,0}, {0,-1}};
+        
+        int cntFresh = 0;
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(grid[i][j] == 1) cntFresh++;
+
+                if(grid[i][j] == 2){
+                    visited[i][j] = true;
+                    q.push({i,j,0});
+                }
+            }
+        }
+
+        int rotten_new = 0;
+        int tm = 0;
+        int max_time = 0;
+        while(!q.empty()){
+            vector<int> curr = q.front();
+            q.pop();
+            tm = max(tm, curr[2]);
+            for(vector<int> surround : surround_array){
+                int x = curr[0] + surround[0];
+                int y = curr[1] + surround[1];
+                int time_stamp = curr[2] + 1;
+                if(x >=0 && x < m && y >= 0 && y < n){
+                    if(grid[x][y] == 1 && visited[x][y] == false){
+                        visited[x][y] = true;
+                        rotten_new++;
+                        q.push({x,y, time_stamp});
+                    }
+                }
+            }
+        }
+
+        if(cntFresh != rotten_new){
+            return -1;
+        }
+
+        return tm;
+
+
+    }
+};
+```
+
+
 ### 6. [Rotten Oranges](https://leetcode.com/problems/rotting-oranges/)
 ### 7. [Cycle detection in undirected graph](https://www.geeksforgeeks.org/problems/detect-cycle-in-an-undirected-graph/1)
 ### 8. [Cycle detection in directed graph](https://www.geeksforgeeks.org/problems/detect-cycle-in-a-directed-graph/1)
