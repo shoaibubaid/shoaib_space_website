@@ -1,0 +1,2396 @@
+[
+ {
+  "id": "OS-4-001",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.1"
+  ],
+  "difficulty": "easy",
+  "question": "A race condition occurs when:",
+  "options": [
+   "Two processes run on different CPUs",
+   "A thread waits too long for a lock",
+   "The result depends on the relative timing of concurrent threads",
+   "A program uses more memory than is available"
+  ],
+  "answer": 2,
+  "explanation": "In a race, the same input can produce different outputs depending on how the threads interleave. The program is indeterminate, which makes such bugs hard to reproduce and hard to test for.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-002",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.1"
+  ],
+  "difficulty": "medium",
+  "question": "Why is the C statement `counter++` not atomic on a typical CPU?",
+  "options": [
+   "Because the variable is stored in a register, not in memory",
+   "It compiles to a load, an add, and a store, and a thread can be interrupted between them",
+   "Because integers are larger than one machine word",
+   "Because the compiler may reorder it with other statements"
+  ],
+  "answer": 1,
+  "explanation": "The three machine instructions can interleave with another thread's copy of the same sequence, so both threads can read the same old value and write back the same new value, losing one update.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-003",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.1"
+  ],
+  "difficulty": "hard",
+  "question": "Two threads each execute `x = x + 1` once, where x starts at 0. What final values of x are possible?",
+  "options": [
+   "1 or 2",
+   "0, 1, or 2",
+   "Only 1",
+   "Only 2"
+  ],
+  "answer": 0,
+  "explanation": "If one thread's store completes before the other's load, the result is 2. If both load 0 before either stores, both write 1 and one update is lost. The value can never be 0, because at least one store of 1 happens.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-004",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.1"
+  ],
+  "difficulty": "hard",
+  "question": "Two threads each increment a shared counter 10 times using load-add-store, with no synchronization. What is the smallest possible final value?",
+  "options": [
+   "10",
+   "11",
+   "1",
+   "2"
+  ],
+  "answer": 3,
+  "explanation": "Thread A loads 0 and stalls; B runs 9 full iterations to 9; A stores 1; B loads 1 for its last iteration and stalls; A runs its remaining 9 iterations to 10; B stores 2. Most people guess 10, but a stale value held across many iterations can erase almost all the work.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-005",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.1"
+  ],
+  "difficulty": "medium",
+  "question": "Why does declaring a shared counter `volatile` in C fail to fix a race condition?",
+  "options": [
+   "volatile applies only to pointers, not integers",
+   "volatile makes the variable read-only",
+   "volatile disables interrupts while the variable is accessed",
+   "It only stops the compiler caching the value in a register; the read-modify-write is still three separate steps"
+  ],
+  "answer": 3,
+  "explanation": "volatile guarantees that each access touches memory, but provides no atomicity and, in C and C++, no ordering guarantees between threads. Correctness needs a lock or an atomic operation. In Java, volatile does give ordering, which causes confusion.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-006",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.1"
+  ],
+  "difficulty": "easy",
+  "question": "A critical section is:",
+  "options": [
+   "A block of code protected from interrupts by hardware",
+   "The part of a program that handles errors",
+   "A region of code that accesses a shared resource and must not run concurrently with another such region",
+   "Any section of code that runs in kernel mode"
+  ],
+  "answer": 2,
+  "explanation": "The defining property is exclusivity with respect to the shared resource. Code accessing different resources can run concurrently; only accesses to the same resource must be serialized.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-007",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.1"
+  ],
+  "difficulty": "medium",
+  "question": "Which of these is NOT one of the three requirements for a solution to the critical-section problem?",
+  "options": [
+   "Efficiency: the solution must not use busy waiting",
+   "Bounded waiting",
+   "Mutual exclusion",
+   "Progress"
+  ],
+  "answer": 0,
+  "explanation": "The three requirements are mutual exclusion, progress, and bounded waiting. Busy waiting may be wasteful but does not make a solution incorrect; spinlocks are legitimate and widely used in kernels.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-008",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.1"
+  ],
+  "difficulty": "hard",
+  "question": "The progress requirement states that:",
+  "options": [
+   "At most one thread may be inside a critical section at a time",
+   "Every thread eventually enters its critical section within a bounded number of turns",
+   "Threads must enter the critical section in the order they requested it",
+   "If no thread is in its critical section and some want to enter, the decision cannot be postponed indefinitely, and threads in their remainder sections take no part in it"
+  ],
+  "answer": 3,
+  "explanation": "Progress prevents an empty critical section from staying empty while threads want in, and stops an uninterested thread from blocking others. Bounded waiting is the separate guarantee that a waiting thread is not overtaken indefinitely.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-009",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.1"
+  ],
+  "difficulty": "medium",
+  "question": "Mutual exclusion is a safety property, while progress and bounded waiting are:",
+  "options": [
+   "Performance properties",
+   "Atomicity properties",
+   "Fairness properties only",
+   "Liveness properties"
+  ],
+  "answer": 3,
+  "explanation": "Safety means nothing bad happens (two threads never share the critical section). Liveness means something good eventually happens. Deadlock violates progress, and starvation violates bounded waiting: both are liveness failures.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-010",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.1"
+  ],
+  "difficulty": "hard",
+  "question": "Which assumption must a correct solution to the critical-section problem NOT make?",
+  "options": [
+   "That a memory read or write of one word is atomic",
+   "That threads execute at particular relative speeds",
+   "That the number of threads is finite",
+   "That threads eventually leave their critical sections"
+  ],
+  "answer": 1,
+  "explanation": "A solution must work for any interleaving, including one thread running a million times faster than another. Code that happens to work because one thread is usually slower is wrong; the timing will eventually change.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-011",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.1"
+  ],
+  "difficulty": "medium",
+  "question": "In C and C++, a data race (two unsynchronized concurrent accesses, at least one a write) formally results in:",
+  "options": [
+   "A runtime exception",
+   "The last write always winning",
+   "Undefined behaviour, so the compiler may transform the code in ways that assume it cannot happen",
+   "An implementation-defined but predictable value"
+  ],
+  "answer": 2,
+  "explanation": "Because the standard declares data races undefined, optimizers may hoist loads out of loops, reorder stores, or split a write. Reasoning about 'what the hardware would do' is unreliable; correctness requires locks or atomics.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-012",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.1"
+  ],
+  "difficulty": "hard",
+  "question": "On a single-CPU system with a non-preemptive kernel, where can races still arise in kernel code?",
+  "options": [
+   "Only when two CPUs execute system calls simultaneously",
+   "Between ordinary kernel code and an interrupt handler that touches the same data",
+   "Nowhere; races are impossible in that configuration",
+   "Only between user processes"
+  ],
+  "answer": 1,
+  "explanation": "Kernel code runs to completion unless it blocks, so two system calls cannot interleave. But an interrupt can arrive mid-update, and its handler may touch the same structure. Briefly disabling interrupts around such updates is enough on one CPU.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-013",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.2"
+  ],
+  "difficulty": "hard",
+  "question": "A two-thread solution uses only a shared `turn` variable: each thread waits while `turn != i`, and sets `turn = j` on exit. Which requirement does it violate?",
+  "options": [
+   "Progress, because the threads must strictly alternate",
+   "None; it is a correct solution",
+   "Bounded waiting, because one thread can enter arbitrarily often",
+   "Mutual exclusion, because both can enter at once"
+  ],
+  "answer": 0,
+  "explanation": "Mutual exclusion holds, since turn has one value. But if thread 0 wants to enter twice in a row while thread 1 is busy in its remainder section, thread 0 must wait for a thread that is not even interested. An uninterested thread must not block others.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-014",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.2"
+  ],
+  "difficulty": "hard",
+  "question": "A two-thread solution uses only interest flags: each thread sets `flag[i] = true`, then waits while `flag[j]`. What can go wrong?",
+  "options": [
+   "If both set their flags before either checks, each waits for the other forever",
+   "The threads alternate strictly, violating progress",
+   "Both threads enter the critical section together",
+   "Nothing; this is Peterson's algorithm"
+  ],
+  "answer": 0,
+  "explanation": "This attempt guarantees mutual exclusion but can deadlock: both flags are true, so both loops spin forever. Reversing the order (check first, then set) avoids deadlock but breaks mutual exclusion, since both can see false and enter.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-015",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.2"
+  ],
+  "difficulty": "hard",
+  "question": "In Peterson's algorithm, thread i executes `flag[i] = true; turn = j; while (flag[j] && turn == j) ;`. Why does setting `turn = j` (rather than `turn = i`) work?",
+  "options": [
+   "It ensures the threads alternate strictly",
+   "It guarantees the thread with the lower index always wins",
+   "Each thread politely offers the turn to the other, so the thread that writes turn last is the one that waits",
+   "It prevents the compiler from reordering the flag write"
+  ],
+  "answer": 2,
+  "explanation": "If both threads reach the loop, both flags are true and turn holds a single value: whichever thread wrote it last gave the turn away and therefore waits. If only one thread is interested, the other's flag is false and it enters immediately.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-016",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.2"
+  ],
+  "difficulty": "hard",
+  "question": "What is the bounded-waiting guarantee provided by Peterson's algorithm?",
+  "options": [
+   "A waiting thread may be overtaken any number of times",
+   "Threads enter in strict FIFO order of request",
+   "A waiting thread waits for at most one entry by the other thread",
+   "There is no bound; only mutual exclusion is guaranteed"
+  ],
+  "answer": 2,
+  "explanation": "When the other thread leaves and immediately tries to re-enter, it sets turn to the waiting thread's index, so the waiter goes next. That is a bound of one overtake, the strongest fairness a two-thread solution normally provides.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-017",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.2"
+  ],
+  "difficulty": "hard",
+  "question": "Why does Peterson's algorithm fail on modern hardware without additional measures?",
+  "options": [
+   "Modern CPUs no longer support shared memory between cores",
+   "The algorithm requires more than two threads",
+   "Store buffers and compiler reordering can make the flag write become visible after the read of the other flag",
+   "The turn variable cannot be stored atomically"
+  ],
+  "answer": 2,
+  "explanation": "On x86, a store followed by a load of a different address can appear reordered because the store sits in the core's buffer. Both threads can then read the other's flag as false and enter together. A memory fence (or acquire/release atomics) between the write and the read restores correctness.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-018",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.2"
+  ],
+  "difficulty": "medium",
+  "question": "What is the historical significance of Dekker's algorithm?",
+  "options": [
+   "It introduced semaphores",
+   "It is the standard solution for n processes",
+   "It was the first algorithm to use hardware test-and-set",
+   "It was the first known correct software-only solution to mutual exclusion for two processes"
+  ],
+  "answer": 3,
+  "explanation": "Dijkstra published Dekker's solution in the 1960s. It uses two flags plus a turn variable, but a thread that finds it is not its turn temporarily withdraws its flag. Peterson's 1981 algorithm achieves the same guarantees far more simply.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-019",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.2"
+  ],
+  "difficulty": "hard",
+  "question": "In Lamport's bakery algorithm, two threads can compute the same ticket number. How is the tie broken?",
+  "options": [
+   "By re-running the numbering step until the numbers differ",
+   "By comparing thread IDs: the lower ID goes first",
+   "By picking randomly",
+   "By letting whichever thread arrived first proceed"
+  ],
+  "answer": 1,
+  "explanation": "Threads compare the pair (number, id) lexicographically, so ties are settled deterministically by ID. Without a tie-break, two threads with equal numbers could both decide they have priority and enter together.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-020",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.2"
+  ],
+  "difficulty": "hard",
+  "question": "Why does the bakery algorithm need a separate `choosing[]` array?",
+  "options": [
+   "To reset ticket numbers when they grow too large",
+   "To count how many threads are waiting",
+   "Without it, a thread could read another's number as 0 while that thread is still computing it, and both could then enter",
+   "To record which thread is currently in the critical section"
+  ],
+  "answer": 2,
+  "explanation": "Taking a number is not atomic. If thread i checks number[j] during that gap and sees 0, it assumes j is uninterested. If j then takes an equal number with a smaller ID, it also enters. Waiting for choosing[j] to become false closes the window.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-021",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.2"
+  ],
+  "difficulty": "medium",
+  "question": "Which property does the bakery algorithm provide that Peterson's algorithm does not?",
+  "options": [
+   "It works for any number of threads",
+   "It avoids busy waiting",
+   "It needs no shared variables",
+   "It is immune to memory reordering"
+  ],
+  "answer": 0,
+  "explanation": "The bakery algorithm generalizes to n threads and serves them in FIFO ticket order. It still busy-waits, still uses shared arrays, and is still vulnerable to memory reordering without fences. Its cost is O(n) work per entry.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-022",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.2"
+  ],
+  "difficulty": "hard",
+  "question": "What is the main practical drawback of the bakery algorithm besides busy waiting?",
+  "options": [
+   "It requires hardware atomic instructions",
+   "Each entry requires scanning all n threads, and ticket numbers grow without bound under sustained contention",
+   "It cannot guarantee mutual exclusion with more than three threads",
+   "It deadlocks whenever two threads arrive together"
+  ],
+  "answer": 1,
+  "explanation": "A thread must compute the maximum over all numbers and then compare itself with every other thread, so entry is O(n). Numbers keep increasing while threads keep arriving, which can overflow a fixed-width counter in a long-running system.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-023",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.3"
+  ],
+  "difficulty": "medium",
+  "question": "Why is disabling interrupts an unacceptable general solution for mutual exclusion?",
+  "options": [
+   "It only works if the critical section is very long",
+   "It is privileged, and it does not work on multiprocessors because other CPUs keep running",
+   "It is too slow compared with software algorithms",
+   "It cannot be combined with a timer interrupt"
+  ],
+  "answer": 1,
+  "explanation": "A user program cannot be allowed to disable interrupts, or it could freeze the machine. And on a multiprocessor, disabling interrupts on one core does not stop another core from entering the same critical section.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-024",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.3"
+  ],
+  "difficulty": "medium",
+  "question": "What does the atomic test-and-set instruction do?",
+  "options": [
+   "It sets a memory location to true and returns its previous value, indivisibly",
+   "It increments a value and returns the new value",
+   "It compares two values and swaps them if they are equal",
+   "It reads a value and blocks the thread if it is nonzero"
+  ],
+  "answer": 0,
+  "explanation": "If the returned old value is false, the caller has just acquired the lock. If it is true, someone else holds it. The whole read-and-write happens as one operation, so two CPUs cannot both see false.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-025",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.3"
+  ],
+  "difficulty": "hard",
+  "question": "A spinlock is built as `while (test_and_set(&lock)) ;` for acquire and `lock = false` for release. Which critical-section requirement does it fail to guarantee?",
+  "options": [
+   "Progress",
+   "Bounded waiting",
+   "All three are guaranteed",
+   "Mutual exclusion"
+  ],
+  "answer": 1,
+  "explanation": "Mutual exclusion and progress hold, but nothing prevents an unlucky thread from losing the race every time while others repeatedly acquire the lock. Ticket locks or the waiting[] array scheme add fairness by serving threads in order.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-026",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.3"
+  ],
+  "difficulty": "medium",
+  "question": "Compare-and-swap (CAS) differs from test-and-set because it:",
+  "options": [
+   "Writes the new value only if the location still holds an expected value",
+   "Can only operate on boolean values",
+   "Blocks the calling thread if the comparison fails",
+   "Always writes the new value and returns the old one"
+  ],
+  "answer": 0,
+  "explanation": "CAS(location, expected, new) is conditional, which makes it strictly more powerful. It enables lock-free updates: read a value, compute a new one, and commit only if nobody else changed it in between, retrying otherwise.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-027",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.3"
+  ],
+  "difficulty": "hard",
+  "question": "Why does a lock-free atomic increment use a loop like `do { old = *p; } while (CAS(p, old, old + 1) != old);`?",
+  "options": [
+   "The loop is needed because CAS is slower than a lock",
+   "If another thread changed the value between the read and the CAS, the CAS fails and the operation retries with the fresh value",
+   "The loop counts how many threads are competing",
+   "CAS can only be executed once per cache line"
+  ],
+  "answer": 1,
+  "explanation": "The CAS commits the update only if the value is still what was read, so no update is ever lost. Under contention a thread may retry several times, which is why the guarantee is lock-free (some thread progresses) rather than wait-free.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-028",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.3"
+  ],
+  "difficulty": "hard",
+  "question": "What advantage does a ticket lock built on fetch-and-add have over a plain test-and-set spinlock?",
+  "options": [
+   "It never busy-waits",
+   "It requires no atomic instruction at all",
+   "It works without shared memory",
+   "It is fair: threads acquire the lock in FIFO order, giving bounded waiting"
+  ],
+  "answer": 3,
+  "explanation": "Each arriving thread atomically takes the next ticket and spins until the turn counter matches. Because tickets are handed out in order, no thread can be overtaken indefinitely, unlike the free-for-all of repeated test-and-set attempts.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-029",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.3"
+  ],
+  "difficulty": "medium",
+  "question": "On ARM, RISC-V, and MIPS, atomic read-modify-write operations are built from:",
+  "options": [
+   "Test-and-set only",
+   "Disabling interrupts around the operation",
+   "A dedicated hardware mutex unit",
+   "Load-linked and store-conditional (LL/SC)"
+  ],
+  "answer": 3,
+  "explanation": "LL reads a value and starts monitoring the address; SC writes only if no other write to that address intervened, reporting success or failure. A retry loop around LL/SC implements CAS, fetch-and-add, and similar operations.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-030",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.3"
+  ],
+  "difficulty": "hard",
+  "question": "Thread 1 executes `data = 42; ready = true;` and thread 2 executes `while (!ready) ; print(data);`. On a weakly ordered CPU such as ARM, why might thread 2 print 0?",
+  "options": [
+   "The two stores can become visible to thread 2 in the opposite order, or thread 2's loads can be satisfied out of order",
+   "Because ready is not declared volatile",
+   "Because the print statement runs before the loop",
+   "Because integers are not atomic on ARM"
+  ],
+  "answer": 0,
+  "explanation": "Without ordering constraints, the hardware may make the store to ready visible before the store to data. The fix is a release store for ready and an acquire load in the loop, which forces the writes before the release to be visible first.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-031",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.3"
+  ],
+  "difficulty": "medium",
+  "question": "What does a memory barrier (fence) instruction do?",
+  "options": [
+   "It forces memory operations issued before it to become visible before those issued after it",
+   "It disables interrupts for the duration of a critical section",
+   "It prevents other threads from accessing memory",
+   "It flushes the CPU's data cache to main memory"
+  ],
+  "answer": 0,
+  "explanation": "A fence constrains ordering, not access. Acquire and release semantics express the common one-directional cases. Ordinary lock acquire and release already contain the necessary fences, which is why lock-based code needs no explicit barriers.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-032",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.3"
+  ],
+  "difficulty": "hard",
+  "question": "On x86 (a TSO memory model), which reordering is visible to other cores?",
+  "options": [
+   "Two loads can be satisfied in the opposite order",
+   "A store followed by a load of a different address can appear reordered",
+   "Any operation can be reordered with any other",
+   "Two stores can become visible in the opposite order"
+  ],
+  "answer": 1,
+  "explanation": "x86 guarantees store-store and load-load ordering, so it is comparatively strong. Only the store buffer allows a later load to complete before an earlier store is visible. That single relaxation is exactly what breaks Peterson's algorithm.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-033",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.3"
+  ],
+  "difficulty": "medium",
+  "question": "Why do programs using locks correctly not normally need explicit memory barriers?",
+  "options": [
+   "Because shared data is always stored in uncached memory",
+   "Because locks disable the CPU's out-of-order execution",
+   "Because the compiler never reorders code inside functions",
+   "Lock acquire has acquire semantics and release has release semantics, so the necessary fences are already included"
+  ],
+  "answer": 3,
+  "explanation": "Everything written before a release is visible to a thread that later acquires the same lock. Barriers become the programmer's concern only when writing lock-free algorithms or implementing synchronization primitives directly.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-034",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.3"
+  ],
+  "difficulty": "hard",
+  "question": "When are C11 atomic variables (such as `atomic_int` with `atomic_fetch_add`) the right tool?",
+  "options": [
+   "As a replacement for condition variables",
+   "For operations on a single shared variable, such as a counter or flag",
+   "Only on single-processor systems",
+   "For making a sequence of updates to several variables atomic"
+  ],
+  "answer": 1,
+  "explanation": "An atomic type makes each individual operation indivisible with defined ordering. It cannot make a multi-step transaction across several variables atomic; that still requires a lock, since another thread could observe a half-finished update.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-035",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.3"
+  ],
+  "difficulty": "medium",
+  "question": "Silberschatz's test-and-set solution with a `waiting[]` array adds which property to the basic spinlock?",
+  "options": [
+   "Bounded waiting, by passing the lock directly to the next waiting thread in circular order",
+   "Support for multiple simultaneous holders",
+   "Mutual exclusion, which the basic version lacks",
+   "Freedom from busy waiting"
+  ],
+  "answer": 0,
+  "explanation": "On release, a thread scans forward from its own index for a waiting thread and hands the lock to it by clearing its waiting flag. Any waiter therefore enters within at most n − 1 turns, instead of possibly losing the race forever.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-036",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.4"
+  ],
+  "difficulty": "easy",
+  "question": "A mutex lock provides:",
+  "options": [
+   "An integer count of available resources",
+   "Mutual exclusion, with one thread at a time holding the lock",
+   "A queue for threads to wait on a condition",
+   "Protection against deadlock"
+  ],
+  "answer": 1,
+  "explanation": "acquire() blocks until the lock is free, then takes it; release() frees it. A mutex has an owner: only the thread that locked it should unlock it. Counting resources is what a semaphore does.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-037",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.4"
+  ],
+  "difficulty": "medium",
+  "question": "When is a spinlock a better choice than a blocking (sleeping) lock?",
+  "options": [
+   "On a single-CPU system with many threads",
+   "When the lock is held for several milliseconds",
+   "When the critical section performs disk I/O",
+   "When the critical section is very short and the system has multiple CPUs"
+  ],
+  "answer": 3,
+  "explanation": "Spinning wastes CPU only for as long as the wait lasts. If that is shorter than the cost of two context switches, spinning wins. It also requires another CPU to be running the holder; otherwise the spinner blocks the very thread it waits for.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-038",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.4"
+  ],
+  "difficulty": "hard",
+  "question": "Why is spinning particularly harmful on a single-CPU system?",
+  "options": [
+   "Interrupts are disabled while spinning",
+   "The lock holder cannot run while the spinner occupies the only CPU, so the spinner may waste its entire quantum",
+   "Single-CPU systems do not support atomic instructions",
+   "The spinlock variable cannot be cached"
+  ],
+  "answer": 1,
+  "explanation": "With one CPU, progress requires the holder to run, but the spinner holds the CPU until preempted. With n contending threads, up to n − 1 full time slices can be burned before the holder gets a turn to release the lock.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-039",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.4"
+  ],
+  "difficulty": "medium",
+  "question": "Which lock type must be used in code that cannot sleep, such as an interrupt handler?",
+  "options": [
+   "A sleeping mutex",
+   "A semaphore with a wait queue",
+   "A condition variable",
+   "A spinlock"
+  ],
+  "answer": 3,
+  "explanation": "An interrupt handler has no process context to block, so it must never call anything that may sleep. Spinning is the only option. Kernel code holding a spinlock is likewise forbidden from sleeping.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-040",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.4"
+  ],
+  "difficulty": "hard",
+  "question": "A context switch costs 10 µs in total. A lock's critical section lasts 2 µs on average, so a waiting thread expects about 1 µs of remaining wait. Which strategy is cheaper, and by how much?",
+  "options": [
+   "Sleeping, because spinning costs the full 2 µs",
+   "Spinning, at about 1 µs versus 10 µs for sleeping",
+   "They are equal, since both consume CPU",
+   "Sleeping, at about 1 µs versus 10 µs for spinning"
+  ],
+  "answer": 1,
+  "explanation": "Spinning burns roughly the remaining hold time, about 1 µs. Sleeping costs the full switch overhead of about 10 µs whether or not the lock frees up quickly. Sleeping becomes better only when the expected wait exceeds the switch cost.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-041",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.4"
+  ],
+  "difficulty": "hard",
+  "question": "What is a two-phase lock?",
+  "options": [
+   "It spins for a short period and then sleeps if the lock is still held",
+   "It acquires two locks in a fixed order",
+   "It is locked in one phase and released in a second phase",
+   "It uses two threads to manage the wait queue"
+  ],
+  "answer": 0,
+  "explanation": "If the lock frees quickly, only the cheap spin is paid. If not, at most about one context switch worth of spinning is wasted before the thread sleeps. This bounds the cost at roughly twice the optimum without knowing hold times in advance.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-042",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.4"
+  ],
+  "difficulty": "hard",
+  "question": "What makes an uncontended pthread mutex acquisition on Linux so cheap?",
+  "options": [
+   "Uncontended locks are handled entirely by the CPU's cache controller",
+   "The kernel caches the lock state in the process's PCB",
+   "The lock is an integer in user memory updated by an atomic instruction, with no system call unless there is contention",
+   "glibc disables interrupts briefly instead of locking"
+  ],
+  "answer": 2,
+  "explanation": "This is the futex design: the fast path is one compare-and-swap in user space. Only when a thread must actually wait does it call futex(FUTEX_WAIT), and only a releaser that sees waiters calls FUTEX_WAKE.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-043",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.4"
+  ],
+  "difficulty": "hard",
+  "question": "In the park/unpark approach to blocking locks, what is the wakeup/waiting race?",
+  "options": [
+   "A thread decides to sleep, the holder releases and unparks before the thread actually parks, and the thread then sleeps forever",
+   "Two threads unpark each other simultaneously",
+   "A thread parks itself twice and cannot be woken",
+   "The lock is released twice, corrupting the queue"
+  ],
+  "answer": 0,
+  "explanation": "The gap between deciding to sleep and sleeping is the problem: a wakeup delivered in that gap is lost. Solaris added setpark() to declare the intention in advance; Linux futexes pass the expected value so the kernel refuses to sleep if it has changed.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-044",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.4"
+  ],
+  "difficulty": "medium",
+  "question": "Why does the Linux kernel's `spin_lock()` also disable preemption on the local CPU?",
+  "options": [
+   "Because spinlocks cannot be used in kernel mode otherwise",
+   "So the lock holder cannot be preempted, which would make other CPUs spin for a long time",
+   "To allow the holder to sleep safely",
+   "To prevent the lock variable from being swapped out"
+  ],
+  "answer": 1,
+  "explanation": "A spinlock is meant to be held for a few instructions. If the scheduler could preempt the holder, waiters on other CPUs would spin for milliseconds. Disabling preemption keeps the hold time short, which is also why sleeping while holding one is forbidden.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-045",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.4"
+  ],
+  "difficulty": "hard",
+  "question": "When must kernel code use `spin_lock_irqsave()` rather than plain `spin_lock()`?",
+  "options": [
+   "When the lock is shared with user-space threads",
+   "When an interrupt handler on the same CPU may take the same lock",
+   "Whenever the system has more than one CPU",
+   "When the critical section calls a function that may sleep"
+  ],
+  "answer": 1,
+  "explanation": "If process-context code holds the lock and the interrupt arrives on that CPU, the handler spins for a lock whose holder cannot resume until the handler returns: a single-CPU deadlock. Disabling local interrupts while holding the lock closes that window.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-046",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.4"
+  ],
+  "difficulty": "medium",
+  "question": "What is the difference between coarse-grained and fine-grained locking?",
+  "options": [
+   "Coarse-grained locks are held longer than the critical section requires",
+   "Coarse-grained uses spinlocks and fine-grained uses mutexes",
+   "Fine-grained locking never deadlocks",
+   "Coarse-grained uses one lock for a large structure; fine-grained uses separate locks for separate parts"
+  ],
+  "answer": 3,
+  "explanation": "Coarse locking is simple and hard to get wrong but serializes threads touching unrelated data. Fine locking allows more parallelism at the cost of complexity and a greater risk of deadlock. Start coarse and split only where contention is measured.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-047",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.4"
+  ],
+  "difficulty": "medium",
+  "question": "What happens when a thread locks a default (non-recursive) pthread mutex that it already holds?",
+  "options": [
+   "The call returns an error and the thread continues",
+   "The mutex is automatically converted to recursive",
+   "It blocks forever waiting for itself, a deadlock",
+   "The lock count is incremented and it proceeds"
+  ],
+  "answer": 2,
+  "explanation": "A default mutex has no owner-recursion support, so the thread waits for a lock only it can release. A PTHREAD_MUTEX_RECURSIVE mutex keeps a count and allows it; an error-checking mutex returns EDEADLK instead of hanging.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-048",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.4"
+  ],
+  "difficulty": "medium",
+  "question": "What does `pthread_mutex_trylock()` do when the lock is held by another thread?",
+  "options": [
+   "It blocks until the lock is free, like pthread_mutex_lock",
+   "It forcibly takes the lock from the current holder",
+   "It returns immediately with EBUSY instead of blocking",
+   "It puts the calling thread to sleep for one quantum"
+  ],
+  "answer": 2,
+  "explanation": "trylock lets a thread take alternative action rather than wait, which is useful for avoiding deadlock: a thread that cannot get the second lock can release the first and retry, though that introduces a risk of livelock without backoff.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-049",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.4"
+  ],
+  "difficulty": "hard",
+  "question": "Which lock discipline rule is most often broken in practice?",
+  "options": [
+   "Locks must be held for the entire function",
+   "A lock must be acquired before the thread is created",
+   "Every access to shared data, including reads, must hold the protecting lock",
+   "Locks must be released in the reverse order of acquisition"
+  ],
+  "answer": 2,
+  "explanation": "Programmers often assume that reading a value is harmless without the lock. An unlocked read can see a half-updated structure, or a stale value with no ordering guarantee. Reads need the lock (or an atomic type) too.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-050",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.4"
+  ],
+  "difficulty": "hard",
+  "question": "In xv6, what distinguishes a `spinlock` from a `sleeplock`?",
+  "options": [
+   "A spinlock can be held across a context switch and a sleeplock cannot",
+   "A spinlock busy-waits with interrupts disabled on that CPU; a sleeplock lets the waiter sleep, so the holder may block on I/O",
+   "A spinlock works on multiprocessors and a sleeplock only on one CPU",
+   "A sleeplock is faster because it does not use atomic instructions"
+  ],
+  "answer": 1,
+  "explanation": "xv6 uses spinlocks for short critical sections such as protecting the process table, and sleeplocks for long ones such as disk buffers, where the holder must wait for I/O. Sleeping while holding a spinlock is forbidden.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-051",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.4"
+  ],
+  "difficulty": "hard",
+  "question": "Each request spends 2 ms inside a critical section guarded by one global lock and 8 ms outside it. What is the maximum throughput on a machine with many cores?",
+  "options": [
+   "125 requests per second",
+   "1,000 requests per second",
+   "500 requests per second, set by the lock",
+   "Unbounded, given enough cores"
+  ],
+  "answer": 2,
+  "explanation": "The lock serializes the 2 ms section, so at most 1,000/2 = 500 requests per second can pass through it, however many cores exist. This is Amdahl's law with the critical section as the serial fraction; splitting the data across several locks raises the ceiling.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-052",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.5"
+  ],
+  "difficulty": "easy",
+  "question": "The two atomic operations on a semaphore are:",
+  "options": [
+   "wait (P, down) and signal (V, up)",
+   "park and unpark",
+   "acquire and release",
+   "lock and unlock"
+  ],
+  "answer": 0,
+  "explanation": "Dijkstra named them P (proberen, to test) and V (verhogen, to increment). POSIX calls them sem_wait and sem_post. wait decrements and may block; signal increments and may wake a waiter.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-053",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.5"
+  ],
+  "difficulty": "medium",
+  "question": "In the blocking implementation of semaphores, what does a value of −3 mean?",
+  "options": [
+   "The semaphore is invalid and must be reinitialized",
+   "Three resources are available",
+   "The semaphore was signalled three times too often",
+   "Three processes are blocked waiting on the semaphore"
+  ],
+  "answer": 3,
+  "explanation": "wait decrements first, then blocks if the value went negative. A value of −k therefore means exactly k waiters. A positive value counts available permits. The busy-waiting definition never goes below zero.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-054",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.5"
+  ],
+  "difficulty": "hard",
+  "question": "A counting semaphore is initialized to 5. After 12 wait operations and 4 signal operations in some order, what is its value?",
+  "options": [
+   "5",
+   "−3",
+   "−7",
+   "1"
+  ],
+  "answer": 1,
+  "explanation": "Each wait subtracts 1 and each signal adds 1, regardless of order: 5 − 12 + 4 = −3. The negative value means 3 processes are currently blocked on it.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-055",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.5"
+  ],
+  "difficulty": "hard",
+  "question": "A semaphore starts at 3. Seven processes call wait() and none calls signal(). How many are blocked, and what is the value?",
+  "options": [
+   "4 blocked, value 0",
+   "4 blocked, value −4",
+   "3 blocked, value −3",
+   "7 blocked, value 0"
+  ],
+  "answer": 1,
+  "explanation": "The first three waits succeed (value goes 2, 1, 0). The next four each decrement below zero and block, leaving the value at 3 − 7 = −4 with 4 waiters.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-056",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.5"
+  ],
+  "difficulty": "medium",
+  "question": "To use a semaphore purely for mutual exclusion, what should its initial value be?",
+  "options": [
+   "The number of threads",
+   "−1",
+   "1",
+   "0"
+  ],
+  "answer": 2,
+  "explanation": "With value 1, the first wait succeeds and subsequent waits block until a signal. That is a binary semaphore behaving as a lock. Initialize to 0 for signalling and to N for a pool of N resources.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-057",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.5"
+  ],
+  "difficulty": "hard",
+  "question": "Thread A must run statement S1 before thread B runs S2. Which semaphore setup enforces this?",
+  "options": [
+   "A semaphore initialized to 2, signalled by both threads",
+   "A semaphore initialized to 0: A signals it after S1, and B waits on it before S2",
+   "A semaphore initialized to 1, with both threads waiting on it",
+   "Two semaphores initialized to 1, one per thread"
+  ],
+  "answer": 1,
+  "explanation": "If B arrives first, it blocks until A signals. If A signals first, the value becomes 1 and B's wait passes straight through: the semaphore remembers the signal. That memory is what distinguishes it from a condition variable.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-058",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.5"
+  ],
+  "difficulty": "hard",
+  "question": "Which statement about semaphores versus mutexes is correct?",
+  "options": [
+   "A semaphore can only take values 0 and 1",
+   "A mutex has an owner and should be unlocked only by the locking thread; a semaphore has no owner and may be signalled by any thread",
+   "A mutex can be used for signalling between threads but a semaphore cannot",
+   "A mutex can count available resources but a semaphore cannot"
+  ],
+  "answer": 1,
+  "explanation": "Ownership is the key difference. It lets a mutex detect misuse and support priority inheritance, which a semaphore generally cannot. Conversely, the lack of an owner makes semaphores the right tool for one thread signalling an event to another.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-059",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.5"
+  ],
+  "difficulty": "hard",
+  "question": "Why does the blocking implementation of semaphores still involve some busy waiting?",
+  "options": [
+   "Because signal() must wait for the woken process to run",
+   "Because blocked processes poll the semaphore value",
+   "Because the waiting list must be scanned repeatedly",
+   "The wait and signal operations themselves are short critical sections protected by a spinlock or by disabling interrupts"
+  ],
+  "answer": 3,
+  "explanation": "Busy waiting is not eliminated but relocated: instead of spinning for a possibly long application critical section, threads spin only for the few instructions that update the semaphore's value and queue.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-060",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.5"
+  ],
+  "difficulty": "hard",
+  "question": "Two threads use semaphores S and Q, both initialized to 1. Thread 0 runs `wait(S); wait(Q);` and thread 1 runs `wait(Q); wait(S);`. What can happen?",
+  "options": [
+   "Mutual exclusion is violated and both enter the critical section",
+   "Nothing; the semaphores serialize access correctly",
+   "Thread 1 always starves",
+   "Deadlock, if each thread acquires its first semaphore before the other acquires its second"
+  ],
+  "answer": 3,
+  "explanation": "Thread 0 holds S and waits for Q; thread 1 holds Q and waits for S. Neither can proceed: a circular wait. Acquiring the semaphores in a globally agreed order prevents it.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-061",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.5"
+  ],
+  "difficulty": "medium",
+  "question": "Which mistake causes a thread using a binary semaphore as a lock to block forever on itself?",
+  "options": [
+   "Calling signal(mutex) before wait(mutex)",
+   "Initializing the semaphore to 1",
+   "Calling signal(mutex) twice in a row",
+   "Calling wait(mutex) twice without an intervening signal"
+  ],
+  "answer": 3,
+  "explanation": "The second wait finds the value at 0 and blocks, waiting for a signal only this thread could give. Note that signalling twice is a different bug: it leaves the value at 2, letting two threads into the critical section at once.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-062",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.5"
+  ],
+  "difficulty": "medium",
+  "question": "Which POSIX semaphore function is async-signal-safe and therefore usable inside a signal handler?",
+  "options": [
+   "sem_wait()",
+   "pthread_cond_signal()",
+   "pthread_mutex_lock()",
+   "sem_post()"
+  ],
+  "answer": 3,
+  "explanation": "sem_post is explicitly listed as async-signal-safe, making it the standard way for a handler to notify a waiting thread. Mutex and condition-variable operations are not safe there and can deadlock if the handler interrupts the same code.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-063",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.5"
+  ],
+  "difficulty": "hard",
+  "question": "In `sem_init(&s, pshared, value)`, what does a nonzero `pshared` mean?",
+  "options": [
+   "The semaphore is shared between processes and must live in shared memory",
+   "The semaphore starts in the locked state",
+   "The semaphore is shared between threads of the process only",
+   "The semaphore uses busy waiting instead of blocking"
+  ],
+  "answer": 0,
+  "explanation": "With pshared = 0 the semaphore is private to the process's threads. With a nonzero value it can coordinate separate processes, provided it is placed in a region both map, such as an mmap of shared memory.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-064",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.5"
+  ],
+  "difficulty": "hard",
+  "question": "What is the lost wakeup problem that xv6's sleep/wakeup design must avoid?",
+  "options": [
+   "A thread checks a condition, and before it actually sleeps another thread changes the condition and calls wakeup, so the sleeper never wakes",
+   "A woken thread immediately sleeps again",
+   "A thread wakes up without any wakeup being sent",
+   "Two threads call wakeup on the same channel simultaneously"
+  ],
+  "answer": 0,
+  "explanation": "The gap between deciding to sleep and sleeping is fatal if a wakeup lands in it. xv6 solves it by having sleep take the lock that protects the condition and release it only after acquiring the process-table lock that wakeup also needs.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-065",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.5"
+  ],
+  "difficulty": "hard",
+  "question": "Why does xv6's `sleep(chan, lk)` take the lock protecting the condition as an argument?",
+  "options": [
+   "So that other threads can continue using the condition while it sleeps",
+   "So it can hold that lock while registering as a sleeper and release it only after acquiring the lock wakeup also needs, closing the lost-wakeup window",
+   "Because sleeping requires two locks to be held at once",
+   "To let the scheduler know which resource the process wants"
+  ],
+  "answer": 1,
+  "explanation": "The caller checks the condition while holding lk, so no other thread can change it. sleep releases lk only once it has made the sleep atomic with respect to wakeup. Callers always re-check the condition in a while loop after waking.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-066",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.5"
+  ],
+  "difficulty": "hard",
+  "question": "A semaphore protects a pool of 4 identical printers. Six processes each call wait() to claim one. What is the semaphore's value and how many processes are printing?",
+  "options": [
+   "Value 2, with 4 printing",
+   "Value 0, with 6 printing",
+   "Value −2, with 4 processes printing and 2 blocked",
+   "Value −2, with 6 printing"
+  ],
+  "answer": 2,
+  "explanation": "The semaphore starts at 4. The first four waits succeed, taking it to 0, and the last two block, taking it to −2. When a printing process signals, the value rises and one waiter is released.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-067",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.6"
+  ],
+  "difficulty": "easy",
+  "question": "What does `pthread_cond_wait(&cv, &m)` do?",
+  "options": [
+   "It acquires m and then blocks on cv",
+   "It blocks on cv while continuing to hold m",
+   "It atomically releases mutex m and blocks on cv, reacquiring m before returning",
+   "It releases m and returns immediately"
+  ],
+  "answer": 2,
+  "explanation": "Releasing the mutex atomically with blocking is essential: otherwise another thread could not acquire the lock to change the condition, or a signal could slip in between. On waking, the thread must hold the lock again to re-check the condition safely.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-068",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.6"
+  ],
+  "difficulty": "hard",
+  "question": "Why must a condition variable always be paired with a separate shared state variable?",
+  "options": [
+   "Because the state variable counts how many threads are waiting",
+   "Because the mutex cannot protect the condition variable itself",
+   "Because condition variables can only be used by two threads",
+   "A condition variable has no memory: a signal sent when nobody is waiting is lost"
+  ],
+  "answer": 3,
+  "explanation": "If the signalling thread runs first, its signal vanishes, and a thread that waits afterwards blocks forever. The state variable records that the event happened, so a late waiter checks it, sees the condition is already true, and never waits.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-069",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.6"
+  ],
+  "difficulty": "hard",
+  "question": "Why must a thread wait on a condition variable inside a `while` loop rather than an `if`?",
+  "options": [
+   "Because the mutex must be acquired once per iteration",
+   "To count how many times the condition was signalled",
+   "Under Mesa semantics the condition may become false again before the woken thread runs, and spurious wakeups are permitted",
+   "Because pthread_cond_wait can only be called in a loop"
+  ],
+  "answer": 2,
+  "explanation": "Signalling only moves the waiter to the ready queue; it must still reacquire the mutex, and another thread may consume the resource first. POSIX also allows wait to return without any signal, so the condition must always be re-verified.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-070",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.6"
+  ],
+  "difficulty": "hard",
+  "question": "Under Hoare (signal-and-wait) semantics, what happens when thread T1 signals a condition that T2 is waiting on?",
+  "options": [
+   "T2 runs immediately and T1 waits, so the condition is guaranteed still true when T2 resumes",
+   "Both threads run inside the monitor concurrently",
+   "T2 is woken only when T1 leaves the monitor, and must re-check the condition",
+   "T1 continues running and T2 becomes ready"
+  ],
+  "answer": 0,
+  "explanation": "Hoare semantics transfers control directly, which makes reasoning simpler but requires more context switches and is harder to implement. Nearly every real system uses Mesa semantics instead, where the signaller continues and the waiter re-checks.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-071",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.6"
+  ],
+  "difficulty": "medium",
+  "question": "Which semantics do pthreads, Java, and the Linux kernel use for condition variables?",
+  "options": [
+   "Mesa (signal-and-continue)",
+   "Brinch Hansen (signal-and-exit)",
+   "A mixture chosen per call",
+   "Hoare (signal-and-wait)"
+  ],
+  "answer": 0,
+  "explanation": "The signaller keeps running and the waiter merely becomes eligible to reacquire the lock later. That is why the condition may have changed by then, and why waiting must always be done in a while loop.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-072",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.6"
+  ],
+  "difficulty": "medium",
+  "question": "What is the essential guarantee a monitor provides?",
+  "options": [
+   "Threads inside the monitor cannot block",
+   "Only one thread is active inside the monitor at a time, enforced automatically by the compiler or runtime",
+   "Threads inside the monitor cannot be preempted",
+   "Deadlock is impossible inside a monitor"
+  ],
+  "answer": 1,
+  "explanation": "A monitor bundles shared data with the procedures that operate on it and inserts the locking automatically, so the programmer cannot forget to lock. Condition variables inside it handle waiting for state changes.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-073",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.6"
+  ],
+  "difficulty": "hard",
+  "question": "When should `pthread_cond_broadcast` be used instead of `pthread_cond_signal`?",
+  "options": [
+   "Whenever more than one thread exists in the program",
+   "Only when the program uses Hoare semantics",
+   "When waiters are waiting for different conditions on the same variable, or when one change may allow several waiters to proceed",
+   "When the condition variable has no associated mutex"
+  ],
+  "answer": 2,
+  "explanation": "Signal wakes an arbitrary waiter, which may re-check, find its own condition false, and sleep again while another waiter who could have proceeded stays asleep. Broadcast wakes everyone to re-check: correct, at the cost of extra wakeups. This is a covering condition.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-074",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.6"
+  ],
+  "difficulty": "hard",
+  "question": "OSTEP's memory-allocator example frees 50 bytes and signals one waiter. Why can this fail with a single condition variable?",
+  "options": [
+   "Two threads wake at once and both take the memory",
+   "The allocator deadlocks because it holds the mutex while signalling",
+   "The signal is lost because no state variable is used",
+   "The woken thread may be one waiting for 100 bytes, which sleeps again, while a thread waiting for 10 bytes is never woken"
+  ],
+  "answer": 3,
+  "explanation": "All waiters share one condition variable but wait for different amounts, so the signal may reach a thread that cannot proceed. Broadcasting wakes them all to re-check, which is why OSTEP calls this a covering condition.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-075",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.6"
+  ],
+  "difficulty": "medium",
+  "question": "In Java, which construct provides monitor-style mutual exclusion?",
+  "options": [
+   "A volatile field",
+   "A static initializer",
+   "A finalizer",
+   "A synchronized method or block"
+  ],
+  "answer": 3,
+  "explanation": "Every Java object has an associated monitor. Entering a synchronized method or block acquires it, and wait(), notify(), and notifyAll() act as its single built-in condition variable. C# provides lock and Monitor for the same purpose.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-076",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.6"
+  ],
+  "difficulty": "hard",
+  "question": "What is the key behavioural difference between signalling a condition variable and signalling a semaphore when no thread is waiting?",
+  "options": [
+   "The condition-variable signal is lost; the semaphore's value is incremented and remembered",
+   "Both are lost",
+   "Both are remembered until a thread waits",
+   "The condition variable queues the signal for the next waiter"
+  ],
+  "answer": 0,
+  "explanation": "A semaphore carries state, so a later wait passes through immediately. A condition variable is purely a waiting queue, which is why programs must keep their own state variable alongside it.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-077",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.6"
+  ],
+  "difficulty": "hard",
+  "question": "Why should a thread hold the mutex while changing the state that a condition variable protects?",
+  "options": [
+   "Because the condition variable stores the mutex internally",
+   "Because pthread_cond_signal returns an error otherwise",
+   "Otherwise a waiter can check the state and sleep in the gap before the change, missing the signal",
+   "Because the state variable must be atomic"
+  ],
+  "answer": 2,
+  "explanation": "This is the lost-wakeup race again. Holding the lock across the state change makes the check-then-sleep sequence atomic with respect to the change. Signalling itself may be done inside or just after the critical section.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-078",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "medium",
+  "question": "In the semaphore solution to the bounded-buffer problem, what are the initial values of empty, full, and mutex?",
+  "options": [
+   "empty = 0, full = N, mutex = 1",
+   "empty = N, full = N, mutex = 0",
+   "empty = 1, full = 1, mutex = N",
+   "empty = N, full = 0, mutex = 1"
+  ],
+  "answer": 3,
+  "explanation": "empty counts free slots (all N at the start), full counts filled slots (none), and mutex protects the buffer's internal indices. The invariant empty + full ≤ N holds throughout.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-079",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "hard",
+  "question": "In the producer, why must `wait(empty)` come before `wait(mutex)` rather than after?",
+  "options": [
+   "Because wait(empty) is faster than wait(mutex)",
+   "Because empty must be decremented before the buffer is locked for correctness of the count",
+   "Otherwise a producer facing a full buffer would sleep while holding the mutex, so no consumer could ever make space: deadlock",
+   "Because the mutex must always be acquired last in the program"
+  ],
+  "answer": 2,
+  "explanation": "Acquire the counting semaphore first, the mutex second. The order of the signal operations at the end does not matter for correctness, though signalling the mutex first is usually better for performance.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-080",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "hard",
+  "question": "With the semaphore solution to the bounded buffer using empty, full, and mutex, how many items can the buffer hold?",
+  "options": [
+   "All N slots",
+   "N − 1 slots, since one must stay empty",
+   "N/2 slots",
+   "One slot per producer"
+  ],
+  "answer": 0,
+  "explanation": "The semaphores track counts explicitly, so all N slots are usable. The N − 1 limit belongs to the lock-free version using only in and out indices, where one slot must stay empty to distinguish full from empty.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-081",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "hard",
+  "question": "In the condition-variable solution to the bounded buffer, why are two condition variables needed rather than one?",
+  "options": [
+   "To avoid spurious wakeups",
+   "Because one condition variable can hold only one waiter",
+   "With one, a consumer that empties the buffer may wake another consumer instead of a producer, and all threads can end up asleep",
+   "Because producers and consumers use different mutexes"
+  ],
+  "answer": 2,
+  "explanation": "With a single variable, signal picks an arbitrary waiter. Separate 'not full' and 'not empty' variables guarantee that producers wake consumers and consumers wake producers, so a thread that can actually proceed is woken.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-082",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "hard",
+  "question": "OSTEP's first bounded-buffer attempt uses one condition variable and an `if` check. With two consumers, what goes wrong?",
+  "options": [
+   "A woken consumer does not re-check, so a second consumer can take the item first and the first consumer reads from an empty buffer",
+   "The mutex is released twice",
+   "The two consumers both block permanently on the first item",
+   "The producer overwrites an unread item"
+  ],
+  "answer": 0,
+  "explanation": "Under Mesa semantics the woken consumer must reacquire the mutex, and another consumer can slip in first. Changing the if to a while fixes this particular bug; a second bug remains until two separate condition variables are used.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-083",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "medium",
+  "question": "In the readers-writers problem, what access is permitted?",
+  "options": [
+   "Any number of readers at once, but a writer needs exclusive access",
+   "One reader and one writer at the same time",
+   "Any number of writers but only one reader",
+   "Only one reader or one writer at a time, never more"
+  ],
+  "answer": 0,
+  "explanation": "Readers do not interfere with each other, so they may proceed concurrently. A writer modifies the data, so it must exclude all readers and other writers.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-084",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "hard",
+  "question": "In the first readers-writers solution, what does the first reader do, and what does the last reader do?",
+  "options": [
+   "The first reader signals all waiting writers",
+   "The first reader acquires rw_mutex on behalf of all readers; the last reader releases it",
+   "The last reader increments read_count and blocks new readers",
+   "Each reader acquires and releases rw_mutex individually"
+  ],
+  "answer": 1,
+  "explanation": "read_count is protected by its own mutex. When it rises from 0 to 1 the reader locks writers out, and when it falls to 0 the reader lets them back in. Readers arriving in between simply increment the count and proceed.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-085",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "hard",
+  "question": "What is the starvation problem in the first (reader-preference) readers-writers solution?",
+  "options": [
+   "Readers starve because writers always take priority",
+   "A writer can wait indefinitely if readers keep arriving so that read_count never reaches zero",
+   "Both readers and writers starve equally",
+   "The first reader starves while holding the mutex"
+  ],
+  "answer": 1,
+  "explanation": "Writers get in only when the last reader leaves. Under steady read traffic that moment never comes. The second formulation gives writers preference (starving readers instead), and a fair version uses a turnstile so neither side starves.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-086",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "medium",
+  "question": "When is a reader-writer lock likely to be slower than a plain mutex?",
+  "options": [
+   "When there are many more readers than writers",
+   "When writes are frequent or read sections are very short, so the extra bookkeeping outweighs the concurrency gained",
+   "When read sections are long",
+   "When the data is read-only"
+  ],
+  "answer": 1,
+  "explanation": "A reader-writer lock must track reader counts and handle more states, which costs more than a simple lock acquire. It pays off only when many readers overlap for long enough to offset that. Extremely read-heavy kernel data uses RCU instead.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-087",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "hard",
+  "question": "In the dining philosophers problem, why does the naive solution (each philosopher takes the left chopstick then the right) deadlock?",
+  "options": [
+   "Because a philosopher can pick up two chopsticks at once",
+   "Because chopsticks are not protected by semaphores",
+   "If all five take their left chopstick at once, every chopstick is held and each waits forever for its right one",
+   "Because philosophers think for unpredictable lengths of time"
+  ],
+  "answer": 2,
+  "explanation": "All four Coffman conditions hold: chopsticks are exclusive, each philosopher holds one and waits for another, none can be taken away, and the waiting forms a cycle around the table.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-088",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "hard",
+  "question": "Which fix for dining philosophers breaks the circular wait condition?",
+  "options": [
+   "Allowing at most four philosophers at the table at once",
+   "Having odd-numbered philosophers take the left chopstick first and even-numbered ones take the right first",
+   "Letting philosophers think for random lengths of time",
+   "Giving each philosopher a private chopstick"
+  ],
+  "answer": 1,
+  "explanation": "Asymmetry is equivalent to numbering the chopsticks and always taking the lower-numbered one first, which makes a cycle impossible. Limiting the table to four breaks hold-and-wait instead, by guaranteeing a philosopher who can obtain both.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-089",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "hard",
+  "question": "Why does allowing at most four of the five philosophers to sit at the table prevent deadlock?",
+  "options": [
+   "Because the table then has a spare chopstick per philosopher",
+   "Because the fifth philosopher releases both chopsticks when leaving",
+   "Because four is an even number, breaking the symmetry",
+   "With four competitors and five chopsticks, at least one philosopher can always obtain both"
+  ],
+  "answer": 3,
+  "explanation": "By the pigeonhole principle, four philosophers holding one chopstick each use only four of the five, so someone can take a second and eat. This is the n(k − 1) + 1 rule: 4 × 1 + 1 = 5 chopsticks suffice for four diners needing two each.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-090",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "hard",
+  "question": "With five philosophers seated normally, what is the maximum number that can eat at the same time?",
+  "options": [
+   "1",
+   "3",
+   "2",
+   "5"
+  ],
+  "answer": 2,
+  "explanation": "Eating philosophers cannot be neighbours, since they would need the same chopstick. Around a cycle of five, the largest set of non-adjacent seats has two members. In general it is ⌊n/2⌋.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-091",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "hard",
+  "question": "In the monitor solution to dining philosophers, what does `test(i)` check before letting philosopher i eat?",
+  "options": [
+   "That philosopher i is hungry and neither neighbour is currently eating",
+   "That both of philosopher i's chopsticks are on the table and unclaimed by number",
+   "That philosopher i has waited longer than both neighbours",
+   "That fewer than four philosophers are seated"
+  ],
+  "answer": 0,
+  "explanation": "The monitor gives each philosopher a state and a private condition variable. Because a philosopher moves to EATING only when both neighbours are not eating, chopsticks are effectively taken both-or-neither, so no deadlock occurs.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-092",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "hard",
+  "question": "The monitor solution to dining philosophers is deadlock-free. Is it starvation-free?",
+  "options": [
+   "No, because it can still deadlock under heavy contention",
+   "Yes: the condition variables serve philosophers in FIFO order",
+   "No: two neighbours can alternate eating so that the philosopher between them never finds both free",
+   "Yes, provided philosophers think for equal lengths of time"
+  ],
+  "answer": 2,
+  "explanation": "Nothing in the solution tracks how long a philosopher has been hungry. Adding aging or a fair queue would fix it. This is a common exam point: deadlock freedom and starvation freedom are separate guarantees.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-093",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "hard",
+  "question": "In the sleeping barber problem, why is a separate `waiting` counter needed alongside the semaphores?",
+  "options": [
+   "Because the barber cannot count customers while cutting hair",
+   "A customer must check how many people are waiting without blocking, and semaphore values cannot be read",
+   "Because semaphores cannot be shared between processes",
+   "To wake the barber when the shop closes"
+  ],
+  "answer": 1,
+  "explanation": "A customer who finds every waiting chair taken must leave immediately rather than block. The semaphore API offers only wait and signal, so the count is tracked in an ordinary variable protected by a mutex.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-094",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "medium",
+  "question": "What real-world situation does the sleeping barber problem model?",
+  "options": [
+   "A database transaction acquiring row locks",
+   "A CPU scheduler choosing among ready processes",
+   "Two processes exchanging messages over a pipe",
+   "A server with a bounded request queue that drops requests when the queue is full"
+  ],
+  "answer": 3,
+  "explanation": "The barber is the worker thread, the waiting chairs are the queue, and customers who leave are dropped requests. This backpressure pattern appears in web servers, connection pools, and network devices.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-095",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "medium",
+  "question": "Which synchronization primitive makes N threads all wait until every one of them has reached a certain point?",
+  "options": [
+   "A reader-writer lock",
+   "A binary semaphore",
+   "A spinlock",
+   "A barrier"
+  ],
+  "answer": 3,
+  "explanation": "A barrier is used between phases of a parallel computation, so no thread starts phase two before all have finished phase one. pthread_barrier_wait provides it, or it can be built from a counter, a mutex, and a broadcast condition variable.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-096",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "hard",
+  "question": "Two threads must print `ping` and `pong` strictly alternately, starting with ping. What is the standard semaphore setup?",
+  "options": [
+   "Two semaphores both initialized to 1",
+   "Two semaphores, one initialized to 1 and the other to 0, with each thread waiting on its own and signalling the other's",
+   "One mutex, with both threads locking and unlocking it",
+   "One semaphore initialized to 2, shared by both threads"
+  ],
+  "answer": 1,
+  "explanation": "The thread that goes first waits on the semaphore initialized to 1. After printing it signals the other's, which was 0. The sum of the two values never exceeds 1, so exactly one thread can proceed at a time, in strict alternation.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-097",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "hard",
+  "question": "What is a rendezvous between two threads, and how is it implemented with semaphores?",
+  "options": [
+   "Both threads lock the same mutex in sequence",
+   "One thread waits on a semaphore initialized to 2",
+   "Each thread sleeps for a fixed time before continuing",
+   "Each waits for the other to reach a point; two semaphores initialized to 0, with each thread signalling its own and waiting on the other's"
+  ],
+  "answer": 3,
+  "explanation": "Thread A signals semA then waits on semB; thread B signals semB then waits on semA. Whichever arrives first blocks until the other arrives, after which both continue. Signalling before waiting is essential, or the pair deadlocks.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-098",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.8"
+  ],
+  "difficulty": "medium",
+  "question": "What distinguishes livelock from deadlock?",
+  "options": [
+   "Livelock affects only single-CPU systems",
+   "Livelock always resolves itself within one quantum",
+   "In livelock the threads are running and changing state, but none makes progress",
+   "In livelock the threads are blocked waiting on locks"
+  ],
+  "answer": 2,
+  "explanation": "Deadlocked threads are blocked and consume no CPU. Livelocked threads spin at full speed, repeatedly reacting to each other, such as two threads that each grab one lock, fail on the second, release, and retry in lockstep. Random backoff fixes it.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-099",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.8"
+  ],
+  "difficulty": "medium",
+  "question": "Starvation differs from deadlock because:",
+  "options": [
+   "In starvation, other threads continue to make progress while one is indefinitely postponed",
+   "Starvation always involves at least two threads blocked on each other",
+   "Starvation can only happen in real-time systems",
+   "Starvation involves a cycle of waiting threads"
+  ],
+  "answer": 0,
+  "explanation": "Deadlock stops every thread in the affected set. Starvation is a fairness failure: the system runs fine except that one victim never gets its turn, as with a writer under reader-preference locking, or a low-priority process under strict priority scheduling.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-100",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.8"
+  ],
+  "difficulty": "hard",
+  "question": "In the classic priority inversion scenario with priorities H > M > L, what actually blocks H?",
+  "options": [
+   "H is blocked directly by M holding the lock",
+   "The scheduler mistakenly assigns H the lowest priority",
+   "M, indirectly: M preempts L, which holds the lock H needs, so H waits for all of M's work",
+   "L holds the lock and runs, so H waits only for L's critical section"
+  ],
+  "answer": 2,
+  "explanation": "L holds the lock and would release it quickly, but M (which does not need the lock) preempts L because it has higher priority. H therefore waits behind unrelated medium-priority work, for an unbounded time.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-101",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.8"
+  ],
+  "difficulty": "medium",
+  "question": "How does the priority inheritance protocol solve priority inversion?",
+  "options": [
+   "The highest-priority thread takes the lock away from the holder",
+   "All threads run at the same priority while any lock is held",
+   "Waiting threads are demoted to the holder's priority",
+   "A thread holding a lock temporarily inherits the priority of the highest-priority thread waiting for it"
+  ],
+  "answer": 3,
+  "explanation": "Running L at H's priority stops M from preempting it, so L finishes its critical section promptly and releases the lock. H's blocking time is then bounded by the length of L's critical section rather than by unrelated work.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-102",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.8"
+  ],
+  "difficulty": "hard",
+  "question": "What distinguishes the priority ceiling protocol from priority inheritance?",
+  "options": [
+   "The ceiling protocol applies only to semaphores, not mutexes",
+   "Each lock has a fixed ceiling priority, and a thread holding it runs at that priority regardless of who is waiting",
+   "The ceiling protocol requires no knowledge of which tasks use which locks",
+   "The ceiling protocol lowers the priority of waiting threads"
+  ],
+  "answer": 1,
+  "explanation": "The ceiling equals the highest priority of any task that may use the lock, which must be known in advance. Raising the holder to that level immediately also prevents chained blocking and certain deadlocks, at the cost of needing static analysis.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-103",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.8"
+  ],
+  "difficulty": "hard",
+  "question": "What caused the Mars Pathfinder to reset repeatedly in 1997?",
+  "options": [
+   "A race condition that corrupted the mission data",
+   "Unbounded priority inversion: a low-priority task held a mutex needed by a high-priority task, while medium-priority tasks preempted it, so a watchdog timer fired",
+   "A memory leak that exhausted the lander's RAM",
+   "A deadlock between two equal-priority tasks"
+  ],
+  "answer": 1,
+  "explanation": "A meteorological task held a lock on the information bus; the bus-management task blocked on it; communications tasks preempted the low-priority holder. Engineers fixed it remotely by enabling priority inheritance on that mutex, a VxWorks option that had been switched off.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-104",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.8"
+  ],
+  "difficulty": "medium",
+  "question": "What does it mean for an algorithm to be lock-free?",
+  "options": [
+   "Every thread completes its operation in a bounded number of its own steps",
+   "The algorithm uses no atomic instructions",
+   "At every step, at least one thread makes progress, even if individual threads may retry indefinitely",
+   "Threads never contend for the same data"
+  ],
+  "answer": 2,
+  "explanation": "Lock-free guarantees system-wide progress: a suspended thread cannot block others, unlike a preempted lock holder. Wait-free is the stronger property where every thread finishes within a bounded number of steps.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-105",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.8"
+  ],
+  "difficulty": "hard",
+  "question": "Which guarantee is strongest?",
+  "options": [
+   "Obstruction-free",
+   "Lock-free",
+   "Deadlock-free",
+   "Wait-free"
+  ],
+  "answer": 3,
+  "explanation": "Wait-free bounds every individual thread's completion, lock-free guarantees only that some thread progresses, and obstruction-free guarantees progress only for a thread that eventually runs alone. Wait-free algorithms are the hardest to design.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-106",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.8"
+  ],
+  "difficulty": "hard",
+  "question": "In the ABA problem, why does a compare-and-swap succeed when it should not?",
+  "options": [
+   "CAS only checks that the value is the same, not that it was never changed; it can have been changed to B and back to A",
+   "Two CAS instructions execute at the same time on different cores",
+   "CAS fails to read the value atomically",
+   "The compared value overflows and wraps around"
+  ],
+  "answer": 0,
+  "explanation": "A thread reads pointer A and its successor, stalls, and meanwhile others pop A and B and push A back. The stalled thread's CAS sees A, succeeds, and installs a stale successor pointer, corrupting the structure.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-107",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.8"
+  ],
+  "difficulty": "hard",
+  "question": "Which technique does NOT help solve the ABA problem?",
+  "options": [
+   "Tagging the pointer with a version counter updated on every change",
+   "Adding a mutex around the CAS loop, which defeats the purpose",
+   "Using epoch-based reclamation to delay freeing nodes",
+   "Using hazard pointers so a node is not reused while a thread may reference it"
+  ],
+  "answer": 1,
+  "explanation": "Version tags (with a double-width CAS), hazard pointers, and epoch-based reclamation all address it. Wrapping the operation in a lock would prevent ABA but abandons the lock-free property that motivated the design.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-108",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.8"
+  ],
+  "difficulty": "hard",
+  "question": "In Linux's read-copy-update (RCU), what do readers do?",
+  "options": [
+   "They take a spinlock for the duration of the read",
+   "They take no locks at all, marking a read-side critical section and following pointers directly",
+   "They take a shared reader-writer lock",
+   "They copy the data structure before reading it"
+  ],
+  "answer": 1,
+  "explanation": "Read-side cost is nearly zero and scales perfectly across CPUs, which is why RCU suits data read constantly and updated rarely, such as routing tables. Writers do the work instead: copy, modify, publish, wait for a grace period, then free.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-109",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.8"
+  ],
+  "difficulty": "hard",
+  "question": "Why must an RCU writer wait for a grace period before freeing the old version of a structure?",
+  "options": [
+   "To allow the memory allocator to coalesce free blocks",
+   "To be certain that no reader still holds a pointer to it",
+   "Because freeing memory requires a lock that readers hold",
+   "To give other writers a chance to make their updates first"
+  ],
+  "answer": 1,
+  "explanation": "Readers take no locks, so the writer cannot know directly who is reading. A grace period ends when every CPU has passed through a point where it cannot be in an old read-side section, after which no stale references can exist.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-110",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.8"
+  ],
+  "difficulty": "hard",
+  "question": "According to the widely cited study of concurrency bugs in real software, which category was most common?",
+  "options": [
+   "Livelocks",
+   "Atomicity violations: code assumed a sequence of operations was indivisible when it was not",
+   "Deadlocks",
+   "Priority inversions"
+  ],
+  "answer": 1,
+  "explanation": "Lu and colleagues found that atomicity violations and order violations made up the great majority of non-deadlock bugs. Deadlocks were a minority. Useful debugging questions are: what is assumed atomic here, and what is assumed to happen first?",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-111",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.8"
+  ],
+  "difficulty": "hard",
+  "question": "One thread runs `if (p->info != NULL) fputs(p->info, f);` while another sets `p->info = NULL`. What kind of bug is this?",
+  "options": [
+   "A deadlock caused by two locks",
+   "An order violation: the threads run in the wrong order",
+   "An atomicity violation: the check and the use must happen as one atomic unit",
+   "A livelock caused by repeated retries"
+  ],
+  "answer": 2,
+  "explanation": "The pointer can be set to NULL between the test and the dereference. The fix is to hold a lock across both the check and the use, so no other thread can invalidate the pointer in between.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-112",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.8"
+  ],
+  "difficulty": "hard",
+  "question": "A thread uses a data structure that another thread has not yet initialized, causing an intermittent crash. This is:",
+  "options": [
+   "An order violation, fixed by enforcing the required ordering with a condition variable or semaphore",
+   "An atomicity violation, fixed by adding a mutex",
+   "A deadlock, fixed by lock ordering",
+   "A priority inversion, fixed by inheritance"
+  ],
+  "answer": 0,
+  "explanation": "Nothing guarantees that initialization finishes before use. A mutex alone does not help, since it enforces exclusion, not sequence. A semaphore initialized to 0, or a condition variable with a state flag, makes the user wait for the initializer.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-113",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.8"
+  ],
+  "difficulty": "hard",
+  "question": "Which liveness failure is best fixed by adding randomized backoff?",
+  "options": [
+   "Livelock",
+   "Priority inversion",
+   "Starvation",
+   "Deadlock"
+  ],
+  "answer": 0,
+  "explanation": "Livelock arises when threads repeatedly react to each other in lockstep, such as trylock-and-release cycles. Random delays break the symmetry. Deadlock needs a broken Coffman condition, starvation needs aging or fair queues, and inversion needs priority inheritance.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-114",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.1"
+  ],
+  "difficulty": "easy",
+  "question": "Mutual exclusion means that:",
+  "options": [
+   "At most one thread at a time is inside a critical section for a given resource",
+   "Threads must run on different CPUs",
+   "Each thread has its own copy of shared data",
+   "Threads take turns in a fixed order"
+  ],
+  "answer": 0,
+  "explanation": "It is the safety guarantee that prevents concurrent updates from interleaving. Taking turns in a fixed order is stricter than necessary and violates the progress requirement.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-115",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.1"
+  ],
+  "difficulty": "easy",
+  "question": "Which of these is shared between threads and therefore needs synchronization when written concurrently?",
+  "options": [
+   "A thread's program counter",
+   "A function's local variable",
+   "A thread's stack pointer",
+   "A global counter"
+  ],
+  "answer": 3,
+  "explanation": "Globals and heap objects live in the shared address space. Locals, registers, and the stack pointer are per thread. A local becomes shared only if its address is deliberately passed to another thread.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-116",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.1"
+  ],
+  "difficulty": "medium",
+  "question": "Why is a concurrency bug caused by a race often hard to reproduce?",
+  "options": [
+   "Because it only occurs on machines with one CPU",
+   "It occurs only under specific interleavings, which depend on timing and rarely happen in testing",
+   "Because the operating system hides the error",
+   "Because the compiler removes the bug in debug builds"
+  ],
+  "answer": 1,
+  "explanation": "Time slices are long compared with the few instructions where the race window sits, so most runs are harmless. Load, extra cores, or a different scheduler can suddenly make the bad interleaving common, which is why such bugs surface in production.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-117",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.3"
+  ],
+  "difficulty": "easy",
+  "question": "Why must the test and the set in test-and-set happen as one indivisible operation?",
+  "options": [
+   "To prevent the value from being cached",
+   "Otherwise two CPUs could both read false and both conclude they acquired the lock",
+   "Because the memory bus cannot handle two operations",
+   "Because the compiler would otherwise remove the test"
+  ],
+  "answer": 1,
+  "explanation": "Atomicity is the whole point: the hardware locks the cache line or the bus for the duration, so no other core can observe or modify the location between the read and the write.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-118",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.4"
+  ],
+  "difficulty": "easy",
+  "question": "Which operation does a thread perform to release a mutex it holds?",
+  "options": [
+   "signal",
+   "wait",
+   "unlock (release)",
+   "broadcast"
+  ],
+  "answer": 2,
+  "explanation": "Mutexes have lock and unlock. wait and signal are semaphore operations; signal and broadcast also name condition-variable operations. Only the thread that locked a mutex should unlock it.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-119",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.4"
+  ],
+  "difficulty": "medium",
+  "question": "A thread is spinning on a lock that is held by a thread on another CPU performing a disk read. What is wrong with this design?",
+  "options": [
+   "Spinlocks cannot be used across CPUs",
+   "The spinning thread will deadlock with the holder",
+   "Disk reads cannot be performed while holding any lock",
+   "The critical section is far too long for a spinlock; a blocking lock should be used"
+  ],
+  "answer": 3,
+  "explanation": "Spinning is worth it only when the wait is shorter than two context switches. Waiting milliseconds for I/O while burning a CPU is pure waste. In the kernel this would also be a bug, since sleeping is forbidden while holding a spinlock.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-120",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.5"
+  ],
+  "difficulty": "easy",
+  "question": "A binary semaphore differs from a counting semaphore in that its value:",
+  "options": [
+   "Is restricted to 0 or 1",
+   "Is set by the scheduler rather than by threads",
+   "Counts the number of waiting threads only",
+   "Can never be negative"
+  ],
+  "answer": 0,
+  "explanation": "A binary semaphore behaves much like a lock, while a counting semaphore manages a pool of N interchangeable resources. In the blocking implementation, either kind can go negative to record waiters.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-121",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.5"
+  ],
+  "difficulty": "medium",
+  "question": "A semaphore guards a pool of 10 database connections. What should its initial value be, and what does wait() represent?",
+  "options": [
+   "1, and wait() represents locking the pool",
+   "0, and wait() represents releasing a connection",
+   "10, and wait() represents claiming one connection",
+   "10, and wait() represents returning a connection"
+  ],
+  "answer": 2,
+  "explanation": "A counting semaphore initialized to the number of interchangeable resources allows that many concurrent holders. A thread calls wait before using a connection and signal after returning it; the eleventh thread blocks until one is freed.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-122",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.6"
+  ],
+  "difficulty": "medium",
+  "question": "What is a spurious wakeup?",
+  "options": [
+   "pthread_cond_wait returning even though no thread signalled the condition variable",
+   "Two threads being woken by a single signal",
+   "A thread waking itself by signalling while holding the mutex",
+   "A signal that arrives before any thread waits"
+  ],
+  "answer": 0,
+  "explanation": "POSIX permits it because it simplifies implementations on some platforms. Code that waits in a while loop and re-checks the condition handles spurious wakeups automatically, which is one more reason never to use a bare if.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-123",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "medium",
+  "question": "In the producer-consumer solution, why are produce() and consume() placed outside the mutex-protected region?",
+  "options": [
+   "Because the mutex protects only the semaphores",
+   "Because they may block on I/O, which is forbidden inside a critical section",
+   "So producers and consumers can do their slow work in parallel instead of serializing on the buffer lock",
+   "Because consume() must run before signal(empty)"
+  ],
+  "answer": 2,
+  "explanation": "Only the few instructions that touch the shared buffer need protection. Holding the lock during item generation or processing would make the whole pipeline serial and negate the benefit of multiple threads.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-124",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.7"
+  ],
+  "difficulty": "hard",
+  "question": "A bounded buffer with N = 6 uses semaphores empty, full, and mutex. The producer has produced 15 items and the consumer has consumed 11. What are the values of empty and full?",
+  "options": [
+   "empty = 6, full = 0",
+   "empty = 2, full = 4",
+   "empty = 0, full = 6",
+   "empty = 4, full = 2"
+  ],
+  "answer": 1,
+  "explanation": "Items in the buffer = 15 − 11 = 4, so full = 4 and empty = N − 4 = 2. The invariant empty + full = N holds whenever no operation is in progress.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-125",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.8"
+  ],
+  "difficulty": "medium",
+  "question": "Why does a preempted lock holder harm a system more than a preempted thread doing ordinary work?",
+  "options": [
+   "The holder loses its place in the ready queue",
+   "The scheduler cannot preempt a lock holder",
+   "Every other thread waiting for that lock is blocked until the holder is rescheduled",
+   "The lock is automatically released on preemption"
+  ],
+  "answer": 2,
+  "explanation": "This convoy effect is why kernels disable preemption while a spinlock is held, why hypervisors detect spinning guests, and why lock-free algorithms are attractive: a suspended thread cannot stall the others.",
+  "notes": "4.md"
+ },
+ {
+  "id": "OS-4-126",
+  "subject": "OS",
+  "unit": 4,
+  "tags": [
+   "OS-4.8"
+  ],
+  "difficulty": "hard",
+  "question": "Priorities are H > M > L on one CPU. L takes a mutex at t = 0 for a 3 ms critical section. H requests the same mutex at t = 1. M, needing 40 ms of CPU and no mutex, arrives at t = 1.5. With priority inheritance, when does H acquire the mutex?",
+  "options": [
+   "At t = 4.5",
+   "At t = 43",
+   "At t = 3",
+   "At t = 41.5"
+  ],
+  "answer": 2,
+  "explanation": "At t = 1, L inherits H's priority, so M cannot preempt it at t = 1.5. L finishes its remaining 2 ms at t = 3 and releases the lock. Without inheritance, M would run 40 ms first and H would wait until about t = 43.",
+  "notes": "4.md"
+ }
+]

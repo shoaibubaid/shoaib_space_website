@@ -1,0 +1,1617 @@
+[
+ {
+  "id": "OS-5-001",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.1"
+  ],
+  "difficulty": "easy",
+  "question": "A set of processes is deadlocked when:",
+  "options": [
+   "Every process in the set waits for an event that only another process in the set can cause",
+   "One process holds a resource that others want",
+   "All processes in the set are running but making no progress",
+   "The system has more processes than available CPUs"
+  ],
+  "answer": 0,
+  "explanation": "The defining feature is a closed set of mutually dependent waits. Processes that are running but achieving nothing are livelocked, and one process merely holding a resource is normal operation.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-002",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.1"
+  ],
+  "difficulty": "medium",
+  "question": "In what order does a process use a resource?",
+  "options": [
+   "Allocate, request, use",
+   "Request, use, release",
+   "Use, request, release",
+   "Request, release, use"
+  ],
+  "answer": 1,
+  "explanation": "If a request cannot be granted immediately, the process waits. Request and release are system calls (open/close, malloc/free) or synchronization operations (lock/unlock, wait/signal). Deadlock arises from waits during the request step.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-003",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.1"
+  ],
+  "difficulty": "easy",
+  "question": "Which is NOT one of the four Coffman conditions for deadlock?",
+  "options": [
+   "Hold and wait",
+   "Mutual exclusion",
+   "Starvation of at least one process",
+   "Circular wait"
+  ],
+  "answer": 2,
+  "explanation": "The four conditions are mutual exclusion, hold and wait, no preemption, and circular wait. Starvation is a separate liveness failure: deadlocked processes are starved, but starvation alone does not imply deadlock.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-004",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.1"
+  ],
+  "difficulty": "medium",
+  "question": "The hold-and-wait condition means that:",
+  "options": [
+   "A process requests all its resources before it starts",
+   "Processes wait in a circular chain",
+   "A process holds at least one resource while waiting to acquire others",
+   "A resource can be held by only one process at a time"
+  ],
+  "answer": 2,
+  "explanation": "If processes had to obtain everything at once or nothing at all, they would never sit on resources while blocked, and deadlock would be impossible. That is exactly what the prevention protocols for this condition enforce.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-005",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.1"
+  ],
+  "difficulty": "medium",
+  "question": "The no-preemption condition means that:",
+  "options": [
+   "A process cannot request more resources once it holds one",
+   "Resources are never shared between processes",
+   "Processes cannot be preempted by the CPU scheduler",
+   "A resource cannot be forcibly taken from a process; it is released only voluntarily"
+  ],
+  "answer": 3,
+  "explanation": "This concerns resources, not the CPU. The CPU itself is preemptible, which is why it never appears in deadlocks. A printer mid-job or a mutex protecting a half-updated structure cannot safely be taken away.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-006",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.1"
+  ],
+  "difficulty": "hard",
+  "question": "Which statement about the four conditions is correct?",
+  "options": [
+   "They apply only to systems with a single instance of each resource",
+   "All four must hold simultaneously for deadlock to occur, so breaking any one prevents it",
+   "Any one of the four is enough to cause deadlock",
+   "They are sufficient but not necessary"
+  ],
+  "answer": 1,
+  "explanation": "They are necessary conditions, which is the entire basis of prevention: make one structurally impossible and deadlock cannot arise. They are not fully independent, since circular wait implies hold and wait.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-007",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.1"
+  ],
+  "difficulty": "hard",
+  "question": "Thread 1 locks mutex A then B; thread 2 locks B then A. What is true?",
+  "options": [
+   "Deadlock happens on every run",
+   "Deadlock happens only on a single-CPU system",
+   "Deadlock is possible but not certain; it depends on the interleaving",
+   "Deadlock is impossible because mutexes are preemptible"
+  ],
+  "answer": 2,
+  "explanation": "If thread 1 acquires both locks before thread 2 starts, nothing goes wrong. Deadlock needs thread 1 to hold A and thread 2 to hold B at the same moment. This timing dependence is why such bugs survive testing.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-008",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.1"
+  ],
+  "difficulty": "medium",
+  "question": "Which resource type is consumable rather than reusable?",
+  "options": [
+   "A printer",
+   "A message waiting to be received",
+   "A memory frame",
+   "A mutex"
+  ],
+  "answer": 1,
+  "explanation": "Consumable resources are created and destroyed: messages, signals, interrupts. A process waiting for a message that is never sent is also stuck, which is a communication deadlock. Reusable resources are returned intact after use.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-009",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.1"
+  ],
+  "difficulty": "hard",
+  "question": "Why does the CPU never appear as a resource in deadlock analysis?",
+  "options": [
+   "Because the CPU is a consumable resource",
+   "Because every process gets its own CPU",
+   "It is preemptible: the scheduler can take it away and give it back later without harm",
+   "Because only the kernel holds the CPU"
+  ],
+  "answer": 2,
+  "explanation": "CPU state can be saved and restored exactly, so preemption is transparent. The no-preemption condition therefore fails for the CPU, and no cycle involving it can persist. Memory pages are similar, since they can be swapped out.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-010",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.1"
+  ],
+  "difficulty": "medium",
+  "question": "Why do database systems handle deadlocks explicitly while Linux mostly ignores them for user processes?",
+  "options": [
+   "Databases have fewer resources, so detection is trivial",
+   "A hung transaction is unacceptable, and a database can safely abort and retry one because it has undo logs",
+   "Database deadlocks do not involve circular waits",
+   "Linux hardware cannot detect cycles"
+  ],
+  "answer": 1,
+  "explanation": "Transactions are designed to be rolled back, which makes recovery cheap and correct. A general OS cannot undo a half-finished process, and user deadlocks are rare enough that leaving them to the programmer is reasonable.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-011",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.1"
+  ],
+  "difficulty": "hard",
+  "question": "What is lockdep in the Linux kernel?",
+  "options": [
+   "A runtime validator that records lock acquisition orders and warns about conflicting orders even if no deadlock occurred",
+   "A tool that detects deadlocks in user programs",
+   "A lock type that cannot deadlock",
+   "A scheduler that avoids running processes that hold locks"
+  ],
+  "answer": 0,
+  "explanation": "Kernel deadlocks hang the whole machine, so Linux checks lock ordering proactively. lockdep flags a potential cycle the first time two code paths take the same locks in different orders, long before the bad interleaving actually happens.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-012",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.2"
+  ],
+  "difficulty": "medium",
+  "question": "In a resource-allocation graph, an edge drawn from a process to a resource represents:",
+  "options": [
+   "A request edge: the process has requested that resource and is waiting",
+   "The process releasing the resource",
+   "An assignment edge: the resource is allocated to the process",
+   "A claim edge: the process may request the resource later"
+  ],
+  "answer": 0,
+  "explanation": "Requests point from process to resource; assignments point from a specific instance back to the process. When a request is granted, the request edge is replaced by an assignment edge in the opposite direction.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-013",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.2"
+  ],
+  "difficulty": "hard",
+  "question": "A resource-allocation graph contains no cycle. What can you conclude?",
+  "options": [
+   "There is definitely no deadlock",
+   "There may or may not be a deadlock",
+   "There is definitely a deadlock",
+   "Nothing, unless all resources have single instances"
+  ],
+  "answer": 0,
+  "explanation": "A cycle is a necessary condition, so its absence rules deadlock out completely, regardless of how many instances each resource type has. The converse is weaker: a cycle proves deadlock only when every resource in it has one instance.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-014",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.2"
+  ],
+  "difficulty": "hard",
+  "question": "A resource-allocation graph contains a cycle, and some resources in that cycle have multiple instances. What can you conclude?",
+  "options": [
+   "There is definitely a deadlock",
+   "Deadlock is possible but not certain; the detection algorithm must be run",
+   "The graph must be invalid",
+   "There is definitely no deadlock"
+  ],
+  "answer": 1,
+  "explanation": "A process outside the cycle, or one holding a spare instance and waiting for nothing, may finish and release what the cycle needs. With multiple instances, a cycle is necessary but not sufficient.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-015",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.2"
+  ],
+  "difficulty": "hard",
+  "question": "In a wait-for graph, what does an edge from P1 to P2 mean, and when is this representation valid?",
+  "options": [
+   "P1 has higher priority than P2; valid for priority systems",
+   "P1 and P2 share a resource; valid for multiple instances",
+   "P1 holds a resource that P2 wants; valid for any system",
+   "P1 waits for a resource held by P2; valid only when every resource has a single instance"
+  ],
+  "answer": 3,
+  "explanation": "The wait-for graph collapses the resource nodes out of a RAG. With single instances, a deadlock exists if and only if the graph has a cycle, so ordinary cycle detection suffices. Multiple instances need the full detection algorithm.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-016",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.2"
+  ],
+  "difficulty": "hard",
+  "question": "R1, R2, and R3 each have one instance. P1 holds R1 and wants R2; P2 holds R2 and wants R3; P3 holds R3 and wants R1. Is there a deadlock?",
+  "options": [
+   "Yes: the single-instance cycle P1 → P2 → P3 → P1 means all three are deadlocked",
+   "No: three processes cannot deadlock, only two can",
+   "No: each process holds only one resource",
+   "Only if a fourth process is also waiting"
+  ],
+  "answer": 0,
+  "explanation": "With single instances, a cycle in the wait-for graph is necessary and sufficient. Each process waits for a resource held by the next, and nobody can release anything, so all three wait forever.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-017",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.2"
+  ],
+  "difficulty": "hard",
+  "question": "R1 has one instance held by P1, which waits for R2. R2 has two instances, held by P2 and P4. P2 waits for R1. P4 waits for nothing. Is there a deadlock?",
+  "options": [
+   "No: P4 finishes and releases an R2 instance, which goes to P1, which then releases R1 to P2",
+   "Only if P4 requests R1 as well",
+   "Yes, because R1 has only one instance",
+   "Yes: the cycle P1 → R2 → P2 → R1 → P1 proves deadlock"
+  ],
+  "answer": 0,
+  "explanation": "A cycle exists, but P4 holds a needed instance and waits for nothing. It completes, its R2 instance satisfies P1, and the chain unwinds. This is the standard counterexample to treating a cycle as proof of deadlock.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-018",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.2"
+  ],
+  "difficulty": "medium",
+  "question": "What does a dashed claim edge from Pi to Rj mean in a resource-allocation graph used for deadlock avoidance?",
+  "options": [
+   "Pi has released Rj",
+   "Rj has been assigned to Pi",
+   "Pi may request Rj at some point in the future",
+   "Pi has requested Rj and is waiting"
+  ],
+  "answer": 2,
+  "explanation": "Claim edges express the maximum future need that avoidance algorithms require. When the request is actually made, the claim edge becomes a request edge; on release, the assignment edge reverts to a claim edge.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-019",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.2"
+  ],
+  "difficulty": "hard",
+  "question": "What is the time complexity of detecting a cycle in a wait-for graph with n processes?",
+  "options": [
+   "O(1), using a hash table",
+   "O(log n), using a balanced tree",
+   "O(n²) in the worst case, since the graph can have up to n² edges",
+   "O(2ⁿ), since all subsets must be checked"
+  ],
+  "answer": 2,
+  "explanation": "Depth-first search costs O(V + E), and with n process nodes there can be up to n² edges, giving the O(n²) figure textbooks quote. Databases use exactly this to detect deadlocked transactions.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-020",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.3"
+  ],
+  "difficulty": "medium",
+  "question": "Deadlock prevention works by:",
+  "options": [
+   "Running a detection algorithm periodically",
+   "Aborting processes that have waited too long",
+   "Ensuring that at least one of the four necessary conditions can never hold",
+   "Checking each request to see whether the state stays safe"
+  ],
+  "answer": 2,
+  "explanation": "Prevention constrains how requests may be made so deadlock is structurally impossible. Checking each request against a safe-state test is avoidance; periodic checks and aborts are detection and recovery.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-021",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.3"
+  ],
+  "difficulty": "hard",
+  "question": "Which technique attacks the mutual-exclusion condition?",
+  "options": [
+   "Numbering resources and requesting them in increasing order",
+   "Requiring processes to request all resources at once",
+   "Rolling back a process and releasing its resources",
+   "Spooling printer output to disk so that only one daemon ever uses the printer"
+  ],
+  "answer": 3,
+  "explanation": "Spooling turns a non-sharable device into a sharable one: processes write to their own files and nobody waits for the printer. The mutual-exclusion condition generally cannot be eliminated, since many resources (like mutexes) exist to be exclusive.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-022",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.3"
+  ],
+  "difficulty": "hard",
+  "question": "A protocol requires each process to request all its resources before execution begins. Which condition does this break, and what is the cost?",
+  "options": [
+   "No preemption; the cost is lost work during rollback",
+   "Circular wait; the cost is extra context switches",
+   "Hold and wait; resources sit idle for long periods and processes needing many popular resources may starve",
+   "Mutual exclusion; the cost is slower device access"
+  ],
+  "answer": 2,
+  "explanation": "A process never waits while holding anything, so hold and wait cannot occur. But a job that prints only at the end holds the printer for its whole run, and a process needing several busy resources may never find them all free at once.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-023",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.3"
+  ],
+  "difficulty": "hard",
+  "question": "A job scans for 50 minutes, computes for 20, then prints for 5. Under the request-everything-up-front protocol, what is the printer's utilization if such jobs run back to back?",
+  "options": [
+   "100%",
+   "About 25%",
+   "About 6.7%",
+   "About 66.7%"
+  ],
+  "answer": 2,
+  "explanation": "The printer is held for the whole 75-minute run but used for only 5 minutes: 5/75 ≈ 6.7%. Under the release-then-request protocol it would be held only during the 5 minutes it is actually needed.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-024",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.3"
+  ],
+  "difficulty": "hard",
+  "question": "Which resources can realistically be preempted to break the no-preemption condition?",
+  "options": [
+   "Those whose state can be saved and restored, such as CPU registers and memory pages",
+   "Printers, because the job can be restarted from the beginning",
+   "Any resource, provided the OS keeps a log",
+   "Mutexes, because the kernel knows which thread holds them"
+  ],
+  "answer": 0,
+  "explanation": "Preemption is safe only if the process can be resumed exactly. Context switching preempts the CPU and swapping preempts memory. Taking a mutex away would expose a half-updated structure, and a half-finished printout cannot be un-printed.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-025",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.3"
+  ],
+  "difficulty": "hard",
+  "question": "A thread locks A, then calls trylock on B. If trylock fails, it unlocks A and retries from the top. Which condition does this break, and what new risk appears?",
+  "options": [
+   "Hold and wait; the new risk is livelock if threads retry in lockstep",
+   "Mutual exclusion; the new risk is data corruption",
+   "Circular wait; the new risk is starvation of the first thread",
+   "No preemption; the new risk is deadlock between three threads"
+  ],
+  "answer": 0,
+  "explanation": "Because the thread gives up A instead of blocking while holding it, no cycle of blocked threads can form. But two threads can repeatedly grab, fail, and release in step, making no progress. A randomized backoff before retrying fixes it.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-026",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.3"
+  ],
+  "difficulty": "medium",
+  "question": "Which prevention technique is used most widely in real software?",
+  "options": [
+   "Spooling all shared devices",
+   "Preempting resources from waiting processes",
+   "Requesting all resources at process start",
+   "Imposing a global order on resources and always acquiring them in increasing order"
+  ],
+  "answer": 3,
+  "explanation": "Lock ordering costs nothing at run time and fits normal programming. Kernels document lock hierarchies, and code that locks dynamic objects orders them by address or ID. The other techniques are impractical for general use.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-027",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.3"
+  ],
+  "difficulty": "hard",
+  "question": "Why does acquiring resources in increasing numerical order prevent circular wait?",
+  "options": [
+   "Because only one process can hold the highest-numbered resource",
+   "Because the ordering makes every request succeed immediately",
+   "A cycle would require a chain of strictly increasing numbers returning to its start, which is impossible",
+   "Because the lowest-numbered resource is never contended"
+  ],
+  "answer": 2,
+  "explanation": "In a cycle, each process holds Ri and waits for Ri+1, so F(Ri) < F(Ri+1) all the way round, giving F(R0) < F(R0). The contradiction proves no cycle can form.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-028",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.3"
+  ],
+  "difficulty": "hard",
+  "question": "A banking system implements `transfer(from, to, amount)` by locking `from` then `to`. Why can this deadlock, and what is the standard fix?",
+  "options": [
+   "Both accounts use the same lock; fix it by adding a second lock",
+   "Two opposite transfers can each hold one account; fix it by always locking the account with the lower ID or address first",
+   "The lock is held too long; fix it by shortening the critical section",
+   "The amount may be negative; fix it by validating input"
+  ],
+  "answer": 1,
+  "explanation": "transfer(A, B) and transfer(B, A) running together form a circular wait. Ordering by a stable property such as account ID means both threads take the same lock first, so no cycle can form, with no global lock needed.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-029",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.3"
+  ],
+  "difficulty": "hard",
+  "question": "In the wait-die scheme, what happens when an older transaction requests a lock held by a younger one?",
+  "options": [
+   "The younger transaction aborts",
+   "The older transaction waits",
+   "Both abort and restart",
+   "The older transaction aborts"
+  ],
+  "answer": 1,
+  "explanation": "Wait-die is non-preemptive: old waits, young dies. In wound-wait, the older transaction wounds (aborts) the younger and the younger waits. In both, waiting flows in only one direction of age, so no cycle can form.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-030",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.3"
+  ],
+  "difficulty": "hard",
+  "question": "Why do wait-die and wound-wait give an aborted transaction its original timestamp when it restarts?",
+  "options": [
+   "To make the log smaller",
+   "So its locks are preserved across the restart",
+   "So it becomes relatively older over time and eventually stops being the one chosen to abort, preventing starvation",
+   "Because timestamps cannot be reassigned once issued"
+  ],
+  "answer": 2,
+  "explanation": "A transaction that received a new timestamp on every restart would stay young forever and could be aborted repeatedly. Keeping the original makes it the oldest in any conflict eventually, guaranteeing it completes.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-031",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.3"
+  ],
+  "difficulty": "medium",
+  "question": "What makes a documented lock hierarchy difficult to maintain in a large codebase?",
+  "options": [
+   "It requires every lock to be acquired at process start",
+   "The hierarchy must be recomputed at run time",
+   "Only the kernel can define a lock order",
+   "Every code path must follow it, including code written later, and library functions may take locks the caller does not know about"
+  ],
+  "answer": 3,
+  "explanation": "Encapsulation hides which locks a function takes internally, so a caller may violate the order unknowingly. That is exactly why tools like lockdep exist: they infer and check the order automatically as the code runs.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-032",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.4"
+  ],
+  "difficulty": "medium",
+  "question": "What extra information does deadlock avoidance require that prevention does not?",
+  "options": [
+   "The priority of each process",
+   "The exact order in which processes will request resources",
+   "The maximum number of each resource type that each process may ever need",
+   "The execution time of each process"
+  ],
+  "answer": 2,
+  "explanation": "Avoidance grants a request only if the resulting state remains safe, which requires knowing worst-case future demand. Most real programs cannot declare this, which is why general-purpose systems do not use the banker's algorithm.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-033",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.4"
+  ],
+  "difficulty": "hard",
+  "question": "A system state is safe if:",
+  "options": [
+   "No process is currently waiting for a resource",
+   "Every process holds fewer resources than its maximum",
+   "The resource-allocation graph contains no cycle",
+   "There exists an ordering of all processes in which each can obtain its remaining needs from the currently available resources plus those released by earlier processes"
+  ],
+  "answer": 3,
+  "explanation": "That ordering is the safe sequence. Its existence means the OS can always schedule everyone to completion, even if all of them request their declared maximums.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-034",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.4"
+  ],
+  "difficulty": "hard",
+  "question": "Which statement about unsafe states is correct?",
+  "options": [
+   "An unsafe state may or may not lead to deadlock; the OS simply can no longer guarantee avoiding it",
+   "An unsafe state always becomes deadlocked eventually",
+   "An unsafe state contains a cycle in the resource-allocation graph",
+   "An unsafe state is always deadlocked"
+  ],
+  "answer": 0,
+  "explanation": "Processes may release resources early or never request their declared maximums, in which case nothing bad happens. Deadlocked states are a subset of unsafe states, and avoidance is conservative: it refuses requests that merely could lead to trouble.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-035",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.4"
+  ],
+  "difficulty": "hard",
+  "question": "A system has 12 identical drives. P0 holds 5 (max 10), P1 holds 2 (max 4), P2 holds 2 (max 9). Is this state safe?",
+  "options": [
+   "No, because P0 and P2 together need more than 12",
+   "No, because only 3 drives are available",
+   "Yes, with the safe sequence P0, P1, P2",
+   "Yes, with the safe sequence P1, P0, P2"
+  ],
+  "answer": 3,
+  "explanation": "Available = 12 − 9 = 3. P1 needs 2 ≤ 3, finishes, releasing 4 (available 5). P0 needs 5 ≤ 5, finishes, releasing 10 (available 10). P2 needs 7 ≤ 10. All finish, so the state is safe.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-036",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.4"
+  ],
+  "difficulty": "hard",
+  "question": "Continuing: 12 drives, P0 holds 5 (max 10), P1 holds 2 (max 4), P2 holds 2 (max 9), so 3 are available. P2 now requests 1 more drive. Should it be granted?",
+  "options": [
+   "No: granting it leaves an unsafe state, so P2 must wait even though a drive is free",
+   "Yes, because P2 is furthest from its maximum",
+   "Yes: a drive is available, so the request is safe",
+   "No, because P2 would exceed its declared maximum"
+  ],
+  "answer": 0,
+  "explanation": "After granting, available = 2 and P2 still needs 6. Only P1 (needing 2) can finish, leaving 4; P0 needs 5 and P2 needs 6, so neither can proceed. No safe sequence exists, so the banker's algorithm denies the request.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-037",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.4"
+  ],
+  "difficulty": "medium",
+  "question": "In the banker's algorithm, how is the Need matrix computed?",
+  "options": [
+   "Need[i][j] = Max[i][j] − Allocation[i][j]",
+   "Need[i][j] = Available[j] − Allocation[i][j]",
+   "Need[i][j] = Allocation[i][j] − Request[i][j]",
+   "Need[i][j] = Max[i][j] + Allocation[i][j]"
+  ],
+  "answer": 0,
+  "explanation": "Need is what a process could still demand in the worst case. The safety algorithm looks for a process whose entire remaining Need fits within the currently available resources, since only then is its completion guaranteed.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-038",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.4"
+  ],
+  "difficulty": "hard",
+  "question": "In the safety algorithm, what happens when a process Pi with Need ≤ Work is found?",
+  "options": [
+   "Work is increased by Pi's Allocation and Pi is marked finished, on the assumption that it completes and releases everything",
+   "Pi is aborted to free its resources",
+   "Pi's request is granted and the algorithm restarts",
+   "Work is decreased by Pi's Need and Pi is marked finished"
+  ],
+  "answer": 0,
+  "explanation": "The algorithm simulates completion: since Pi's worst-case need can be met, it must eventually finish and return all it holds. Repeating this either marks every process finished (safe) or gets stuck (unsafe).",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-039",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.4"
+  ],
+  "difficulty": "hard",
+  "question": "Five processes, three resource types with totals A=10, B=5, C=7. Allocation: P0 (0,1,0), P1 (2,0,0), P2 (3,0,2), P3 (2,1,1), P4 (0,0,2). What is Available?",
+  "options": [
+   "(3, 2, 3)",
+   "(7, 2, 5)",
+   "(3, 3, 2)",
+   "(10, 5, 7)"
+  ],
+  "answer": 2,
+  "explanation": "Total allocated = (0+2+3+2+0, 1+0+0+1+0, 0+0+2+1+2) = (7, 2, 5). Available = (10, 5, 7) − (7, 2, 5) = (3, 3, 2). This is the standard textbook example.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-040",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.4"
+  ],
+  "difficulty": "hard",
+  "question": "Continuing the standard example: Available = (3,3,2) and Need is P0 (7,4,3), P1 (1,2,2), P2 (6,0,0), P3 (0,1,1), P4 (4,3,1). Which process can the safety algorithm select first?",
+  "options": [
+   "P4, since (4,3,1) ≤ (3,3,2)",
+   "P1, since (1,2,2) ≤ (3,3,2)",
+   "P2, since it needs no B or C",
+   "P0, since it needs the most and should go first"
+  ],
+  "answer": 1,
+  "explanation": "Compare component by component. P1 fits. P0 fails on A (7 > 3), P2 fails on A (6 > 3), P4 fails on A (4 > 3), and P3 (0,1,1) also fits but P1 is the conventional first choice. A safe sequence is P1, P3, P4, P2, P0.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-041",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.4"
+  ],
+  "difficulty": "hard",
+  "question": "In the standard example (Available (3,3,2), Need1 = (1,2,2)), P1 requests (1,0,2). What does the banker's algorithm do?",
+  "options": [
+   "Denies it, because the resources are unavailable",
+   "Grants it, because the resulting state is safe",
+   "Denies it, because the resulting state is unsafe",
+   "Denies it, because the request exceeds P1's need"
+  ],
+  "answer": 1,
+  "explanation": "The request is within Need1 and within Available. Pretending to grant gives Available = (2,3,0), Allocation1 = (3,0,2), Need1 = (0,2,0). The safety check succeeds with the sequence P1, P3, P4, P0, P2, so the allocation is made.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-042",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.4"
+  ],
+  "difficulty": "hard",
+  "question": "After P1's request is granted, Available = (2,3,0). P4 now requests (3,3,0). What happens?",
+  "options": [
+   "P4 is aborted for exceeding its maximum",
+   "The safety algorithm runs and declares the state unsafe",
+   "P4's request is granted, since it is within Need4",
+   "P4 waits, because the request exceeds Available"
+  ],
+  "answer": 3,
+  "explanation": "Step 2 of the request algorithm compares Request with Available: 3 > 2 for resource A, so the resources simply are not there. P4 blocks immediately, with no need to run the safety check.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-043",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.4"
+  ],
+  "difficulty": "hard",
+  "question": "After P1's request, Available = (2,3,0) with Need0 = (7,4,3). P0 requests (0,2,0). What happens?",
+  "options": [
+   "It is granted, and P0 finishes immediately",
+   "It is denied because it exceeds P0's maximum",
+   "The request is denied as unsafe: after pretending to grant it, no process can complete",
+   "It is granted, since (0,2,0) ≤ (2,3,0)"
+  ],
+  "answer": 2,
+  "explanation": "Pretending to grant gives Available = (2,1,0). P0 needs (7,2,3), P1 needs (0,2,0), P2 needs (6,0,0), P3 needs (0,1,1), P4 needs (4,3,1): none fits (P1 and P3 fail on B or C). No safe sequence exists, so P0 waits.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-044",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.4"
+  ],
+  "difficulty": "medium",
+  "question": "In the resource-allocation-graph algorithm for avoidance, a request is granted only if:",
+  "options": [
+   "Converting the request edge into an assignment edge creates no cycle, counting claim edges",
+   "No other process has a claim edge to that resource",
+   "The resource has a free instance",
+   "The requesting process holds no other resources"
+  ],
+  "answer": 0,
+  "explanation": "This algorithm works only when every resource has a single instance. A cycle involving claim edges signals a potentially unsafe state, so the request is refused even though the resource is free.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-045",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.4"
+  ],
+  "difficulty": "hard",
+  "question": "What is the time complexity of the banker's safety algorithm for n processes and m resource types?",
+  "options": [
+   "O(2ⁿ)",
+   "O(m × n²)",
+   "O(m × n)",
+   "O(n log n)"
+  ],
+  "answer": 1,
+  "explanation": "Each pass over the processes costs O(m × n) vector comparisons, and up to n passes are needed to mark everyone finished. Running this on every request is a major reason the algorithm is impractical for general-purpose systems.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-046",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.4"
+  ],
+  "difficulty": "hard",
+  "question": "Which is NOT a limitation of the banker's algorithm?",
+  "options": [
+   "It can only handle resources with a single instance each",
+   "The number of processes and resources is assumed fixed",
+   "Processes must declare their maximum needs in advance",
+   "It refuses some requests that would never have caused deadlock"
+  ],
+  "answer": 0,
+  "explanation": "Multiple instances are exactly what it handles; the RAG algorithm is the single-instance variant. Its real problems are unknown maximum demands, a changing set of processes and resources, conservatism, and O(mn²) cost per request.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-047",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.5"
+  ],
+  "difficulty": "hard",
+  "question": "How does the deadlock detection algorithm differ from the banker's safety algorithm?",
+  "options": [
+   "It uses Max instead of Need",
+   "It examines only processes that hold no resources",
+   "It requires a cycle in the resource-allocation graph",
+   "It uses each process's current outstanding Request instead of its worst-case Need"
+  ],
+  "answer": 3,
+  "explanation": "Detection asks whether a deadlock exists now, so it considers only what processes are actually blocked on. Avoidance asks whether one could ever occur if everyone demanded their maximum, which is why it needs Need.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-048",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.5"
+  ],
+  "difficulty": "medium",
+  "question": "In the detection algorithm, how is Finish[i] initialized?",
+  "options": [
+   "To true for processes holding no resources, and false otherwise",
+   "To false for every process",
+   "To true for every process",
+   "To true for processes with no outstanding requests"
+  ],
+  "answer": 0,
+  "explanation": "A process holding nothing can release nothing, so it cannot be part of a deadlock and is marked finished at the start. The algorithm then repeatedly finds an unfinished process whose current request fits within Work.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-049",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.5"
+  ],
+  "difficulty": "hard",
+  "question": "Three resource types with totals A=7, B=2, C=6. Allocation: P0 (0,1,0), P1 (2,0,0), P2 (3,0,3), P3 (2,1,1), P4 (0,0,2). Requests: P0 (0,0,0), P1 (2,0,2), P2 (0,0,0), P3 (1,0,0), P4 (0,0,2). Is the system deadlocked?",
+  "options": [
+   "Yes: P1, P3, and P4 are deadlocked",
+   "Cannot be determined without the Max matrix",
+   "Yes: all five processes are deadlocked",
+   "No: the sequence P0, P2, P3, P1, P4 lets every process finish"
+  ],
+  "answer": 3,
+  "explanation": "Allocated = (7,2,6), so Available = (0,0,0). P0 and P2 request nothing and finish, freeing (3,1,3). P3 needs (1,0,0) and finishes, then P1 and P4 follow. No deadlock, even though nothing is free right now.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-050",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.5"
+  ],
+  "difficulty": "hard",
+  "question": "Continuing that example, P2 now additionally requests one instance of C, so Request2 = (0,0,1) while Available is (0,0,0). What is the result?",
+  "options": [
+   "No deadlock: P2 simply waits for C",
+   "P1, P2, P3, and P4 are deadlocked; only P0 can finish",
+   "All five processes are deadlocked",
+   "Only P2 and P4 are deadlocked"
+  ],
+  "answer": 1,
+  "explanation": "With Available = (0,0,0), only P0 (requesting nothing) finishes, freeing (0,1,0). Every remaining request needs A or C, which nobody releases. The four processes wait forever.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-051",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.5"
+  ],
+  "difficulty": "hard",
+  "question": "What is the drawback of running deadlock detection on every request that cannot be granted immediately?",
+  "options": [
+   "It may report deadlocks that do not exist",
+   "It cannot identify which process caused the deadlock",
+   "It is expensive, since the algorithm costs O(m × n²) and blocked requests are frequent",
+   "It requires each process to declare its maximum needs"
+  ],
+  "answer": 2,
+  "explanation": "Detecting instantly is precise about the cause but consumes far too much CPU under load. Running periodically or when CPU utilization drops is cheaper, at the cost of deadlocks persisting unnoticed and harder attribution.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-052",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.5"
+  ],
+  "difficulty": "medium",
+  "question": "Why is a sudden drop in CPU utilization used as a trigger for running deadlock detection?",
+  "options": [
+   "Deadlocked processes stop doing useful work, so utilization falls as more of them become stuck",
+   "Because low utilization always indicates a deadlock",
+   "Because deadlocks consume large amounts of CPU",
+   "Because the detection algorithm needs idle CPUs to run"
+  ],
+  "answer": 0,
+  "explanation": "It is a cheap heuristic: run the expensive check only when the symptom appears. Low utilization has other causes, so it triggers a check rather than proving anything.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-053",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.5"
+  ],
+  "difficulty": "medium",
+  "question": "Which is NOT a factor normally considered when selecting a victim for termination?",
+  "options": [
+   "The alphabetical order of the process names",
+   "How long the process has already computed",
+   "Whether the process is interactive or batch",
+   "How many resources it holds and of what kinds"
+  ],
+  "answer": 0,
+  "explanation": "Victim selection minimizes cost: work already done, resources held, how much more is needed, priority, and how many processes must die. Including the number of previous rollbacks also prevents the same process being chosen forever.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-054",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.5"
+  ],
+  "difficulty": "hard",
+  "question": "What is the main disadvantage of aborting one deadlocked process at a time rather than all of them?",
+  "options": [
+   "It always terminates more processes in total",
+   "It requires every process to be restartable",
+   "It cannot break the deadlock reliably",
+   "The detection algorithm must be re-run after each abort, adding considerable overhead"
+  ],
+  "answer": 3,
+  "explanation": "Aborting one at a time loses less work, but each abort may not break the cycle, so detection must run again to check. Aborting everything is decisive and cheap to decide, but discards all their partial computation.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-055",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.5"
+  ],
+  "difficulty": "hard",
+  "question": "When recovering by resource preemption, what does rollback mean?",
+  "options": [
+   "Moving it to the back of the ready queue",
+   "Releasing all resources while letting it continue running",
+   "Undoing the last instruction it executed",
+   "Returning the preempted process to a previously saved safe state and restarting it from there"
+  ],
+  "answer": 3,
+  "explanation": "A process cannot simply continue without a resource it was using, so it must resume from a checkpoint. The simplest form is total rollback (abort and restart). Databases do this naturally with transaction logs.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-056",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.5"
+  ],
+  "difficulty": "hard",
+  "question": "How is starvation prevented during repeated deadlock recovery?",
+  "options": [
+   "By raising the priority of every process after a rollback",
+   "By including the number of previous rollbacks in the victim's cost, so a process is chosen only a bounded number of times",
+   "By always choosing the newest process as victim",
+   "By running detection less frequently"
+  ],
+  "answer": 1,
+  "explanation": "A purely cost-based rule could keep selecting the same cheap process, which would then never complete. Counting rollbacks makes a repeatedly chosen process progressively more expensive to abort, so the system eventually picks someone else.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-057",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.5"
+  ],
+  "difficulty": "medium",
+  "question": "Which system routinely detects deadlocks and recovers automatically?",
+  "options": [
+   "A database management system, which aborts and retries one transaction",
+   "The Linux kernel, for user-space mutexes",
+   "A typical embedded RTOS, for its task set",
+   "Windows, for application-level locks"
+  ],
+  "answer": 0,
+  "explanation": "Transactions are atomic and can be undone through logs, making recovery safe and inexpensive. General-purpose OSes leave user deadlocks to the programmer, and RTOSes usually prevent them by design instead.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-058",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.6"
+  ],
+  "difficulty": "medium",
+  "question": "The ostrich approach to deadlock means:",
+  "options": [
+   "Detecting deadlocks but never recovering from them",
+   "Ignoring the problem, on the grounds that deadlocks are rare and the alternatives cost too much",
+   "Preventing deadlock by a strict resource ordering",
+   "Aborting any process that waits too long"
+  ],
+  "answer": 1,
+  "explanation": "Linux and Windows take this approach for user-level deadlocks. Prevention restricts every program, avoidance needs unavailable information, and detection costs CPU, while deadlocks are far rarer than other failures.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-059",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.6"
+  ],
+  "difficulty": "hard",
+  "question": "Why is ignoring deadlocks a defensible engineering decision for a general-purpose OS?",
+  "options": [
+   "Because modern hardware prevents circular waits",
+   "They are rare compared with other failures, the alternatives are costly, and the affected process can simply be killed and restarted",
+   "Because the scheduler eventually breaks any cycle",
+   "Because general-purpose systems have no shared resources"
+  ],
+  "answer": 1,
+  "explanation": "The cost of universal prevention or continuous detection outweighs the occasional hung application. Inside the kernel, where a deadlock freezes the machine, developers take it seriously and enforce lock ordering with lockdep.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-060",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.6"
+  ],
+  "difficulty": "hard",
+  "question": "Which combination correctly describes the three liveness failures?",
+  "options": [
+   "Deadlock: blocked forever in a cycle. Livelock: running but not progressing. Starvation: waiting while others progress",
+   "All three mean the same thing at different scales",
+   "Deadlock: running but not progressing. Livelock: blocked in a cycle. Starvation: blocked on I/O",
+   "Deadlock and livelock are identical; starvation is a scheduling issue only"
+  ],
+  "answer": 0,
+  "explanation": "CPU usage distinguishes the first two: deadlocked threads use none, livelocked threads use a lot. Starvation differs from both because the rest of the system is making normal progress; only the victim is postponed.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-061",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.6"
+  ],
+  "difficulty": "medium",
+  "question": "Two threads in a corridor repeatedly step aside in the same direction and never pass each other. This is an analogy for:",
+  "options": [
+   "Deadlock",
+   "Priority inversion",
+   "Livelock",
+   "Starvation"
+  ],
+  "answer": 2,
+  "explanation": "Both are active and responding to each other, yet neither progresses. The fix mirrors the software one: introduce randomness or asymmetry so the symmetry that keeps them in step is broken.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-062",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.6"
+  ],
+  "difficulty": "hard",
+  "question": "Under strict priority scheduling, a nightly backup job has not run for a week because interactive jobs keep arriving. What is this, and how is it fixed?",
+  "options": [
+   "Starvation, fixed by aging the waiting job's priority",
+   "Deadlock, fixed by breaking the circular wait",
+   "Livelock, fixed by random backoff",
+   "Priority inversion, fixed by priority inheritance"
+  ],
+  "answer": 0,
+  "explanation": "Nothing is blocked in a cycle and the system is doing useful work; one job is simply never chosen. Aging raises its priority as it waits until it eventually wins, which is the standard cure for starvation.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-063",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.6"
+  ],
+  "difficulty": "hard",
+  "question": "Can a deadlock involve a single thread?",
+  "options": [
+   "No: deadlock requires at least two threads",
+   "Yes: a thread that locks a non-recursive mutex it already holds waits for itself, a cycle of length one",
+   "Yes, but only if the thread is a kernel thread",
+   "No: a thread always knows which locks it holds"
+  ],
+  "answer": 1,
+  "explanation": "The thread waits for a lock only it can release. Fix it by restructuring so the lock is taken once at the outer level, or by using a recursive mutex, which many consider a sign of unclear ownership.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-064",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.6"
+  ],
+  "difficulty": "medium",
+  "question": "Which strategy do most general-purpose operating systems apply to deadlocks among user processes?",
+  "options": [
+   "Require all programs to declare their maximum resource needs",
+   "Run the banker's algorithm on every resource request",
+   "Detect cycles periodically and abort a victim",
+   "Ignore them, leaving correctness to the application programmer"
+  ],
+  "answer": 3,
+  "explanation": "Linux and Windows do nothing about user-level deadlocks. Programmers use lock ordering, trylock, and debugging tools instead, and a hung application is killed and restarted.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-065",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.6"
+  ],
+  "difficulty": "hard",
+  "question": "Which statement about the relationship between deadlock and starvation is correct?",
+  "options": [
+   "Every deadlocked process is starved, but a starved process need not be deadlocked",
+   "The two are mutually exclusive",
+   "Starvation always precedes deadlock",
+   "Every starved process is deadlocked"
+  ],
+  "answer": 0,
+  "explanation": "Deadlocked processes never make progress, which is starvation by definition. The converse fails: a low-priority process under strict priority scheduling, or a writer under reader-preference locking, starves without any circular wait.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-066",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.1"
+  ],
+  "difficulty": "hard",
+  "question": "Five processes each need at most 2 instances of a resource type. What is the minimum number of instances that guarantees no deadlock?",
+  "options": [
+   "5",
+   "6",
+   "10",
+   "11"
+  ],
+  "answer": 1,
+  "explanation": "In the worst case each process holds 1 instance and waits for another, using 5. One more instance lets someone obtain a second, finish, and release both. The rule is n(k − 1) + 1 = 5 × 1 + 1 = 6.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-067",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.1"
+  ],
+  "difficulty": "hard",
+  "question": "Four processes each need at most 3 instances of a resource type. What is the minimum number of instances that makes deadlock impossible?",
+  "options": [
+   "13",
+   "8",
+   "9",
+   "12"
+  ],
+  "answer": 2,
+  "explanation": "n(k − 1) + 1 = 4 × 2 + 1 = 9. With 8, all four could hold 2 each and wait forever. With 9, one process obtains its third instance, completes, and releases everything.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-068",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.1"
+  ],
+  "difficulty": "hard",
+  "question": "Three processes need at most 3, 4, and 5 instances of a resource type. What is the minimum total that guarantees no deadlock?",
+  "options": [
+   "10",
+   "13",
+   "9",
+   "12"
+  ],
+  "answer": 0,
+  "explanation": "Σ(maxᵢ − 1) + 1 = (3−1) + (4−1) + (5−1) + 1 = 2 + 3 + 4 + 1 = 10. Equivalently, deadlock is impossible when Σ maxᵢ < total + n.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-069",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.1"
+  ],
+  "difficulty": "hard",
+  "question": "A system has 6 instances of a resource type, and every process may need up to 3. What is the largest number of processes for which deadlock is impossible?",
+  "options": [
+   "2",
+   "4",
+   "3",
+   "6"
+  ],
+  "answer": 0,
+  "explanation": "Require n(3 − 1) + 1 ≤ 6, so 2n ≤ 5 and n ≤ 2.5, giving n = 2. With three processes, each could hold 2 instances (using all 6) and wait forever for a third.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-070",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.4"
+  ],
+  "difficulty": "hard",
+  "question": "One resource type with 10 instances. P1 holds 3 (max 7), P2 holds 2 (max 4), P3 holds 2 (max 6). What is the largest request by P3 that the banker's algorithm will grant immediately?",
+  "options": [
+   "2",
+   "4",
+   "1",
+   "3"
+  ],
+  "answer": 2,
+  "explanation": "Available = 3; needs are P1 4, P2 2, P3 4. With r = 1: available 2, P2 (2) finishes → 4, P1 (4) finishes → 7, P3 (3) fits: safe. With r = 2: available 1, and no process needs ≤ 1, so it is unsafe.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-071",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.5"
+  ],
+  "difficulty": "hard",
+  "question": "A detection algorithm needs about m × n² operations, with m = 4 resource types, n = 100 processes, and 10 ns per operation. How long does one run take?",
+  "options": [
+   "About 4 s",
+   "About 4 ms",
+   "About 0.4 ms",
+   "About 40 µs"
+  ],
+  "answer": 2,
+  "explanation": "4 × 100² = 40,000 operations × 10 ns = 400,000 ns = 0.4 ms. Running it once per second costs almost nothing, but running it on every blocked request in a busy system would be prohibitive.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-072",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.3"
+  ],
+  "difficulty": "hard",
+  "question": "A parent writes an entire large input to a child filter's stdin before reading any of the child's output, and both hang. Which condition creates the cycle?",
+  "options": [
+   "Mutual exclusion on the pipe's inode",
+   "No preemption of the child's CPU time",
+   "Circular wait on pipe buffer space: each blocks in write because the other has stopped reading",
+   "Hold and wait on file descriptors"
+  ],
+  "answer": 2,
+  "explanation": "The child's output pipe fills, so it blocks in write. The parent is still blocked writing to the child's input pipe, which is full because the child stopped reading. Fix it by reading and writing concurrently, or by using a temporary file.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-073",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.1"
+  ],
+  "difficulty": "hard",
+  "question": "A server uses a pool of 4 worker threads. Each request submits a sub-task to the same pool and waits for its result. With 4 simultaneous requests the server hangs. Why?",
+  "options": [
+   "The thread pool has a memory leak",
+   "The scheduler starves the sub-tasks",
+   "The sub-tasks deadlock on a mutex",
+   "All 4 workers are occupied by waiting requests, so no worker remains to run the sub-tasks they wait for"
+  ],
+  "answer": 3,
+  "explanation": "Worker threads are the resource. Each request holds one and waits for another, and the sub-tasks sit queued for a worker that will never free up. Each request effectively needs 2 workers, so 4 × 1 + 1 = 5 would be the safe minimum for 4 requests.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-074",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.3"
+  ],
+  "difficulty": "hard",
+  "question": "A file system must lock two directories for a cross-directory rename, but directories are created and destroyed dynamically. How can a consistent lock order be defined?",
+  "options": [
+   "By using a single global lock for all renames",
+   "By locking the directory with the lower inode number or memory address first",
+   "By locking the source directory first, always",
+   "By locking them in the order the user typed the path names"
+  ],
+  "answer": 1,
+  "explanation": "Any stable, comparable property gives a total order computable at run time, so every code path takes the same one first. Real kernels add special cases, such as locking an ancestor before its descendant, because the hierarchy itself can change.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-075",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.6"
+  ],
+  "difficulty": "hard",
+  "question": "Why can a bug that never deadlocks in testing still deadlock in production?",
+  "options": [
+   "Production systems use different lock implementations",
+   "Compilers optimize locks away in test builds",
+   "Deadlocks occur only when memory is nearly full",
+   "Deadlock requires a specific interleaving, which becomes far more likely under heavy load or with more cores"
+  ],
+  "answer": 3,
+  "explanation": "The window in which one thread holds the first lock and has not yet taken the second is tiny. More concurrency, slower I/O, and different timing all widen the odds of hitting it, which is why static checkers like lockdep are valuable.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-076",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.1"
+  ],
+  "difficulty": "easy",
+  "question": "Which condition states that at least one resource must be non-sharable?",
+  "options": [
+   "Mutual exclusion",
+   "Circular wait",
+   "Hold and wait",
+   "No preemption"
+  ],
+  "answer": 0,
+  "explanation": "If every resource could be used by any number of processes at once, nobody would ever wait for one and deadlock could not occur. Read-only files are sharable; mutexes and printers are not.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-077",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.1"
+  ],
+  "difficulty": "easy",
+  "question": "Which condition describes a closed chain of processes, each waiting for a resource held by the next?",
+  "options": [
+   "Circular wait",
+   "No preemption",
+   "Hold and wait",
+   "Mutual exclusion"
+  ],
+  "answer": 0,
+  "explanation": "Circular wait is the condition most often attacked in practice, by numbering resources and requiring that they be acquired in increasing order, which makes a cycle arithmetically impossible.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-078",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.2"
+  ],
+  "difficulty": "easy",
+  "question": "In a resource-allocation graph, processes are drawn as circles and resources as:",
+  "options": [
+   "Triangles, one per process holding them",
+   "Rectangles, with one dot per instance",
+   "Diamonds, labelled with their capacity",
+   "Circles, distinguished by colour"
+  ],
+  "answer": 1,
+  "explanation": "The dots matter: they show how many instances a resource type has, which decides whether a cycle proves deadlock. Assignment edges are drawn from a specific dot to the holding process.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-079",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.3"
+  ],
+  "difficulty": "easy",
+  "question": "Which of the four conditions is usually the easiest to attack in real software?",
+  "options": [
+   "Mutual exclusion",
+   "No preemption",
+   "Hold and wait",
+   "Circular wait"
+  ],
+  "answer": 3,
+  "explanation": "A global lock order costs nothing at run time and fits ordinary programming. Mutual exclusion usually cannot be removed, preemption is unsafe for most resources, and eliminating hold and wait wastes resources badly.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-080",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.4"
+  ],
+  "difficulty": "easy",
+  "question": "What is a safe sequence?",
+  "options": [
+   "A sequence in which no process ever waits",
+   "An ordering of all processes in which each can finish using the available resources plus those released by the processes before it",
+   "The order of decreasing resource need",
+   "The order in which processes arrived in the system"
+  ],
+  "answer": 1,
+  "explanation": "Its existence proves the state is safe: the OS could run the processes in that order to completion even in the worst case. There may be several safe sequences, and finding one is enough.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-081",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.5"
+  ],
+  "difficulty": "easy",
+  "question": "Which two broad approaches exist for recovering from a detected deadlock?",
+  "options": [
+   "Rebooting the machine, or adding more memory",
+   "Raising priorities, or lowering priorities",
+   "Terminating processes, or preempting resources from them",
+   "Detecting cycles, or ignoring them"
+  ],
+  "answer": 2,
+  "explanation": "Termination can abort everyone in the cycle or one at a time until it breaks. Preemption takes a resource from a victim and rolls that process back, which requires saved state and a rule to avoid starving the same victim.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-082",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.6"
+  ],
+  "difficulty": "easy",
+  "question": "Which system state uses almost no CPU time?",
+  "options": [
+   "Starvation, because the victim spins",
+   "Livelock, because the threads keep retrying",
+   "All three use the CPU heavily",
+   "Deadlock, because every involved process is blocked"
+  ],
+  "answer": 3,
+  "explanation": "Deadlocked processes sit on wait queues consuming nothing. Livelocked threads burn CPU while achieving nothing, which is why a livelocked system often looks busy while a deadlocked one looks idle.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-083",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.3"
+  ],
+  "difficulty": "medium",
+  "question": "Under the protocol where a process must release everything it holds before requesting more, which condition is broken?",
+  "options": [
+   "Mutual exclusion",
+   "Hold and wait",
+   "No preemption",
+   "Circular wait"
+  ],
+  "answer": 1,
+  "explanation": "A process never waits while holding anything, so the hold-and-wait condition fails. The cost is that it may lose resources it still needs and have to reacquire them, and starvation is possible if popular resources are always busy.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-084",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.4"
+  ],
+  "difficulty": "medium",
+  "question": "Why is the banker's algorithm named after banking?",
+  "options": [
+   "Because it was first implemented in a banking system",
+   "Because it charges processes interest for holding resources",
+   "Because it keeps a ledger of resource transactions",
+   "A banker never lends so much that he cannot satisfy every customer's full credit line"
+  ],
+  "answer": 3,
+  "explanation": "Dijkstra's analogy: the bank grants a loan only if it could still honour every customer's maximum credit afterwards. Likewise the OS grants a request only if the state remains safe.",
+  "notes": "5.md"
+ },
+ {
+  "id": "OS-5-085",
+  "subject": "OS",
+  "unit": 5,
+  "tags": [
+   "OS-5.5"
+  ],
+  "difficulty": "medium",
+  "question": "What does it mean if the detection algorithm ends with Finish[i] = false for some processes?",
+  "options": [
+   "Exactly those processes are deadlocked",
+   "The system will deadlock soon but has not yet",
+   "Those processes hold no resources",
+   "The algorithm needs to be run again"
+  ],
+  "answer": 0,
+  "explanation": "Every process that could complete has been marked finished. The remainder cannot proceed even if all completable processes release everything, which is precisely the definition of deadlock.",
+  "notes": "5.md"
+ }
+]

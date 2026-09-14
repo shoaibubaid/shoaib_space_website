@@ -43,7 +43,7 @@
   "os": {
     "group": "Computer",
     "icon": "ti-cpu",
-    "color": "amber",
+    "color": "teal",
     "label": "Operating Systems",
     "intro": "Explaining Operating Systems concepts in a structured way so that the future me can crack tech interviews",
     "posts": [
@@ -63,11 +63,54 @@
     ]
   },
 
+  "cn": {
+    "group": "Computer",
+    "icon": "ti-cpu",
+    "color": "indigo",
+    "label": "Computer Networks",
+    "intro": "Explaining Computer Networks concepts in a structured way so that the future me can crack tech interviews",
+    "posts": [
+      "posts/cs/cn/0.md",
+      "posts/cs/cn/1.md",
+      "posts/cs/cn/2.md",
+      "posts/cs/cn/3.md",
+      "posts/cs/cn/4.md",
+      "posts/cs/cn/5.md",
+      "posts/cs/cn/6.md",
+      "posts/cs/cn/7.md",
+      "posts/cs/cn/8.md",
+      "posts/cs/cn/9.md",
+      "posts/cs/cn/10.md"
+    ]
+  },
+
+  "dbms": {
+    "group": "Computer",
+    "icon": "ti-cpu",
+    "color": "amber",
+    "label": "Database Management Systems",
+    "intro": "Explaining Database Management Systems concepts in a structured way so that the future me can crack tech interviews",
+    "posts": [
+      "posts/cs/dbms/0.md",
+      "posts/cs/dbms/1.md",
+      "posts/cs/dbms/2.md",
+      "posts/cs/dbms/3.md",
+      "posts/cs/dbms/4.md",
+      "posts/cs/dbms/5.md",
+      "posts/cs/dbms/6.md",
+      "posts/cs/dbms/7.md",
+      "posts/cs/dbms/8.md",
+      "posts/cs/dbms/9.md",
+      "posts/cs/dbms/10.md",
+      "posts/cs/dbms/11.md"
+    ]
+  },
+
 
   "dsa": {
     "group": "Computer",
     "icon": "ti-cpu",
-    "color": "teal",
+    "color": "coral",
     "label": "Data Structures and Algorithms",
     "intro": "Explaining Data structures and Algorithms in a structured way so that the future me can crack tech interviews",
     "posts": [
@@ -79,7 +122,7 @@
    "system_design": {
     "group": "Computer",
     "icon": "ti-cpu",
-    "color": "indigo",
+    "color": "teal",
     "label": "System Design",
     "intro": "Explaining System Design concepts in a structured way so that the future me can crack tech interviews",
     "posts": [
