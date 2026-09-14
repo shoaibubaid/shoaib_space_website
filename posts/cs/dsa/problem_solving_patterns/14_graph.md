@@ -72,6 +72,72 @@ class Solution {
 ```
 
 ### 4. [Number of Islands](https://leetcode.com/problems/number-of-islands/description/)
+
+Given an `m x n` 2D binary grid `grid` which represents a map of `'1'`s (land) and `'0'`s (water), return the number of islands.
+
+An **island** is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+
+**Example 1:**
+
+**Input**: 
+```
+grid = [
+  ["1","1","1","1","0"],
+  ["1","1","0","1","0"],
+  ["1","1","0","0","0"],
+  ["0","0","0","0","0"]
+]
+```
+**Output**: **1**
+
+
+```cpp
+class Solution {
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        int count = 0;
+
+        vector<vector<bool>> visited(m,vector<bool>(n,false));
+        queue<vector<int>> q;
+        vector<vector<int>> surround_array = {{-1,0}, {0, 1},{1,0}, {0, -1}};
+            
+
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(grid[i][j] == '1'){
+                    if(!visited[i][j]){
+                        visited[i][j] = true;
+                        q.push({i,j});
+                        count++;
+
+                        while(!q.empty()){
+                            vector<int> curr = q.front();
+                            q.pop();
+                            // curr[0], curr[1] == indices of the popped
+                           
+                            for(vector<int> surround : surround_array){
+                                int x = curr[0] + surround[0];
+                                int y = curr[1] + surround[1];
+                            
+                                if(x >= 0 && x < m && y >=0 && y < n){
+                                    if(grid[x][y] == '1' && visited[x][y] == false){
+                                        visited[x][y] = true;
+                                        q.push({x,y});
+                                    } 
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
+};
+```
+
 ### 5. [Number of Provinces](https://leetcode.com/problems/number-of-provinces/description/)
 ### 6. [Rotten Oranges](https://leetcode.com/problems/rotting-oranges/)
 ### 7. [Cycle detection in undirected graph](https://www.geeksforgeeks.org/problems/detect-cycle-in-an-undirected-graph/1)
