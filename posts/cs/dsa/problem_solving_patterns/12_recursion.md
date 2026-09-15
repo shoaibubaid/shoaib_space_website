@@ -17,3 +17,53 @@ background: cs/dsa.png
 ### 8. [Permutations](https://leetcode.com/problems/permutations/description/)
 ### 9. [Combination Sum](https://leetcode.com/problems/combination-sum/description/)
 ### 10. [Pallindrome partition](https://leetcode.com/problems/palindrome-partitioning/description/)
+
+Given a string `s`, partition `s` such that every substring of the partition is a **palindrome**. Return all possible palindrome partitioning of `s`.
+
+```cpp
+class Solution {
+public:
+    bool isPalindrome(string& s, int start, int end) {
+        int left = start;
+        int right = end;
+
+        while (left <= right) {
+            if (s[left] != s[right])
+                return false;
+            left++;
+            right--;
+        }
+
+        return true;
+    }
+
+    void solve(string& s, int start, vector<string> &current,
+               vector<vector<string>> &ans) {
+        if (start == s.size()) {
+            ans.push_back(current);
+        }
+
+        for (int end = start; end < s.size(); end++) {
+            if (isPalindrome(s, start, end)) {
+
+                // add in the current array (that stores ans[i])
+                current.push_back(s.substr(start, end - start + 1));
+
+                // go to next letter and explore
+                solve(s, end + 1, current, ans);
+
+                // pop them so that it remains empty for the next iteration from the start
+                current.pop_back();
+            }
+        }
+    }
+
+    vector<vector<string>> partition(string s) {
+        vector<vector<string>> ans;
+        vector<string> current;
+        solve(s, 0, current, ans);
+        return ans;
+    }
+};
+```
+
