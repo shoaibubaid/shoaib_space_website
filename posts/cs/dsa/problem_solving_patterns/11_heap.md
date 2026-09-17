@@ -433,14 +433,631 @@ public:
 
 ## 3. Heap as pointer
 ### 1. [Merge K Sorted Arrays](https://www.geeksforgeeks.org/problems/merge-k-sorted-arrays/1)
+Given a 2D matrix **mat[][]** of size **n x m**. Each row in the matrix is sorted in non-decreasing order, merge all the rows and return a single sorted array that contains all the elements of the matrix.
+
+```cpp
+class Solution {
+  public:
+    vector<int> mergeArrays(vector<vector<int>> &mat) {
+        int n = mat.size();
+
+                // {value, row, column}
+                priority_queue<
+                    vector<int>,
+                    vector<vector<int>>,
+                    greater<vector<int>>
+                > min_heap;
+
+                // Put first element of every row into heap
+                for(int i = 0; i < n; i++) {
+                    if(!mat[i].empty()) {
+                        min_heap.push({mat[i][0], i, 0});
+                    }
+                }
+
+                vector<int> ans;
+
+                while(!min_heap.empty()) {
+
+                    auto curr = min_heap.top();
+                    min_heap.pop();
+
+                    int value = curr[0];
+                    int row = curr[1];
+                    int col = curr[2];
+
+                    ans.push_back(value);
+
+                    // Add next element from the same row
+                    if(col + 1 < mat[row].size()) {
+                        min_heap.push({
+                            mat[row][col + 1],
+                            row,
+                            col + 1
+                        });
+                    }
+                }
+
+                return ans;
+    }
+};
+```
+
 ### 2. [Kth Smallest in Sorted Matrix](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/description/)
+
+Given an `n x n` `matrix` where each of the rows and columns is sorted in ascending order, return the `kth` smallest element in the matrix.
+
+Note that it is the `kth` smallest element in the sorted order, not the `kth` distinct element.
+
+You must find a solution with a memory complexity better than `O(n2)`.
+
+```cpp
+class Solution {
+public:
+    int kthSmallest(vector<vector<int>>& matrix, int k) {
+
+        int n = matrix.size();
+
+        int low = matrix[0][0];
+        int high = matrix[n - 1][n - 1];
+
+        while(low < high) {
+
+            int mid = low + (high - low) / 2;
+
+            // Count elements <= mid
+            int count = 0;
+
+            int row = n - 1;
+            int col = 0;
+
+            // Start from bottom-left
+            while(row >= 0 && col < n) {
+
+                if(matrix[row][col] <= mid) {
+                    // Everything above this element
+                    // in this column is also <= mid
+                    count += row + 1;
+                    col++;
+                }
+                else {
+                    // Current element is too large
+                    row--;
+                }
+            }
+
+            if(count < k) {
+                low = mid + 1;
+            }
+            else {
+                high = mid;
+            }
+        }
+
+        return low;
+    }
+};
+```
+
 ## 4. GREEDY+heap
 ### 1. [LAST STONE WEIGHT](https://leetcode.com/problems/last-stone-weight/description/)
+
+You are given an array of integers `stones` where `stones[i]` is the weight of the `i`th stone.
+
+We are playing a game with the stones. On each turn, we choose the heaviest two stones and smash them together. Suppose the heaviest two stones have weights `x` and `y` with `x <= y`. The result of this smash is:
+
+- If `x == y`, both stones are destroyed, and
+- If `x != y`, the stone of weight `x` is destroyed, and the stone of weight `y` has new weight `y - x`.
+
+At the end of the game, there is at most one stone left.
+
+Return the weight of the last remaining stone. If there are no stones left, return `0`.
+
+```cpp
+class Solution {
+public:
+    int lastStoneWeight(vector<int>& stones) {
+        priority_queue<int> max_heap;
+
+        for(int stone : stones) {
+            max_heap.push(stone);
+        }
+
+        while(max_heap.size() > 1) {
+
+            int y = max_heap.top();
+            max_heap.pop();
+
+            int x = max_heap.top();
+            max_heap.pop();
+
+            if(x != y) {
+                max_heap.push(y - x);
+            }
+        }
+
+        if(max_heap.empty()) {
+            return 0;
+        }
+
+        return max_heap.top();
+    }
+};
+```
+
+
 ### 2. [CPU Task Scheduler](https://leetcode.com/problems/task-scheduler/description/)
+
+You are given an array of CPU `tasks`, each labeled with a letter from A to Z, and a number `n`. Each CPU interval can be idle or allow the completion of one task. Tasks can be completed in any order, but there's a constraint: there has to be a gap of at least `n` intervals between two tasks with the same label.
+
+Return the minimum number of CPU intervals required to complete all tasks.
+
+**Greedy + Max Heap**
+```cpp
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+
+        unordered_map<char, int> freq;
+
+        for(char task : tasks) {
+            freq[task]++;
+        }
+
+        priority_queue<int> max_heap;
+
+        for(auto [task, count] : freq) {
+            max_heap.push(count);
+        }
+
+        int time = 0;
+
+        while(!max_heap.empty()) {
+
+            vector<int> used;
+
+            // One cycle has at most n + 1 tasks
+            for(int i = 0; i <= n; i++) {
+
+                if(!max_heap.empty()) {
+
+                    int count = max_heap.top();
+                    max_heap.pop();
+
+                    count--;
+
+                    if(count > 0) {
+                        used.push_back(count);
+                    }
+                }
+
+                time++;
+
+                // Nothing left to execute
+                if(max_heap.empty() && used.empty()) {
+                    break;
+                }
+            }
+
+            // Put remaining tasks back
+            for(int count : used) {
+                max_heap.push(count);
+            }
+        }
+
+        return time;
+    }
+};
+```
+
 ### 3. [Reorganize String](https://leetcode.com/problems/reorganize-string/)
+
+Given a string `s`, rearrange the characters of `s` so that any two adjacent characters are not the same.
+
+Return any possible rearrangement of `s` or return `""` if not possible.
+
+Example 1:
+
+- Input: s = "aab"
+- Output: "aba"
+
+Example 2:
+
+- Input: s = "aaab"
+- Output: ""
+
+**Greedy + Max Heap**
+
+```cpp
+class Solution {
+public:
+    string reorganizeString(string s) {
+
+        unordered_map<char, int> freq;
+
+        for(char c : s) {
+            freq[c]++;
+        }
+
+        // {frequency, character}
+        priority_queue<pair<int, char>> max_heap;
+
+        for(auto [ch, count] : freq) {
+            max_heap.push({count, ch});
+        }
+
+        string ans;
+
+        while(max_heap.size() >= 2) {
+
+            auto [freq1, ch1] = max_heap.top();
+            max_heap.pop();
+
+            auto [freq2, ch2] = max_heap.top();
+            max_heap.pop();
+
+            ans += ch1;
+            ans += ch2;
+
+            freq1--;
+            freq2--;
+
+            if(freq1 > 0) {
+                max_heap.push({freq1, ch1});
+            }
+
+            if(freq2 > 0) {
+                max_heap.push({freq2, ch2});
+            }
+        }
+
+        // One character may remain
+        if(!max_heap.empty()) {
+            auto [count, ch] = max_heap.top();
+
+            if(count > 1) {
+                return "";
+            }
+
+            // Make sure it doesn't equal the last character
+            if(!ans.empty() && ans.back() == ch) {
+                return "";
+            }
+
+            ans += ch;
+        }
+
+        return ans;
+    }
+};
+```
+
 ### 4. [Min number of refueling stops](https://leetcode.com/problems/minimum-number-of-refueling-stops/description/)
+
+<font color="red">**HARD**</font>
+
+A car travels from a starting position to a destination which is `target` miles east of the starting position.
+
+There are gas stations along the way. The gas stations are represented as an array `stations` where `stations[i] = [positioni, fueli]` indicates that the `ith` gas station is `position_i` miles east of the starting position and has `fuel_i` liters of gas.
+
+The car starts with an infinite tank of gas, which initially has `startFuel` liters of fuel in it. It uses one liter of gas per one mile that it drives. When the car reaches a gas station, it may stop and refuel, transferring all the gas from the station into the car.
+
+Return the minimum number of refueling stops the car must make in order to reach its destination. If it cannot reach the destination, return `-1`.
+
+Note that if the car reaches a gas station with `0` fuel left, the car can still refuel there. If the car reaches the destination with `0` fuel left, it is still considered to have arrived.
+
+**Greedy + Max Heap**
+```cpp
+class Solution {
+public:
+    int minRefuelStops(int target, int startFuel, vector<vector<int>>& stations) {
+        priority_queue<int> max_heap;
+
+        int fuel = startFuel;
+        int stops = 0;
+        int i = 0;
+
+        while(fuel < target) {
+
+            // Add all stations we can currently reach
+            while(i < stations.size() &&
+                  stations[i][0] <= fuel) {
+
+                max_heap.push(stations[i][1]);
+                i++;
+            }
+
+            // No reachable station left
+            if(max_heap.empty()) {
+                return -1;
+            }
+
+            // Take the station with maximum fuel
+            fuel += max_heap.top();
+            max_heap.pop();
+
+            stops++;
+        }
+
+        return stops;
+    }
+};
+```
+
 ### 5. [IPO](https://leetcode.com/problems/ipo/description/)
+
+<font color="red">**HARD**</font>
+
+Suppose LeetCode will start its **IPO** soon. In order to sell a good price of its shares to Venture Capital, LeetCode would like to work on some projects to increase its capital before the IPO. Since it has limited resources, it can only finish at most `k` distinct projects before the IPO. Help LeetCode design the best way to maximize its total capital after finishing at most `k` distinct projects.
+
+You are given `n` projects where the `ith` project has a pure profit `profits[i]` and a minimum capital of `capital[i]` is needed to start it.
+
+Initially, you have `w` capital. When you finish a project, you will obtain its pure profit and the profit will be added to your total capital.
+
+Pick a list of at most `k` distinct projects from given projects to maximize your final capital, and return the final maximized capital.
+
+The answer is guaranteed to fit in a 32-bit signed integer.
+
+
+**Greedy + Heap**
+
+- Sort projects by required capital.
+- Use a max-heap for profits.
+
+```cpp
+class Solution {
+public:
+    int findMaximizedCapital(int k, int w,
+                             vector<int>& profits,
+                             vector<int>& capital) {
+
+        int n = profits.size();
+
+        // {required capital, profit}
+        vector<pair<int, int>> projects;
+
+        for(int i = 0; i < n; i++) {
+            projects.push_back({capital[i], profits[i]});
+        }
+
+        // Sort by required capital
+        sort(projects.begin(), projects.end());
+
+        // Max heap of profits
+        priority_queue<int> max_heap;
+
+        int i = 0;
+
+        for(int project = 0; project < k; project++) {
+
+            // Add all projects we can currently afford
+            while(i < n && projects[i].first <= w) {
+                max_heap.push(projects[i].second);
+                i++;
+            }
+
+            // No project can be started
+            if(max_heap.empty()) {
+                break;
+            }
+
+            // Choose maximum profit
+            w += max_heap.top();
+            max_heap.pop();
+        }
+
+        return w;
+    }
+};
+```
+
 ### 6. [Course Scheduler 3](https://leetcode.com/problems/course-schedule-iii/description/)
+
+<font color="red">**HARD**</font>
+
+There are `n` different online courses numbered from `1` to `n`. You are given an array `courses` where `courses[i] = [durationi, lastDayi]` indicate that the `ith` course should be taken continuously for `durationi` days and must be finished before or on `lastDayi`.
+
+You will start on the `1st` day and you cannot take two or more courses simultaneously.
+
+Return the maximum number of courses that you can take.
+
+**Greedy + Heap**
+
+```cpp
+class Solution {
+public:
+    int scheduleCourse(vector<vector<int>>& courses) {
+
+        // Sort by deadline
+        sort(courses.begin(), courses.end(),
+             [](const vector<int>& a, const vector<int>& b) {
+                 return a[1] < b[1];
+             });
+
+        // Max heap of course durations
+        priority_queue<int> max_heap;
+
+        int time = 0;
+
+        for(auto course : courses) {
+
+            int duration = course[0];
+            int deadline = course[1];
+
+            time += duration;
+            max_heap.push(duration);
+
+            // Cannot finish all selected courses by deadline
+            if(time > deadline) {
+                time -= max_heap.top();
+                max_heap.pop();
+            }
+        }
+
+        return max_heap.size();
+    }
+};
+```
+
 ## 5. Two heaps
 ### 1. [Find median in data stream](https://leetcode.com/problems/find-median-from-data-stream/description/)
+
+<font color="red">**HARD**</font>
+
+The **median** is the middle value in an ordered integer list. If the size of the list is even, there is no middle value, and the median is the mean of the two middle values.
+
+- For example, for `arr = [2,3,4]`, the median is `3`.
+- For example, for `arr = [2,3]`, the median is `(2 + 3) / 2 = 2.5`.
+
+Implement the MedianFinder class:
+
+- `MedianFinder()` initializes the MedianFinder object.
+- `void addNum(int num)` adds the integer num from the data stream to the data structure.
+- `double findMedian()` returns the median of all elements so far. Answers within 10-5 of the actual answer will be accepted.
+
+```cpp
+class MedianFinder {
+private:
+    // Smaller half
+    priority_queue<int> left;
+
+    // Larger half
+    priority_queue<int, vector<int>, greater<int>> right;
+
+public:
+    MedianFinder() {
+        
+    }
+    
+    void addNum(int num) {
+
+        // First put the number into left
+        if(left.empty() || num <= left.top()) {
+            left.push(num);
+        }
+        else {
+            right.push(num);
+        }
+
+        // Balance the heaps
+        if(left.size() > right.size() + 1) {
+            right.push(left.top());
+            left.pop();
+        }
+        else if(right.size() > left.size()) {
+            left.push(right.top());
+            right.pop();
+        }
+    }
+    
+    double findMedian() {
+
+        if(left.size() > right.size()) {
+            return left.top();
+        }
+
+        return (left.top() + right.top()) / 2.0;
+    }
+};
+```
+
 ### 2. [Sliding Window Median (hard)](https://leetcode.com/problems/sliding-window-median/description/)
+
+<font color="red">**HARD**</font>
+
+The median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value. So the median is the mean of the two middle values.
+
+- For examples, if `arr = [2,3,4]`, the median is `3`.
+- For examples, if `arr = [1,2,3,4]`, the median is `(2 + 3) / 2 = 2.5`.
+
+You are given an integer array `nums` and an integer `k`. There is a sliding window of size k which is moving from the very left of the array to the very right. You can only see the k numbers in the window. Each time the sliding window moves right by one position.
+
+Return the median array for each window in the original array. Answers within `10^-5` of the actual value will be accepted.
+
+```cpp
+class Solution {
+public:
+    vector<double> medianSlidingWindow(vector<int>& nums, int k) {
+
+        // left = smaller half
+        // right = larger half
+        multiset<int> left, right;
+
+        vector<double> ans;
+
+        // Keep:
+        // left.size() == right.size()
+        // OR
+        // left.size() == right.size() + 1
+
+        auto balance = [&]() {
+
+            // left has too many
+            while(left.size() > right.size() + 1) {
+                right.insert(*left.rbegin());
+                left.erase(prev(left.end()));
+            }
+
+            // right has too many
+            while(right.size() > left.size()) {
+                left.insert(*right.begin());
+                right.erase(right.begin());
+            }
+        };
+
+        auto add = [&](int num) {
+
+            if(left.empty() || num <= *left.rbegin()) {
+                left.insert(num);
+            }
+            else {
+                right.insert(num);
+            }
+
+            balance();
+        };
+
+        auto remove = [&](int num) {
+
+            if(left.find(num) != left.end()) {
+                left.erase(left.find(num));
+            }
+            else {
+                right.erase(right.find(num));
+            }
+
+            balance();
+        };
+
+        auto getMedian = [&]() -> double {
+
+            if(left.size() > right.size()) {
+                return *left.rbegin();
+            }
+
+            return ((double)*left.rbegin() + *right.begin()) / 2.0;
+        };
+
+        // Build first window
+        for(int i = 0; i < k; i++) {
+            add(nums[i]);
+        }
+
+        ans.push_back(getMedian());
+
+        // Slide window
+        for(int i = k; i < nums.size(); i++) {
+
+            // Remove element leaving window
+            remove(nums[i - k]);
+
+            // Add new element
+            add(nums[i]);
+
+            ans.push_back(getMedian());
+        }
+
+        return ans;
+    }
+};
+```
