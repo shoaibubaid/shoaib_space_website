@@ -1,0 +1,64 @@
+/* ---- focus timer ----
+   Scoped to .ft- prefixed classes so it can't collide with the rest of
+   style.css / test.css. Uses currentColor + soft overlays so it should
+   sit reasonably in any of the three ambience themes; tweak the accent
+   below if you want it to match a theme's exact palette. */
+
+.ft-entry-btn {
+  margin: 4px 0 20px;
+}
+
+.ft-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+  padding: 20px;
+  max-width: 640px;
+}
+
+.ft-controls {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.ft-controls .t-field {
+  min-width: 0;
+}
+
+#ft-minutes {
+  width: 72px;
+}
+
+.ft-canvas-wrap {
+  overflow-x: auto;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ft-canvas-wrap canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ft-readout {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 14px;
+}
+
+.ft-time {
+  font-family: "Space Mono", monospace;
+  font-size: 26px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ft-phase {
+  font-size: 13px;
+  opacity: 0.65;
+}

@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.2/styles/atom-one-dark.min.css">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="test.css">
+<link rel="stylesheet" href="focus-timer.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.2/highlight.min.js"></script>
 </head>
@@ -108,6 +109,10 @@
       <h2 class="handwritten section-title">The blog</h2>
       <p class="intro">Pick a topic to see what's inside.</p>
 
+      <button type="button" class="t-btn t-btn-primary ft-entry-btn" data-nav="focus-timer">
+        <i class="ti ti-hourglass"></i> focus timer
+      </button>
+
       <div id="blog-groups"></div>
     </section>
 
@@ -117,6 +122,37 @@
       <h2 id="blog-list-title" class="handwritten section-title"></h2>
       <p id="blog-list-intro" class="intro"></p>
       <div id="blog-list" class="post-list"></div>
+    </section>
+
+    <!-- ===================== FOCUS TIMER ===================== -->
+    <section id="view-focus-timer" class="view" hidden>
+      <a href="#" class="back-link" data-nav="blog"><i class="ti ti-arrow-left"></i> blog</a>
+      <h2 class="handwritten section-title">focus timer</h2>
+      <p class="intro">Value climbs for the first half of the session, peaks at the midpoint, then eases back down — a quiet visual cue for where you are in a study block.</p>
+
+      <div class="ft-card">
+        <div class="ft-controls">
+          <label class="t-field">
+            <span class="t-field-label">duration (min, max 60)</span>
+            <input type="number" id="ft-minutes" min="1" max="60" value="25" inputmode="numeric">
+          </label>
+          <button type="button" class="t-btn t-btn-primary" id="ft-start"><i class="ti ti-player-play"></i> start</button>
+          <button type="button" class="t-btn t-btn-sm" id="ft-pause" disabled><i class="ti ti-player-pause"></i> pause</button>
+          <button type="button" class="t-btn t-btn-sm" id="ft-reset"><i class="ti ti-rotate"></i> reset</button>
+        </div>
+
+        <div class="ft-canvas-wrap">
+          <canvas id="ft-canvas" width="960" height="320"></canvas>
+        </div>
+
+        <div class="ft-readout">
+          <div>
+            <div class="ft-time" id="ft-time">25:00</div>
+            <div class="ft-phase" id="ft-phase">ready</div>
+          </div>
+          <div class="ft-phase" id="ft-value">value: 0%</div>
+        </div>
+      </div>
     </section>
 
     <!-- POST (populated by JS) -->
@@ -307,5 +343,6 @@
 
 <script src="script.js"></script>
 <script src="test.js"></script>
+<script src="focus-timer.js"></script>
 </body>
 </html>
