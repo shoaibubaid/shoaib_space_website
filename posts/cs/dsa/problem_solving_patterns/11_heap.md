@@ -36,6 +36,26 @@ class Solution {
 ```
 
 ```cpp
+// using maxHeap : because top element in a maxheap of size k is always the kth smallest
+class Solution {
+public:
+    int kthSmallest(vector<int>& arr, int k) {
+        priority_queue<int, vector<int>> maxHeap;
+        
+        for(int value : arr){
+            maxHeap.push(value);
+            if(maxHeap.size() > k){
+                maxHeap.pop();
+            }
+        }
+        
+        return maxHeap.top();
+        
+    }
+}; 
+```
+
+```cpp
 // without sorting the array
 
 class Solution {
@@ -170,6 +190,13 @@ public:
 Given an array of strings `words` and an integer `k`, return the `k` most frequent strings.
 
 Return the answer sorted by the frequency from highest to lowest. Sort the words with the same frequency by their **lexicographical order**.
+
+In the solution,
+The comparator is answering one simple question:
+
+**“Should a come after b?”**
+
+That's it.
 
 ```cpp
 class Solution {
@@ -362,6 +389,39 @@ A row `i` is weaker than a row `j` if one of the following is true:
 
 Return the indices of the `k` **weakest rows** in the matrix ***ordered from weakest to strongest***.
 
+
+```cpp
+class Solution {
+public:
+    vector<int> kWeakestRows(vector<vector<int>>& mat, int k) {
+        unordered_map<int,int> mp;
+
+        for(int i = 0; i < mat.size(); i++){
+            mp[i] = count(mat[i].begin(), mat[i].end() ,1);
+        }
+
+        priority_queue<pair<int,int>> maxHeap;
+
+        for(auto [row, count] : mp){
+            maxHeap.push({count, row});
+
+            if(maxHeap.size() > k){
+                maxHeap.pop();
+            }
+        }
+
+        vector<int> ans;
+
+        while(!maxHeap.empty()){
+            ans.push_back(maxHeap.top().second);
+            maxHeap.pop();
+        }
+
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
+```
 ```cpp
 class Solution {
 public:
@@ -435,13 +495,59 @@ public:
 ### 1. [Merge K Sorted Arrays](https://www.geeksforgeeks.org/problems/merge-k-sorted-arrays/1)
 Given a 2D matrix **mat[][]** of size **n x m**. Each row in the matrix is sorted in non-decreasing order, merge all the rows and return a single sorted array that contains all the elements of the matrix.
 
+
+```cpp
+class Solution {
+  public:
+  
+    vector<int> merge(vector<int> array1, vector<int> array2){
+        vector<int> ans;
+        int m = array1.size();
+        int n = array2.size();
+        
+        int i = 0, j = 0;
+        
+        while(i < m && j < n){
+            if(array1[i] <= array2[j]){
+                ans.push_back(array1[i]);
+                i++;
+            }
+            else{
+                ans.push_back(array2[j]);
+                j++;
+            }
+        }
+        
+        while( i < m){
+            ans.push_back(array1[i++]);
+        }
+        
+        while( j < n){
+            ans.push_back(array2[j++]);
+        }
+        
+        return ans;
+    }
+    vector<int> mergeArrays(vector<vector<int>> &mat) {
+        
+        vector<int> ans = mat[0];
+        for(int i = 1; i < mat.size(); i++){
+            ans = merge(ans, mat[i]);
+        }
+        return ans;
+        
+    }
+};
+```
+
+Another solution, add the first elements of the heap and pop one at a time and then add the element next to the popped element.
 ```cpp
 class Solution {
   public:
     vector<int> mergeArrays(vector<vector<int>> &mat) {
         int n = mat.size();
 
-                // {value, row, column}
+                // vector<int> = {value, row, column}
                 priority_queue<
                     vector<int>,
                     vector<vector<int>>,
@@ -491,6 +597,37 @@ Note that it is the `kth` smallest element in the sorted order, not the `kth` di
 
 You must find a solution with a memory complexity better than `O(n2)`.
 
+```cpp
+class Solution {
+public:
+    int kthSmallest(vector<vector<int>>& matrix, int k) {
+        // vector<int> for {value, row, column}
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> minHeap;
+
+        for(int i = 0; i < matrix.size(); i++){
+            minHeap.push({matrix[i][0], i, 0});
+        }
+
+        int ans = 0;
+        for(int i = 0; i < k ; i++){
+            auto curr = minHeap.top();
+            minHeap.pop();
+
+            int value = curr[0];
+            int row = curr[1];
+            int col = curr[2];
+
+            ans = value;
+            if(col + 1 < matrix[row].size()){
+                minHeap.push({matrix[row][col + 1], row, col + 1});
+            }
+        }
+        
+
+        return ans;
+    }
+};
+```
 ```cpp
 class Solution {
 public:
