@@ -817,6 +817,57 @@ Example 2:
 ```cpp
 class Solution {
 public:
+   string reorganizeString(string s) {
+       unordered_map<char, int> mp;
+       for (char c : s) {
+           mp[c]++;
+       }
+
+
+       priority_queue<pair<int, char>> pq;
+
+
+       for (auto [c, count] : mp) {
+           pq.push({count, c});
+       }
+
+
+       string ans = "";
+       int reserve_freq = 0;
+       char reserve_char = '\0';
+
+
+       while (!pq.empty()) {
+
+
+           auto curr = pq.top();
+           pq.pop();
+
+
+           ans += curr.second;
+           curr.first--;
+
+
+           if (reserve_freq > 0) {
+               pq.push({reserve_freq, reserve_char});
+           }
+           reserve_freq = curr.first;
+           reserve_char = curr.second;
+       }
+       if (reserve_freq > 0) {
+           return "";
+       }
+
+
+       return ans;
+   }
+};
+
+
+```
+```cpp
+class Solution {
+public:
     string reorganizeString(string s) {
 
         unordered_map<char, int> freq;
