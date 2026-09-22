@@ -76,7 +76,29 @@ public:
 ### 5. [Remove occurences of a character in string](https://www.geeksforgeeks.org/problems/remove-all-occurrences-of-a-character-in-a-string/1)
 
 Given a string `s` and a character `ch`, recursively remove every occurrence of `ch` from `s` and return the result.
-
+```cpp
+class Solution {
+  public:
+  
+    string removehelper(string &s, int curr, int size, char c){
+        if(curr >= size) return s;
+        
+        if(s[curr] == c){
+            s = s.substr(0, curr) + s.substr(curr + 1);
+            return removehelper(s, curr, s.size(), c);
+        }
+        
+        return removehelper(s, curr + 1, s.size(), c);
+    }
+  
+    // Function to remove all occurrences of the character from the string
+    void removeCharacter(string &s, char c) {
+        // code here
+        removehelper(s, 0, s.size(), c);
+        
+    }
+};
+```
 ```cpp
 class Solution {
 public:
