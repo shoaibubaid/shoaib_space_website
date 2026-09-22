@@ -677,6 +677,15 @@ public:
 ```
 
 ## 4. GREEDY+heap
+
+[How greedy algorithms work](https://www.geeksforgeeks.org/dsa/introduction-to-greedy-algorithm-data-structures-and-algorithm-tutorials/)
+
+1. Start with the initial state of the problem.
+2. Consider all the options available at that specific moment.
+3. Choose the option that seems best at that moment, regardless of future consequences. This is the "greedy" part - you take the best option available now, even if it might not be the best in the long run.
+4. Move to the new state based on your chosen option. This becomes your new starting point for the next iteration.
+5. Repeat steps 2-4 until you reach the goal state or no further progress is possible.
+
 ### 1. [LAST STONE WEIGHT](https://leetcode.com/problems/last-stone-weight/description/)
 
 You are given an array of integers `stones` where `stones[i]` is the weight of the `i`th stone.
