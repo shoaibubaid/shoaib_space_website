@@ -178,6 +178,35 @@ Given an array `nums` of distinct integers, return all possible permutations, in
 ```cpp
 class Solution {
 public:
+    void solve(vector<int>& nums,vector<int>& curr, vector<vector<int>>& ans){
+
+        int n = nums.size();
+        if(nums.empty()){
+            ans.push_back(curr);
+            return;
+        }
+        for(int i = 0; i < n ; i++){
+            int value = nums[i];
+            curr.push_back(value);
+            nums.erase(nums.begin() + i);
+            solve(nums, curr, ans);
+            nums.insert(nums.begin() + i, value);
+            curr.pop_back();
+        } 
+    }
+
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> ans;
+        vector<int> curr;
+        solve(nums, curr, ans);
+
+        return ans;
+    }
+};
+```
+```cpp
+class Solution {
+public:
     void solve(vector<int>& nums, vector<bool>& used, vector<int>& current, vector<vector<int>>& ans) {
         if(current.size() == nums.size()) {
             ans.push_back(current);
