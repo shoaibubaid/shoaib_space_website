@@ -82,7 +82,34 @@ public:
 ### 2. [Preorder](https://leetcode.com/problems/binary-tree-preorder-traversal/description/)
 
 Given the `root` of a binary tree, return the **preorder traversal** (root, left, right) of its nodes' values.
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    void preorder(TreeNode* root, vector<int> &ans){
+        if(root == nullptr) return;
+        ans.push_back(root->val);
+        preorder(root->left, ans);
+        preorder(root->right, ans);
 
+    }
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        preorder(root,ans);
+        return ans;
+    }
+};
+```
 ```cpp
 class Solution {
 public:
@@ -112,6 +139,33 @@ public:
 ### 3. [Postorder](https://leetcode.com/problems/binary-tree-postorder-traversal/description/)
 
 Given the `root` of a binary tree, return the **postorder traversal** (left, right, root) of its nodes' values.
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    void solve(TreeNode* root, vector<int> &ans){
+        if(root == nullptr) return;
+        solve(root->left, ans);
+        solve(root->right, ans);
+        ans.push_back(root->val);
+    }
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        solve(root, ans);
+        return ans;
+    }
+};
+```
 
 ```cpp
 class Solution {
@@ -179,7 +233,54 @@ public:
 ### 5. [ZigZag Order](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/description/)
 
 Given the `root` of a binary tree, return the **zigzag level order traversal**: left to right, then right to left for the next level, alternating.
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
+ * right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        vector<vector<int>> ans;
 
+        if (root == nullptr)
+            return ans;
+
+        queue<TreeNode*> q;
+        bool reverse = false;
+        q.push(root);
+
+        while (!q.empty()) {
+            vector<int> level;
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode* curr = q.front();
+                q.pop();
+
+                level.push_back(curr->val);
+
+                if (curr->left) q.push(curr->left);
+                if (curr->right) q.push(curr->right);
+            }
+            if(reverse){
+                std::reverse(level.begin(), level.end());
+            }
+            ans.push_back(level);
+            reverse = !reverse;
+        }
+
+        return ans;
+    }
+};
+```
 ```cpp
 class Solution {
 public:
@@ -489,7 +590,29 @@ public:
 Given the `root` of a BST and an integer `k`, return the `k`th smallest value among all node values.
 
 **Intuition**: an inorder traversal of a BST visits nodes in sorted order, so stop at the kth visit.
+```cpp
+class Solution {
+public:
+    int count = 0;
+    int answer;
+    void inorder(TreeNode* root, int k){
+        if(root == nullptr) return;
+        inorder(root->left,k);
+        count++;
+        if(count == k) {
+            answer = root->val;
+            return;
+        }
+        inorder(root->right,k);
+    }
 
+    int kthSmallest(TreeNode* root, int k) {
+        // an inorder traversal of a BST visits nodes in sorted order, so stop at the kth visit.
+        inorder(root,k);
+        return answer;
+    }
+};
+```
 ```cpp
 class Solution {
 public:

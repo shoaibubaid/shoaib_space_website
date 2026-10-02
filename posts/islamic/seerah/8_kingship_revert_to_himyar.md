@@ -2,7 +2,7 @@
 title: 8. The reversion of the kingship from the Abyssinians to Sayf b. Dhu Yazan the Himyante, just as the two soothsayers had predicted to Rabfia b. Nasr, the Lakhmite.
 era: 578 CE
 readTime: 25 min
-excerpt: How Abraha got pride and why he tries to attack Kaaba how he got humiliated.
+excerpt: The reversion of the kingship from the Abyssinians to Sayf b. Dhu Yazan the Himyante.
 floats: lantern.png, moon.png, arabbooks.png, palmtree.png, prayer_mat.png
 background: seerah/7_seerah.png
 ---
